@@ -6,6 +6,11 @@
       "use": "@nuxtjs/now-builder",
       "config": {}
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "YUDHAWIJAYA_COM_STORYBLOK_TOKEN": "@yudhawijaya-com-storyblok-token"
+    }
+  }
 }
 
