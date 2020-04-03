@@ -68,6 +68,23 @@ module.exports = {
   axios: {
   },
   /*
+  ** purgeCSS module configuration
+  ** See https://github.com/nuxt-community/tailwindcss-module
+  */
+  tailwindcss: {
+    purgeCSSInDev: true
+  },
+  purgeCSS: {
+    whitelist: [
+      'svg-inline--fa',
+      'fa-github',
+      'fa-gitlab',
+      'fa-linkedin',
+      'fa-twitter',
+      'fa-w-16'
+    ],
+  },
+  /*
   ** Build configuration
   */
   build: {
