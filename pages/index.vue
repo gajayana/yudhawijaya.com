@@ -27,7 +27,7 @@ export default {
       meta: [
         { hid: 'description', name: 'description', content: this.metas.description },
         { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.metas.og_description },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.metas.og_image },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: `https:${this.metas.og_image}` },
         { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.metas.og_title },
         { hid: 'og:url', name: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' },
         { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
