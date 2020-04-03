@@ -1,77 +1,47 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        yudhawijaya
-      </h1>
-      <h2 class="subtitle">
-        My extraordinary Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+  <div v-if="teaser" class="bg-blue-100">
+    <div class="container flex flex-col items-center mx-auto px-4 py-32">
+      <h1 class="font-bold font-sans leading-tight mb-4 text-center text-gray-600 text-4xl sm:text-6xl">{{ teaser.headline }}</h1>
+      <span class="mb-2 text-center text-base sm:text-2xl text-gray-600">{{ teaser.occupation }}</span>
+      <ul class="flex -mx-4">
+        <li v-for="(item, key) in socialAccounts" :key="`social-${key}`" class="px-4">
+          <a :href="item.link" :title="item.link" class="text-gray-500 hover:text-gray-600 text-3xl sm:text-2xl" target="_blank">
+            <font-awesome-icon :icon="item.icon" />
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+// import Logo from '~/components/Logo.vue'
+import { mapGetters, mapState } from 'vuex'
 export default {
-  components: {
-    Logo
+  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
+    if(!store.state.home.raw) store.dispatch('home/fetch', { app })
+  },
+  computed: {
+    ...mapGetters({
+      teaser: 'home/teaser',
+    }),
+    ...mapState({
+      error: state => state.home.error,
+      // raw: state => state.home.raw,
+    }),
+    socialAccounts() {
+      // if (!this.teaser) return
+      const accounts = this.teaser.social_accounts.split('||')
+
+      return accounts.map((ob) => {
+        let item = ob.split('|')
+        return {
+          icon: item[1].split(','),
+          link : item[0],
+        }
+      })
+
+    }
   }
 }
 </script>
-
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
