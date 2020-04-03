@@ -30,7 +30,7 @@ export default {
       // raw: state => state.home.raw,
     }),
     socialAccounts() {
-      if (!this.teaser) return
+      // if (!this.teaser) return
       const accounts = this.teaser.social_accounts.split('||')
 
       return accounts.map((ob) => {
