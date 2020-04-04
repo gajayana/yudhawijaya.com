@@ -19,7 +19,11 @@
 import { mapGetters, mapState } from 'vuex'
 export default {
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
-    if(!store.state.home.raw) store.dispatch('home/fetch', { app })
+    if(process.server) {
+      await store.dispatch('home/fetch', { app })
+    } else {
+      store.dispatch('home/fetch', { app })
+    }
   },
   head() {
     return {
