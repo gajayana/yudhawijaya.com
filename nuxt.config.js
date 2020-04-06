@@ -59,6 +59,13 @@ module.exports = {
         accessToken: process.env.YUDHAWIJAYA_COM_STORYBLOK_TOKEN || '',
         cacheProvider: 'memory'
       }
+    ],
+    [
+      '@nuxtjs/markdownit',
+      // See https://github.com/markdown-it/markdown-it
+      {
+        injected: true
+      }
     ]
   ],
   /*
@@ -72,7 +79,7 @@ module.exports = {
   ** See https://github.com/nuxt-community/tailwindcss-module
   */
   tailwindcss: {
-    purgeCSSInDev: true
+    purgeCSSInDev: false
   },
   purgeCSS: {
     whitelist: [
