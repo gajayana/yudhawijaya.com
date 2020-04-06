@@ -1,0 +1,32 @@
+<template>
+  <div class="container mx-auto md:px-4 py-20">
+    <h2 class="font-bold font-sans leading-tight mb-4 px-4 md:px-0 text-gray-600 text-3xl sm:text-4xl">Jurnal</h2>
+    <div class="flex flex-wrap mx-0 md:-mx-4">
+      <div class="flex w-full md:w-1/2 lg:w-1/3 px-4 mb-4" v-for="post in posts" :key="post.uuid">
+        <nuxt-link :to="`/jurnal/${post.slug}`" class="bg-white flex flex-col h-full overflow-hidden rounded shadow">
+          <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url(https:${post.content.featured_image})`, paddingBottom: '56.25%' }"></div>
+          <div class="flex flex-col h-full justify-between p-4">
+            <div class="flex flex-col mb-3">
+              <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ post.content.title }}</h3>
+              <p class="text-gray-800">{{ post.content.excerpt }}</p>
+            </div>
+            <div class="flex text-gray-600 text-xs">
+              <time>16 Oktober 1999</time>
+            </div>
+          </div>
+        </nuxt-link>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  name: 'HomePosts',
+  computed: {
+    ...mapGetters({
+      posts: 'home/posts'
+    })
+  },
+}
+</script>
