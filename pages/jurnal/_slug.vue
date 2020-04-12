@@ -57,9 +57,9 @@ export default {
       firstPublishedAt: 'journal/firstPublishedAt',
       title: 'journal/title',
     }),
-    ...mapState({
-      raw: state => state.journal.raw
-    }),
+    // ...mapState({
+    //   raw: state => state.journal.raw
+    // }),
   },
   mixins: [
     dateTimeFormatter,
