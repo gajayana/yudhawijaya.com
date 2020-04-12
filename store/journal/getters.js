@@ -6,7 +6,7 @@ export default {
     if (state.raw) return state.raw.story.content.excerpt
   },
   featuredImage(state) {
-    if (state.raw) return `https:${state.raw.story.content.featured_image}`
+    if (state.raw) return state.raw.story.content.featured_image
   },
   firstPublishedAt(state) {
     if (state.raw) return state.raw.story.first_published_at

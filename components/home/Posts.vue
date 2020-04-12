@@ -4,7 +4,7 @@
     <div class="flex flex-wrap mx-0 md:-mx-4">
       <div class="flex w-full md:w-1/2 lg:w-1/3 px-4 mb-4" v-for="post in posts" :key="post.uuid">
         <nuxt-link :to="`/jurnal/${post.slug}`" class="bg-white flex flex-col h-full overflow-hidden rounded shadow">
-          <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url(https:${post.content.featured_image})`, paddingBottom: '56.25%' }"></div>
+          <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url(${post.content.featured_image})`, paddingBottom: '56.25%' }"></div>
           <div class="flex flex-col h-full justify-between p-4">
             <div class="flex flex-col mb-3">
               <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ post.content.title }}</h3>
