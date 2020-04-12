@@ -11,7 +11,7 @@
               <p class="text-gray-800">{{ post.content.excerpt }}</p>
             </div>
             <div class="flex text-gray-600 text-xs">
-              <time>16 Oktober 1999</time>
+              <time :datetime="post.first_published_at">{{ post.first_published_at | dateTimeFormatter }}</time>
             </div>
           </div>
         </nuxt-link>
@@ -21,6 +21,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import dateTimeFormatter from '~/mixins/filters/dateTimeFormatter'
 export default {
   name: 'HomePosts',
   computed: {
@@ -28,5 +29,6 @@ export default {
       posts: 'home/posts'
     })
   },
+  mixins: [ dateTimeFormatter ],
 }
 </script>

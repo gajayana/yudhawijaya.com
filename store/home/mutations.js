@@ -3,9 +3,9 @@ export default {
     state.error = payload
   },
   setRawPosts(state, payload) {
-    state.rawPosts = payload
+    state.rawPosts = Object.freeze(payload)
   },
   setRaw(state, payload) {
-    state.raw = payload
+    state.raw = Object.freeze(payload)
   },
 }
