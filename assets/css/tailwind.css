@@ -4,10 +4,38 @@
 /* purgecss end ignore */
 @import 'tailwindcss/utilities';
 
+/* purgecss start ignore */
 body {
+  @apply bg-gray-100;
   @apply font-serif;
 }
 
-pre {
-  @apply font-mono;
+.story-body {
+  @apply w-full;
+  @apply px-4;
+
+  & p {
+    @apply font-serif;
+    @apply mb-3;
+    @apply mx-auto;
+    @apply text-gray-900;
+    @apply text-lg;
+    @apply max-w-xl;
+  }
+
+  & pre {
+    @apply border;
+    @apply border-gray-500;
+    @apply border-solid;
+    @apply font-mono;
+    @apply mb-3;
+    @apply mx-auto;
+    @apply overflow-hidden;
+    @apply p-3;
+    @apply rounded-sm;
+    @apply text-sm;
+    @apply max-w-xl;
+    @apply whitespace-pre-wrap;
+  }
 }
+/* purgecss end ignore */
