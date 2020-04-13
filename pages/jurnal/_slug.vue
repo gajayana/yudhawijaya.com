@@ -21,7 +21,6 @@
 </template>
 <script>
 import { mapGetters, mapState } from 'vuex'
-import dateTimeFormatter from '~/mixins/filters/dateTimeFormatter'
 export default {
   name: 'JournalSingle',
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
@@ -57,12 +56,6 @@ export default {
       firstPublishedAt: 'journal/firstPublishedAt',
       title: 'journal/title',
     }),
-    // ...mapState({
-    //   raw: state => state.journal.raw
-    // }),
   },
-  mixins: [
-    dateTimeFormatter,
-  ],
 }
 </script>

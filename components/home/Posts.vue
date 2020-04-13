@@ -21,7 +21,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import dateTimeFormatter from '~/mixins/filters/dateTimeFormatter'
 export default {
   name: 'HomePosts',
   computed: {
@@ -29,6 +28,5 @@ export default {
       posts: 'home/posts'
     })
   },
-  mixins: [ dateTimeFormatter ],
 }
 </script>
