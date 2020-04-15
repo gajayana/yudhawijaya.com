@@ -12,13 +12,30 @@ import HomePosts from '~/components/home/Posts.vue'
 
 export default {
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
-    if(process.server) {
-      await store.dispatch('home/fetch', { app })
-      await store.dispatch('home/fetchPosts', { app })
-    } else {
-      store.dispatch('home/fetch', { app })
-      store.dispatch('home/fetchPosts', { app })
+    try {
+      const promises = [
+        app.$storyapi.get('cdn/stories/home', { version: 'published' }),
+        app.$storyapi.get(
+          'cdn/stories',
+          {
+            cv: Date.now(),
+            per_page: 6,
+            sort_by: 'first_published_at:desc',
+            starts_with: 'posts/',
+            version: 'published'
+          }
+        ),
+      ]
+      const [ home, stories ] = await Promise.all(promises)
+      store.commit('home/setRaw', home.data)
+      store.commit('home/setRawPosts', stories.data)
+    } catch (err) {
+      error({
+        statusCode: err.statusCode,
+        message: err.message,
+      })
     }
+
   },
   head() {
     return {
