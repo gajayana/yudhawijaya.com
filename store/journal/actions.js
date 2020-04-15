@@ -2,7 +2,7 @@ export default {
   async fetch({ commit }, { app, error, slug }) {
     try {
       const { data } = await app.$storyapi.get(
-        `cdn/stories/postss/${slug}`,
+        `cdn/stories/posts/${slug}`,
         {
           cv: Date.now(),
           version: 'published',
