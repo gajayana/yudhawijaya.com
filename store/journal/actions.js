@@ -1,17 +1,19 @@
 export default {
-  async fetch({ commit }, payload) {
+  async fetch({ commit }, { app, error, slug }) {
     try {
-      const { data } = await payload.app.$storyapi.get(
-        `cdn/stories/posts/${payload.slug}`,
+      const { data } = await app.$storyapi.get(
+        `cdn/stories/posts/${slug}`,
         {
           cv: Date.now(),
           version: 'published',
         }
       )
       commit('setRaw', data)
-      commit('setError','')
-    } catch (error) {
-      commit('setError', error)
+    } catch (err) {
+      error({
+        statusCode: err.statusCode,
+        message: err.message,
+      })
     }
   }
 }
