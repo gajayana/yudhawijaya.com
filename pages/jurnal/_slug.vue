@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto py-8">
     <article>
-      <header class="mb-6 px-4">
+      <header v-if="title" class="mb-6 px-4">
         <h1 class="font-bold font-sans leading-tight mx-auto text-center text-gray-900 text-2xl sm:text-3xl md:text-4xl max-w-3xl">{{ title }}</h1>
       </header>
-      <section class="mb-6 px-4">
+      <section v-if="excerpt" class="mb-6 px-4">
         <p class="italic mb-4 mx-auto max-w-3xl text-base md:text-lg text-center text-gray-700">{{ excerpt }}</p>
         <p class="mx-auto max-w-3xl text-base text-center text-gray-600 text-sm md:text-base">
           <span>Yosef Yudha Wijaya</span>
@@ -12,14 +12,16 @@
           <time :datetime="firstPublishedAt">{{ firstPublishedAt | dateTimeFormatter }}</time>
         </p>
       </section>
-      <section class="max-w-3xl mb-6 mx-4 lg:mx-auto p-2 lg:p-4 shadow-md">
+      <section v-if="featuredImage" class="max-w-3xl mb-6 mx-4 lg:mx-auto p-2 lg:p-4 shadow-md">
         <img :alt="title" :src="featuredImage" class="block w-full" />
       </section>
-      <section class="story-body" v-html="$md.render(body)"></section>
+      <section v-if="body" v-html="$md.render(body)" class="story-body"></section>
     </article>
   </div>
 </template>
 <script>
+// perlu dirombak utk handel eror
+// https://nuxtjs.org/guide/async-data#handling-errors
 import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'JournalSingle',
@@ -28,6 +30,7 @@ export default {
       'journal/fetch',
       {
         app,
+        error,
         slug: params.slug
       }
     )
