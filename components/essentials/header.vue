@@ -26,7 +26,7 @@
       </nuxt-link>
     </div>
     <div class="flex">
-      <h3 class="font-sans text-center">{{ title || 'Yosef Yudha Wijaya'}}</h3>
+      <h3 class="font-sans text-center">{{ title }}</h3>
     </div>
     <div class="flex"></div>
   </div>
@@ -42,8 +42,11 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      title: 'journal/title',
+      postTitle: 'journal/title',
     }),
+    title() {
+      return this.$route.path === '/' ? 'Yosef Yudha Wijaya' : this.postTitle
+    }
   },
   methods: {
     scrollHandler() {
