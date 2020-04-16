@@ -1,5 +1,5 @@
 <template>
-  <div v-if="teaser" class="bg-blue-100 shadow-md">
+  <div v-if="teaser" class="bg-gray-100 shadow-md">
     <div class="container flex flex-col items-center mx-auto px-4 py-20">
       <h1 class="font-bold font-sans leading-tight mb-4 text-center text-gray-600 text-4xl sm:text-6xl">{{ teaser.headline }}</h1>
       <span class="mb-2 text-center text-base sm:text-2xl text-gray-600">{{ teaser.occupation }}</span>
@@ -22,15 +22,7 @@ export default {
     teaser: 'home/teaser',
   }),
   socialAccounts() {
-    const accounts = this.teaser.social_accounts.split('||')
-
-    return accounts.map((ob) => {
-      let item = ob.split('|')
-      return {
-        icon: item[1].split(','),
-        link : item[0],
-      }
-    })
+    if (this.teaser.social_accounts) return this.$socialParser(this.teaser.social_accounts)
   }
  }
 }
