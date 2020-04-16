@@ -9,7 +9,7 @@
         <p class="mx-auto max-w-3xl text-base text-center text-gray-600 text-sm md:text-base">
           <span>Yosef Yudha Wijaya</span>
           <span class="mx-1">&middot;</span>
-          <time :datetime="firstPublishedAt">{{ firstPublishedAt | dateTimeFormatter }}</time>
+          <time :datetime="firstPublishedAt">{{ firstPublishedAt | dateTimeFormatter($route.query.hl) }}</time>
         </p>
       </section>
       <section v-if="featuredImage" class="max-w-3xl mb-6 mx-4 lg:mx-auto p-2 lg:p-4 shadow-md">
@@ -20,8 +20,6 @@
   </div>
 </template>
 <script>
-// perlu dirombak utk handel eror
-// https://nuxtjs.org/guide/async-data#handling-errors
 import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'JournalSingle',
@@ -31,6 +29,7 @@ export default {
       {
         app,
         error,
+        route,
         slug: params.slug
       }
     )

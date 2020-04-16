@@ -6,29 +6,20 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import HomeHero from '~/components/home/Hero.vue'
 import HomePosts from '~/components/home/Posts.vue'
 
 export default {
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
     try {
+      const homeUrl = query.hasOwnProperty('hl') && query.hl === 'en' ? 'cdn/stories/en/home' : 'cdn/stories/home'
+
       const promises = [
-        app.$storyapi.get('cdn/stories/home', { version: 'published' }),
-        app.$storyapi.get(
-          'cdn/stories',
-          {
-            cv: Date.now(),
-            per_page: 6,
-            sort_by: 'first_published_at:desc',
-            starts_with: 'posts/',
-            version: 'published'
-          }
-        ),
+        app.$storyapi.get(homeUrl, { version: 'published' }),
       ]
       const [ home, stories ] = await Promise.all(promises)
       store.commit('home/setRaw', home.data)
-      store.commit('home/setRawPosts', stories.data)
     } catch (err) {
       error({
         statusCode: err.statusCode,
@@ -59,9 +50,6 @@ export default {
   computed: {
     ...mapGetters({
       metas: 'home/metas',
-    }),
-    ...mapState({
-      error: state => state.home.error,
     }),
 
   }

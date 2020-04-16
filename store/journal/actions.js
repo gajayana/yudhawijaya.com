@@ -1,8 +1,9 @@
 export default {
-  async fetch({ commit }, { app, error, slug }) {
+  async fetch({ commit }, { app, error, route, slug }) {
     try {
+      const postUrl = route.query.hasOwnProperty('hl') && route.query.hl === 'en' ? `cdn/stories/en/posts/${slug}` : `cdn/stories/posts/${slug}`
       const { data } = await app.$storyapi.get(
-        `cdn/stories/posts/${slug}`,
+        postUrl,
         {
           cv: Date.now(),
           version: 'published',
