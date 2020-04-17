@@ -9,7 +9,7 @@ module.exports.fetch = (req, res, next) => {
   const lang = req.params.lang || ''
   const slug = req.params.slug
 
-  if( !slug ) return res.json({})
+  if( !slug ) return res.status(200).json({})
 
   Storyblok
     .get(
@@ -20,7 +20,7 @@ module.exports.fetch = (req, res, next) => {
       }
     )
     .then((response) => {
-      return res.json(response.data.story)
+      return res.status(200).json(response.data.story)
     })
     .catch(next)
 }

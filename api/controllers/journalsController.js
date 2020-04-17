@@ -23,7 +23,7 @@ module.exports.fetch = (req, res, next) => {
       const description = lang === 'en' ? 'A collection of stories in yudhawijaya.com' : 'Kumpulan kisah di yudhawijaya.com'
       const image = 'https://a.storyblok.com/f/76789/480x640/7157934e9e/img_20150606_174246.jpg'
       const title = `${lang === 'en' ? 'Journals' : 'Jurnal'} – yudhawijaya.com`
-      return res.json(
+      return res.status(200).json(
         {
           metas: {
             description,

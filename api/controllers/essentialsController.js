@@ -14,7 +14,7 @@ module.exports.fetch = (req, res, next) => {
     Storyblok
       .get(url, { cv: Date.now(), version: 'published' })
       .then((response) => {
-        return res.json(response.data.story.content.main)
+        return res.status(200).json(response.data.story.content.main)
       })
       .catch(next)
   }
@@ -24,7 +24,7 @@ module.exports.fetch = (req, res, next) => {
     Storyblok
       .get(url, { cv: Date.now(), version: 'published' })
       .then((response) => {
-        return res.json(
+        return res.status(200).json(
           response
             .data
             .story
@@ -47,7 +47,7 @@ module.exports.fetch = (req, res, next) => {
     Storyblok
       .get('cdn/stories/essentials/social-accounts', { cv: Date.now(), version: 'published' })
       .then((response) => {
-        return res.json(
+        return res.status(200).json(
           response
             .data
             .story
@@ -66,6 +66,6 @@ module.exports.fetch = (req, res, next) => {
       .catch(next)
   }
   else {
-    return res.json({})
+    return res.status(200).json({})
   }
 }

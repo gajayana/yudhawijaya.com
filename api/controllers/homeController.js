@@ -14,7 +14,7 @@ module.exports.fetch = (req, res, next) => {
     Storyblok
       .get(url, { version: 'published' })
       .then((response) => {
-        return res.json(response.data.story.content.body)
+        return res.status(200).json(response.data.story.content.body)
       })
       .catch(next)
   }
@@ -32,12 +32,12 @@ module.exports.fetch = (req, res, next) => {
         }
       )
       .then((response) => {
-        return res.json(response.data.stories)
+        return res.status(200).json(response.data.stories)
       })
       .catch(next)
   }
 
   else {
-    return res.json({})
+    return res.status(200).json({})
   }
 }
