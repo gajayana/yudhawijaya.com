@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center justify-between px-4 py-2">
+    <div class="container flex items-center justify-between mx-auto px-4 py-2">
       <div class="flex rounded-full overflow-hidden">
         <nuxt-link to="/">
           <img class="h-8 w-8" :src="profile" alt="Yosef Yudha Wijaya" />
@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapState} from 'vuex'
 export default {
   name: 'AppHeader',
   data:() => ({
@@ -61,18 +61,13 @@ export default {
     profile: 'https://en.gravatar.com/userimage/60901674/30e655e5ced31e90f24172b0ac67a311.jpeg'
   }),
   async fetch() {
-    const results = await this.$storyapi.get('cdn/stories/essentials/menus')
-    this.menus = results.data.story.content.main.split('||').map( (ob) => {
-      const item = ob.split('|')
-      return {
-        name: item[0],
-        to: item[1],
-      }
-    })
+    const menus = await this.$axios.$get(`/api/essentials/menus${ this.lang ? '/' + this.lang : ''}`)
+    this.menus = menus
   },
   computed: {
-    ...mapGetters({
-      postTitle: 'journal/title',
+    ...mapState({
+      lang: state => state.locale.lang,
+      story: state => state.journal.story,
     }),
     title() {
       const locale = this.$route.query.hasOwnProperty('hl') ? this.$route.query.hl : ''
@@ -83,7 +78,7 @@ export default {
           title = locale === 'en' ? 'Journals' : 'Jurnal'
           break
         case 'jurnal-slug':
-          title = this.postTitle
+          title = this.story.content.title
           break;
         default:
           title = 'Yosef Yudha Wijaya'

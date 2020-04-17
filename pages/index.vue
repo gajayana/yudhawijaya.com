@@ -1,25 +1,27 @@
 <template>
   <div>
-    <home-hero />
+    <home-hero :teaser='teaser' />
     <home-posts />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import HomeHero from '~/components/home/Hero.vue'
 import HomePosts from '~/components/home/Posts.vue'
 
 export default {
-  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
+  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
-      const homeUrl = query.hasOwnProperty('hl') && query.hl === 'en' ? 'cdn/stories/en/home' : 'cdn/stories/home'
+      const lang = query.hasOwnProperty('hl') ? query.hl : ''
+      const homeUrl = lang ? `/api/home/page?hl=${lang}` : '/api/home/page'
+      const home = await $axios.$get(homeUrl)
 
-      const promises = [
-        app.$storyapi.get(homeUrl, { version: 'published' }),
-      ]
-      const [ home, stories ] = await Promise.all(promises)
-      store.commit('home/setRaw', home.data)
+      store.commit('locale/setLang', lang)
+
+      return {
+        teaser: Object.freeze(home.find( ob => ob.component === 'teaser')),
+        metas: Object.freeze(home.find( ob => ob.component === 'meta').page_metas),
+      }
     } catch (err) {
       error({
         statusCode: err.statusCode,
@@ -37,9 +39,6 @@ export default {
         { hid: 'og:image', name: 'og:image', property: 'og:image', content: `https:${this.metas.og_image}` },
         { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.metas.og_title },
         { hid: 'og:url', name: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' },
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:creator', name: 'twitter:creator', property: 'twitter:creator', content: '@tuan_yudha' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@tuan_yudha' },
       ],
     }
   },
@@ -47,11 +46,5 @@ export default {
     HomeHero,
     HomePosts,
   },
-  computed: {
-    ...mapGetters({
-      metas: 'home/metas',
-    }),
-
-  }
 }
 </script>

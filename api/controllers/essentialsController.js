@@ -58,7 +58,7 @@ module.exports.fetch = (req, res, next) => {
               const a = ob.split('|')
               return {
                 icon: a[1].split(','),
-                name: a[0]
+                link: a[0]
               }
             })
         )

@@ -1,8 +1,8 @@
 <template>
   <div class="bg-gray-900 flex flex-col items-center px-4 pb-8 pt-6">
-    <span v-if="text_id" class="font-mono mb-2 text-white text-center text-xs" v-html="$md.render(text_id)"></span>
-    <ul v-if="socialAccounts" class="flex -mx-2">
-      <li v-for="(item, key) in socialAccounts" :key="`social-${key}`" class="px-2">
+    <span v-if="text" class="font-mono mb-2 text-white text-center text-xs" v-html="$md.render(text)"></span>
+    <ul v-if="social" class="flex -mx-2">
+      <li v-for="(item, key) in social" :key="`social-${key}`" class="px-2">
         <a :href="item.link" :title="item.link" class="text-white hover:text-gray-600 text-sm" target="_blank">
           <font-awesome-icon :icon="item.icon" />
         </a>
@@ -11,38 +11,32 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import axios from 'axios'
+
 export default {
   name: 'AppFooter',
-  async fetch() {
-    const config = {
-      cv: Date.now(),
-      version: 'published',
-    }
-
-    const promises = [
-      this.$storyapi.get('cdn/stories/essentials/footer-text', config),
-      this.$storyapi.get('cdn/stories/en/essentials/footer-text', config),
-      this.$storyapi.get('cdn/stories/essentials/social-accounts', config)
-    ]
-
-    const [footer_id, footer_en, social] = await Promise.all(promises)
-    this.social = Object.freeze(social.data.story.content.name)
-    this.text_en = Object.freeze(footer_en.data.story.content.name)
-    this.text_id = Object.freeze(footer_id.data.story.content.name)
-  },
   data() {
     return {
       social: '',
-      text_en: '',
-      text_id: ''
+      text: '',
     }
   },
-  fetchOnServer: true,
+  async fetch() {
+    const promises = [
+      this.$axios.$get(`/api/essentials/footer-text${ this.lang ? '/' + this.lang : ''}`),
+      this.$axios.$get('/api/essentials/social-accounts')
+    ]
+
+    const [text, social] = await Promise.all(promises)
+    this.social = Object.freeze(social)
+    this.text = Object.freeze(text)
+  },
+  // fetchOnServer: true,
   computed: {
-    socialAccounts() {
-      if (this.social) return this.$socialParser(this.social)
-    }
-  }
+    ...mapState({
+      lang: state => state.locale.lang
+    })
+  },
 }
 </script>
