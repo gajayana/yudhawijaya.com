@@ -14,7 +14,6 @@
   </div>
 </template>
 <script>
-
 export default {
  name: 'HomeHero',
  props: {
@@ -24,9 +23,6 @@ export default {
    }
  },
  computed: {
-  // ...mapGetters({
-  //   teaser: 'home/teaser',
-  // }),
   socialAccounts() {
     if (this.teaser.social_accounts) return this.$socialParser(this.teaser.social_accounts)
   }

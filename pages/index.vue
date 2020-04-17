@@ -13,8 +13,7 @@ export default {
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
       const lang = query.hasOwnProperty('hl') ? query.hl : ''
-      const homeUrl = lang ? `/api/home/page?hl=${lang}` : '/api/home/page'
-      const home = await $axios.$get(homeUrl)
+      const home = await $axios.$get(`/api/home/page${ lang ? '/' + lang : ''}`)
 
       store.commit('locale/setLang', lang)
 
