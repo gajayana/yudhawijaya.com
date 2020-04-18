@@ -118,8 +118,8 @@ module.exports = {
     '~/api/index'
   ],
 
-  // server: {
-  //   port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
-  //   host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.NOW_URL
-  // }
+  server: {
+    port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
+    host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.NOW_URL
+  }
 }
