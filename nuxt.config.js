@@ -84,7 +84,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: process.env.NOW_URL || 'http://localhost:3000'
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },
   /*
   ** purgeCSS module configuration
@@ -120,6 +120,6 @@ module.exports = {
 
   server: {
     port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.NOW_URL
+    host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
   }
 }
