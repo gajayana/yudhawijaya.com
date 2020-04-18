@@ -9,7 +9,10 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:creator', name: 'twitter:creator', property: 'twitter:creator', content: '@tuan_yudha' },
+      { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@tuan_yudha' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -54,7 +57,12 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/dotenv',
+    [
+      '@nuxtjs/dotenv',
+      {
+        only: []
+      }
+    ],
     '@nuxtjs/pwa',
     [
       'storyblok-nuxt',
@@ -76,6 +84,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },
   /*
   ** purgeCSS module configuration
@@ -103,5 +112,14 @@ module.exports = {
     */
     extend (config, ctx) {
     }
+  },
+
+  serverMiddleware: [
+    '~/api/index'
+  ],
+
+  server: {
+    port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
+    host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
   }
 }

@@ -1,8 +1,5 @@
 export default {
-  setError(state, payload) {
-    state.error = Object.freeze(payload)
-  },
-  setRaw(state, payload) {
-    state.raw = Object.freeze(payload)
+  setStory(state, payload) {
+    state.story = Object.freeze(payload)
   },
 }

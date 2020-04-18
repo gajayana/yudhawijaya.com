@@ -1,4 +1,3 @@
 export default () => ({
-  error: '',
-  raw: '',
+  story: '',
 })

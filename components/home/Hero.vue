@@ -14,13 +14,15 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 export default {
  name: 'HomeHero',
+ props: {
+   teaser: {
+     type: Object,
+     default: () => ({})
+   }
+ },
  computed: {
-  ...mapGetters({
-    teaser: 'home/teaser',
-  }),
   socialAccounts() {
     if (this.teaser.social_accounts) return this.$socialParser(this.teaser.social_accounts)
   }

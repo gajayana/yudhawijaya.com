@@ -20,19 +20,19 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapState } from 'vuex'
+// import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'JournalSingle',
-  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
-    await store.dispatch(
-      'journal/fetch',
-      {
-        app,
-        error,
-        route,
-        slug: params.slug
-      }
-    )
+  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
+    const lang = query.hl ? query.hl : ''
+    const story = await $axios.$get(`api/journal/${params.slug}/${lang ? lang : ''}`)
+
+    store.commit('journal/setStory', story)
+    store.commit('locale/setLang', lang)
+
+    return {
+      story: Object.freeze(story)
+    }
   },
   head() {
     return {
@@ -43,21 +43,26 @@ export default {
         { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.featuredImage },
         { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.title} – yudhawijaya.com` },
         { hid: 'og:url', name: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` },
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:creator', name: 'twitter:creator', property: 'twitter:creator', content: '@tuan_yudha' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@tuan_yudha' },
         { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.firstPublishedAt},
       ],
     }
   },
   computed: {
-    ...mapGetters({
-      body: 'journal/body',
-      excerpt: 'journal/excerpt',
-      featuredImage: 'journal/featuredImage',
-      firstPublishedAt: 'journal/firstPublishedAt',
-      title: 'journal/title',
-    }),
+    body() {
+      if (this.story) return this.story.content.body
+    },
+    excerpt() {
+      if (this.story) return this.story.content.excerpt
+    },
+    featuredImage() {
+      if (this.story) return this.story.content.featured_image.replace('a.storyblok.com', 'img2.storyblok.com/768x0')
+    },
+    firstPublishedAt() {
+      if (this.story) return this.story.first_published_at
+    },
+    title() {
+      if (this.story) return this.story.content.title
+    }
   },
 }
 </script>
