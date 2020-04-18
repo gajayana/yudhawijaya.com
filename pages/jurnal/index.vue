@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto py-8">
-    <h1 class="font-bold font-sans leading-tight mb-4 px-4 md:px-0 text-gray-600 text-3xl sm:text-4xl">Jurnal</h1>
+    <h1 class="font-bold font-sans leading-tight mb-4 px-4 md:px-0 text-gray-600 text-3xl sm:text-4xl">{{ pageTitle }}</h1>
     <div v-if="stories" class="flex flex-wrap mx-0 md:-mx-4">
       <div class="flex w-full md:w-1/2 lg:w-1/3 px-4 mb-4" v-for="story in stories" :key="story.uuid">
         <journal-card :story="story"></journal-card>
@@ -15,6 +15,7 @@ export default {
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
       const lang = query.hl ? query.hl : ''
+      const pageTitle = lang ? 'Journals' : 'Jurnal'
       const { metas, stories } = await $axios.$get(`/api/journals${ lang ? '/' + lang : ''}`)
 
       store.commit('locale/setLang', lang)
@@ -22,6 +23,7 @@ export default {
       return {
         metas,
         stories,
+        pageTitle,
       }
     } catch(err) {
       error({
@@ -30,6 +32,7 @@ export default {
       })
     }
   },
+  watchQuery: ['hl'],
   components: {
     JournalCard,
   },
