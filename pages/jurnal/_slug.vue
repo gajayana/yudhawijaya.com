@@ -34,6 +34,7 @@ export default {
       story: Object.freeze(story)
     }
   },
+  watchQuery: ['hl'],
   head() {
     return {
       title: `${this.title} – yudhawijaya.com`,

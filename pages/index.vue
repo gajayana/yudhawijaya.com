@@ -1,7 +1,7 @@
 <template>
   <div>
-    <home-hero :teaser='teaser' />
-    <home-posts />
+    <home-hero :teaser="teaser" />
+    <home-posts :stories="journals" />
   </div>
 </template>
 
@@ -12,14 +12,20 @@ import HomePosts from '~/components/home/Posts.vue'
 export default {
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
-      const lang = query.hasOwnProperty('hl') ? query.hl : ''
-      const home = await $axios.$get(`/api/home/page${ lang ? '/' + lang : ''}`)
+      const { hl } = query
+      store.commit('locale/setLang', hl)
 
-      store.commit('locale/setLang', lang)
+      const promises = [
+        $axios.$get(`/api/home/page${ hl ? '/' + hl : ''}`),
+        $axios.$get(`/api/home/stories${ hl ? '/' + hl : ''}`),
+      ]
+
+      const [ home, stories ] = await Promise.all(promises)
 
       return {
         teaser: Object.freeze(home.find( ob => ob.component === 'teaser')),
         metas: Object.freeze(home.find( ob => ob.component === 'meta').page_metas),
+        journals: Object.freeze(stories),
       }
     } catch (err) {
       error({
@@ -29,6 +35,7 @@ export default {
     }
 
   },
+  watchQuery: ['hl'],
   head() {
     return {
       title: this.metas.title,

@@ -6,15 +6,20 @@
           <img class="h-8 w-8" :src="profile" alt="Yosef Yudha Wijaya" />
         </nuxt-link>
       </div>
-      <ul v-if="menus" class="flex text-sm">
+      <ul v-if="menuItems" class="flex items-center text-sm">
         <li
-          v-for="(item, key) in menus"
+          v-for="(item, key) in menuItems"
           :class="[
             { 'ml-2' : key > 0 }
           ]"
           :key="`menu-main-${key}`"
         >
           <nuxt-link :to="item.to">{{ item.name }}</nuxt-link>
+        </li>
+        <li v-if='languageSwitcher' class="ml-2">
+          <nuxt-link class="border border-gray-300 border-solid outline-none focus:outline-none px-2 py-1 rounded text-center" :to="languageSwitcher.to">
+            {{ languageSwitcher.label }}
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -58,14 +63,30 @@ export default {
     profile: 'https://en.gravatar.com/userimage/60901674/30e655e5ced31e90f24172b0ac67a311.jpeg'
   }),
   async fetch() {
-    const menus = await this.$axios.$get(`/api/essentials/menus${ this.lang ? '/' + this.lang : ''}`)
-    this.menus = menus
+    const promises = [
+      this.$axios.$get('/api/essentials/menus'),
+      this.$axios.$get('/api/essentials/menus/en'),
+    ]
+    const [menu_id, menu_en] = await Promise.all(promises)
+    this.menus = {
+      en: menu_en,
+      id: menu_id,
+    }
   },
   computed: {
     ...mapState({
       lang: state => state.locale.lang,
       story: state => state.journal.story,
     }),
+    languageSwitcher() {
+      return {
+        label: this.lang ? 'Indonesia' : 'English',
+        to: this.lang ? this.$route.path : `${this.$route.path}?hl=en`
+      }
+    },
+    menuItems() {
+      return this.lang ? this.menus.en : this.menus.id
+    },
     title() {
       let title
 
