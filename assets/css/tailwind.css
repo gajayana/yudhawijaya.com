@@ -10,11 +10,6 @@ body {
   @apply font-serif;
 }
 
-.nuxt-progress {
-  @apply bg-blue-600;
-  @apply h-1;
-}
-
 .story-body {
   @apply w-full;
   @apply px-4;
