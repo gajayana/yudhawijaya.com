@@ -25,11 +25,17 @@ body {
 
   & p {
     @apply font-serif;
-    @apply mb-3;
+    @apply mb-6;
     @apply mx-auto;
     @apply text-gray-900;
     @apply text-lg;
     @apply max-w-xl;
+
+    & img {
+      @apply border;
+      @apply border-solid;
+      @apply mx-auto;
+    }
   }
 
   & pre {
