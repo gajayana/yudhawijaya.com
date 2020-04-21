@@ -14,18 +14,22 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
- name: 'HomeHero',
- props: {
-   teaser: {
-     type: Object,
-     default: () => ({})
-   }
- },
- computed: {
-  socialAccounts() {
-    if (this.teaser.social_accounts) return this.$socialParser(this.teaser.social_accounts)
+  name: 'HomeHero',
+  props: {
+    teaser: {
+      type: Object,
+      default: () => ({}),
+    }
+  },
+  computed: {
+    ...mapState({
+      lang: state => state.locale.lang
+    }),
+    socialAccounts() {
+      if (this.teaser.social_accounts) return this.$socialParser(this.teaser.social_accounts)
+    }
   }
- }
 }
 </script>

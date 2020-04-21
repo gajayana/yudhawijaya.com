@@ -2,13 +2,13 @@
   <div>
     <div class="container flex items-center justify-between mx-auto px-4 py-2">
       <div class="flex rounded-full overflow-hidden">
-        <nuxt-link to="/">
+        <nuxt-link :to="`${ lang ? '/?hl=' + lang : ''}`">
           <img class="h-8 w-8" :src="profile" alt="Yosef Yudha Wijaya" />
         </nuxt-link>
       </div>
-      <ul v-if="menuItems" class="flex items-center text-sm">
+      <ul v-if="menus" class="flex items-center text-sm">
         <li
-          v-for="(item, key) in menuItems"
+          v-for="(item, key) in menus"
           :class="[
             { 'ml-2' : key > 0 }
           ]"
@@ -41,7 +41,7 @@
     >
       <div class="container flex items-center justify-between mx-auto px-4 py-2">
         <div class="flex rounded-full overflow-hidden">
-          <nuxt-link to="/">
+          <nuxt-link :to="`${ lang ? '/?hl=' + lang : ''}`">
             <img class="h-8 w-8" :src="profile" alt="Yosef Yudha Wijaya" />
           </nuxt-link>
         </div>
@@ -56,25 +56,37 @@
 import { mapState} from 'vuex'
 export default {
   name: 'AppHeader',
+  watch: {
+    '$route.query': '$fetch'
+  },
+  async fetch() {
+    const items = await this.$storyapi.get(
+      `cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/menus`,
+      { cv: this.cv, version: 'published' }
+    )
+
+    this.menus = items.data
+                      .story
+                      .content
+                      .main
+                      .split('||')
+                      .map((ob) => {
+                        const a = ob.split('|')
+                        return {
+                          name: a[0],
+                          to: a[1],
+                        }
+                      })
+  },
   data:() => ({
     is_shown: false,
     menus: '',
     scroll_pos: 0,
     profile: 'https://en.gravatar.com/userimage/60901674/30e655e5ced31e90f24172b0ac67a311.jpeg'
   }),
-  async fetch() {
-    const promises = [
-      this.$axios.$get('/api/essentials/menus'),
-      this.$axios.$get('/api/essentials/menus/en'),
-    ]
-    const [menu_id, menu_en] = await Promise.all(promises)
-    this.menus = {
-      en: menu_en,
-      id: menu_id,
-    }
-  },
   computed: {
     ...mapState({
+      cv: state => state.storyblok.cv,
       lang: state => state.locale.lang,
       story: state => state.journal.story,
     }),
@@ -83,9 +95,6 @@ export default {
         label: this.lang ? 'Indonesia' : 'English',
         to: this.lang ? this.$route.path : `${this.$route.path}?hl=en`
       }
-    },
-    menuItems() {
-      return this.lang ? this.menus.en : this.menus.id
     },
     title() {
       let title

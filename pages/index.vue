@@ -1,7 +1,7 @@
 <template>
   <div>
     <home-hero :teaser="teaser" />
-    <home-posts :stories="journals" />
+    <home-posts />
   </div>
 </template>
 
@@ -10,23 +10,21 @@ import HomeHero from '~/components/home/Hero.vue'
 import HomePosts from '~/components/home/Posts.vue'
 
 export default {
+  name: 'Home',
+  watchQuery: ['hl'],
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
       const { hl } = query
+      const config = { cv: store.state.storyblok.cv, version: 'published' }
+
       store.commit('locale/setLang', hl)
-
-      const promises = [
-        $axios.$get(`/api/home/page${ hl ? '/' + hl : ''}`),
-        $axios.$get(`/api/home/stories${ hl ? '/' + hl : ''}`),
-      ]
-
-      const [ home, stories ] = await Promise.all(promises)
+      const home = await app.$storyapi.get(`cdn/stories/${ hl ? hl + '/' : '' }home`, config)
 
       return {
-        teaser: Object.freeze(home.find( ob => ob.component === 'teaser')),
-        metas: Object.freeze(home.find( ob => ob.component === 'meta').page_metas),
-        journals: Object.freeze(stories),
+        metas: Object.freeze( home.data.story.content.body.find( ob => ob.component === 'meta').page_metas ),
+        teaser: Object.freeze( home.data.story.content.body.find( ob => ob.component === 'teaser') ),
       }
+
     } catch (err) {
       error({
         statusCode: err.statusCode,
@@ -35,7 +33,6 @@ export default {
     }
 
   },
-  watchQuery: ['hl'],
   head() {
     return {
       title: this.metas.title,
