@@ -1,5 +1,5 @@
 export default {
   setCv(state, payload) {
-    state.cv = payload
+    state.cv = Object.freeze(payload)
   }
 }

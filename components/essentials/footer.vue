@@ -24,7 +24,7 @@ export default {
     const social = await this.$storyapi.get('cdn/stories/essentials/social-accounts', config)
     const text = await this.$storyapi.get(`cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/footer-text`, config)
 
-    this.social = social
+    this.social = Object.freeze(social
       .data
       .story
       .content
@@ -36,8 +36,8 @@ export default {
           icon: a[1].split(','),
           link: a[0]
         }
-      })
-    this.text = text.data.story.content.main
+      }))
+    this.text = Object.freeze(text.data.story.content.main)
 
   },
   data() {

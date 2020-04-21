@@ -65,18 +65,20 @@ export default {
       { cv: this.cv, version: 'published' }
     )
 
-    this.menus = items.data
-                      .story
-                      .content
-                      .main
-                      .split('||')
-                      .map((ob) => {
-                        const a = ob.split('|')
-                        return {
-                          name: a[0],
-                          to: a[1],
-                        }
-                      })
+    this.menus = Object.freeze(
+      items.data
+        .story
+        .content
+        .main
+        .split('||')
+        .map((ob) => {
+          const a = ob.split('|')
+          return {
+            name: a[0],
+            to: a[1],
+          }
+        })
+    )
   },
   data:() => ({
     is_shown: false,

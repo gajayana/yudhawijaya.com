@@ -30,7 +30,7 @@ export default {
       }
     )
 
-    this.stories = response.data.stories
+    this.stories = Object.freeze(response.data.stories)
   },
   data: () => ({
     stories: '',

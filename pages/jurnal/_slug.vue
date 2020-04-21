@@ -20,18 +20,20 @@
   </div>
 </template>
 <script>
-// import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'JournalSingle',
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
-    const lang = query.hl ? query.hl : ''
-    const story = await $axios.$get(`api/journal/${params.slug}/${lang ? lang : ''}`)
+    const { hl } = query
+    store.commit('locale/setLang', hl)
 
-    store.commit('journal/setStory', story)
-    store.commit('locale/setLang', lang)
+    const story = await app.$storyapi.get(
+      `cdn/stories/${ hl ? hl + '/' : ''}posts/${params.slug}`,
+      { cv: store.state.storyblok.cv, version: 'published' }
+    )
+    store.commit('journal/setStory', story.data.story)
 
     return {
-      story: Object.freeze(story)
+      story: Object.freeze(story.data.story)
     }
   },
   watchQuery: ['hl'],
