@@ -14,16 +14,27 @@ export default {
   name: 'Journal',
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
-      const lang = query.hl ? query.hl : ''
-      const pageTitle = lang ? 'Journals' : 'Jurnal'
-      const { metas, stories } = await $axios.$get(`/api/journals${ lang ? '/' + lang : ''}`)
+      const { hl } = query
+      store.commit('locale/setLang', hl)
 
-      store.commit('locale/setLang', lang)
-
+      const journals = await app.$storyapi.get(
+        'cdn/stories',
+        {
+          cv: store.state.storyblok.cv,
+          per_page: 24,
+          sort_by: 'first_published_at:desc',
+          starts_with: `${ hl ? hl + '/' : '' }posts/`,
+          version: 'published'
+        }
+      )
       return {
-        metas,
-        stories,
-        pageTitle,
+        metas : {
+          description : hl ? 'A collection of stories in yudhawijaya.com' : 'Kumpulan kisah di yudhawijaya.com',
+          image: 'https://a.storyblok.com/f/76789/480x640/7157934e9e/img_20150606_174246.jpg',
+          title: `${ hl ? 'Journals' : 'Jurnal' } – yudhawijaya.com`,
+        },
+        stories: Object.freeze(journals.data.stories),
+        pageTitle: (hl ? 'Journals' : 'Jurnal'),
       }
     } catch(err) {
       error({
