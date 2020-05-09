@@ -87,22 +87,10 @@ module.exports = {
     baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },
   /*
-  ** purgeCSS module configuration
+  ** TailwindCSS module configuration
   ** See https://github.com/nuxt-community/tailwindcss-module
   */
-  tailwindcss: {
-    purgeCSSInDev: false
-  },
-  purgeCSS: {
-    whitelist: [
-      'svg-inline--fa',
-      'fa-github',
-      'fa-gitlab',
-      'fa-linkedin',
-      'fa-twitter',
-      'fa-w-16'
-    ],
-  },
+  tailwindcss: {},
   /*
   ** Build configuration
   */

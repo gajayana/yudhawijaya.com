@@ -6,7 +6,7 @@
         <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ story.content.title }}</h3>
         <p class="text-gray-800">{{ story.content.excerpt }}</p>
       </div>
-      <div class="flex text-gray-600 text-xs">
+      <div class="flex text-gray-700 text-sm">
         <time :datetime="story.first_published_at">{{ story.first_published_at | dateTimeFormatter(lang) }}</time>
       </div>
     </div>
