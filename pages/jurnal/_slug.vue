@@ -20,6 +20,7 @@
   </div>
 </template>
 <script>
+import '~/assets/css/_post.css'
 export default {
   name: 'JournalSingle',
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
