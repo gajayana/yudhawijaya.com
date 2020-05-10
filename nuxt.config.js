@@ -49,6 +49,13 @@ module.exports = {
           brands: ['faGithub', 'faGitlab', 'faLinkedin','faTwitter'],
         },
       }
+    ],
+    // Doc: https://github.com/nuxt-community/analytics-module
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-163814757-1'
+      }
     ]
   ],
   /*
