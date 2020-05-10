@@ -24,6 +24,7 @@
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@nuxtjs/fontawesome": "^1.1.2",
+    "@nuxtjs/google-analytics": "^2.2.3",
     "@nuxtjs/tailwindcss": "^2.0.0",
     "@vue/test-utils": "^1.0.2",
     "babel-jest": "^26.0.1",
