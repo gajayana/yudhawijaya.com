@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const StoryblokClient = require('storyblok-js-client');
 let Storyblok = new StoryblokClient({
-  accessToken: process.env.YUDHAWIJAYA_COM_STORYBLOK_TOKEN || ''
+  accessToken: process.env.STORYBLOK_TOKEN || ''
 });
 
 module.exports.fetch = (req, res, next) => {

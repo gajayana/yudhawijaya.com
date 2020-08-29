@@ -74,7 +74,7 @@ module.exports = {
     [
       'storyblok-nuxt',
       {
-        accessToken: process.env.YUDHAWIJAYA_COM_STORYBLOK_TOKEN || '',
+        accessToken: process.env.STORYBLOK_TOKEN || '',
         cacheProvider: 'memory'
       }
     ],
@@ -110,7 +110,7 @@ module.exports = {
   },
 
   serverMiddleware: [
-    '~/api/index'
+    // '~/api/index'
   ],
 
   server: {
@@ -121,5 +121,9 @@ module.exports = {
   loading: {
     color: '#3182ce',
     height: '0.25rem',
-  }
+  },
+
+  telemetry: false,
+
+
 }
