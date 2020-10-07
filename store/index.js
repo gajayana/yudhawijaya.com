@@ -1,7 +1,13 @@
 export const actions = {
   async nuxtServerInit ({ commit }, { app }) {
-    const me = await app.$storyapi.get('cdn/spaces/me')
+    const {
+      data: {
+        space: {
+          version = ''
+        }
+      }
+    } = await app.$storyapi.get('cdn/spaces/me')
 
-    commit('storyblok/setCv', me.data.space.version)
+    commit('storyblok/setCv', version)
   }
 }

@@ -18,11 +18,22 @@ export default {
       const config = { cv: store.state.storyblok.cv, version: 'published' }
 
       store.commit('locale/setLang', hl)
-      const home = await app.$storyapi.get(`cdn/stories/${ hl ? hl + '/' : '' }home`, config)
+      // data.story.content.body
+      const {
+        data: {
+          story: {
+            content: {
+              body = {}
+            }
+          }
+        }
+      } = await app.$storyapi.get(`cdn/stories/${ hl ? hl + '/' : '' }home`, config)
+
+      if (!body) return
 
       return {
-        metas: Object.freeze( home.data.story.content.body.find( ob => ob.component === 'meta').page_metas ),
-        teaser: Object.freeze( home.data.story.content.body.find( ob => ob.component === 'teaser') ),
+        metas: Object.freeze( body.find( ob => ob.component === 'meta').page_metas ),
+        teaser: Object.freeze( body.find( ob => ob.component === 'teaser') ),
       }
 
     } catch (err) {
@@ -34,13 +45,23 @@ export default {
 
   },
   head() {
+    if (!this.metas) return
+
+    const {
+      description = '',
+      title = '',
+      og_description = '',
+      og_image = '',
+      og_title = '',
+    } = this.metas
+
     return {
-      title: this.metas.title,
+      title: title,
       meta: [
-        { hid: 'description', name: 'description', content: this.metas.description },
-        { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.metas.og_description },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: `https:${this.metas.og_image}` },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.metas.og_title },
+        { hid: 'description', name: 'description', content: description },
+        { hid: 'og:description', name: 'og:description', property: 'og:description', content: og_description },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: `https:${og_image}` },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: og_title },
         { hid: 'og:url', name: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' },
       ],
     }
