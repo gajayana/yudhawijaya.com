@@ -19,7 +19,11 @@ export default {
     '$route.query': '$fetch'
   },
   async fetch() {
-    const response = await this.$storyapi.get(
+    const {
+      data: {
+        stories = {}
+      }
+    } = await this.$storyapi.get(
       'cdn/stories',
       {
         cv: this.cv,
@@ -30,7 +34,7 @@ export default {
       }
     )
 
-    this.stories = Object.freeze(response.data.stories)
+    this.stories = Object.freeze(stories)
   },
   data: () => ({
     stories: '',

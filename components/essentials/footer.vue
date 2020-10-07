@@ -21,31 +21,47 @@ export default {
   },
   async fetch() {
     const config = { cv: this.cv, version: 'published' }
-    const social = await this.$storyapi.get('cdn/stories/essentials/social-accounts', config)
-    const text = await this.$storyapi.get(`cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/footer-text`, config)
-
-    this.social = Object.freeze(social
-      .data
-      .story
-      .content
-      .name
-      .split('||')
-      .map(ob => {
-        const a = ob.split('|')
-        return {
-          icon: a[1].split(','),
-          link: a[0]
+    // .data.story.content.name
+    const {
+      data: {
+        story: {
+          content: {
+            name: social
+          }
         }
-      }))
-    this.text = Object.freeze(text.data.story.content.main)
+      }
+    } = await this.$storyapi.get('cdn/stories/essentials/social-accounts', config)
+
+    // data.story.content.main
+    const {
+      data: {
+        story: {
+          content: {
+            main: text
+          }
+        }
+      }
+    } = await this.$storyapi.get(`cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/footer-text`, config)
+
+    this.social = Object.freeze(
+      social
+        .split('||')
+        .map(ob => {
+          const a = ob.split('|')
+          return {
+            icon: a[1].split(','),
+            link: a[0]
+          }
+        })
+    )
+
+    this.text = Object.freeze(text)
 
   },
-  data() {
-    return {
-      social: '',
-      text: '',
-    }
-  },
+  data: () => ({
+    social: '',
+    text: '',
+  }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,

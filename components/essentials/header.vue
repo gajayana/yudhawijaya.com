@@ -2,7 +2,7 @@
   <div>
     <div class="container flex items-center justify-between mx-auto px-4 py-2">
       <div class="flex rounded-full overflow-hidden">
-        <nuxt-link :to="`${ lang ? '/?hl=' + lang : ''}`">
+        <nuxt-link :to="`${ lang ? '/?hl=' + lang : '/'}`">
           <img class="h-8 w-8" :src="profile" alt="Yosef Yudha Wijaya" />
         </nuxt-link>
       </div>
@@ -53,32 +53,42 @@
   </div>
 </template>
 <script>
-import { mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'AppHeader',
   watch: {
     '$route.query': '$fetch'
   },
   async fetch() {
-    const items = await this.$storyapi.get(
+    // data.story.content.main
+    const {
+      data: {
+        story: {
+          content: {
+            main = ''
+          }
+        }
+      }
+    } = await this.$storyapi.get(
       `cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/menus`,
       { cv: this.cv, version: 'published' }
     )
 
-    this.menus = Object.freeze(
-      items.data
-        .story
-        .content
-        .main
-        .split('||')
-        .map((ob) => {
-          const a = ob.split('|')
-          return {
-            name: a[0],
-            to: a[1],
-          }
-        })
-    )
+    if ( main ) {
+      this.menus = Object.freeze(
+        main
+          .split('||')
+          .map((ob) => {
+            const a = ob.split('|')
+            return {
+              name: a[0],
+              to: a[1],
+            }
+          })
+      )
+    }
+
+
   },
   data:() => ({
     is_shown: false,
