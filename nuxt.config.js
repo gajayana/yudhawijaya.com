@@ -1,6 +1,5 @@
 require('dotenv').config()
 module.exports = {
-  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -50,13 +49,6 @@ module.exports = {
         },
       }
     ],
-    // Doc: https://github.com/nuxt-community/analytics-module
-    [
-      '@nuxtjs/google-analytics',
-      {
-        id: 'UA-163814757-1'
-      }
-    ]
   ],
   /*
   ** Nuxt.js modules
@@ -124,6 +116,5 @@ module.exports = {
   },
 
   telemetry: false,
-
 
 }
