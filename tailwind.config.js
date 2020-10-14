@@ -47,5 +47,9 @@ module.exports = {
         'fa-w-16'
       ],
     }
-  }
+  },
+  future: {
+    purgeLayersByDefault: true,
+    removeDeprecatedGapUtilities: true,
+  },
 }
