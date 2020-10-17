@@ -1,6 +1,6 @@
 <template>
   <div class="absolute bg-indigo-600 w-full z-10">
-    <div class="container flex items-center justify-between mx-auto px-4 lg:px-0 py-2">
+    <div class="container flex items-center justify-between mx-auto px-4 xl:px-0 py-2">
       <div class="flex rounded-full overflow-hidden">
         <nuxt-link :to="`${ lang !== 'id' ? '/?hl=' + lang : '/'}`">
           <img class="h-8 w-8" src="~/assets/img/me/64x64.png" alt="Yosef Yudha Wijaya" />
