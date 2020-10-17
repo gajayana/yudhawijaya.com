@@ -12,10 +12,10 @@
     </div>
   </nuxt-link>
 </template>
-<script>
+<<script>
 import { mapState } from 'vuex'
 export default {
-  name: 'JournalCard',
+  name: 'AppCardStory',
   props: {
     story: {
       type: Object,
@@ -30,7 +30,7 @@ export default {
       return this.story.content.featured_image.replace('a.storyblok.com', 'img2.storyblok.com/400x0')
     },
     permalink() {
-      const locale = this.lang ? `?hl=${this.lang}` : ''
+      const locale = this.lang !== 'id' ? `?hl=${this.lang}` : ''
       return `/jurnal/${this.story.slug + locale}`
     }
   }

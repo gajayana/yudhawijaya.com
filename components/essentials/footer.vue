@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -43,18 +43,18 @@ export default {
       }
     } = await this.$storyapi.get(`cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/footer-text`, config)
 
-    this.social = Object.freeze(
-      social
-        .split('||')
-        .map(ob => {
-          const a = ob.split('|')
-          return {
-            icon: a[1].split(','),
-            link: a[0]
-          }
-        })
-    )
+    const socialItems = social
+      .split('||')
+      .map(ob => {
+        const a = ob.split('|')
+        return {
+          icon: a[1].split(','),
+          link: a[0]
+        }
+      })
 
+    this.setSocial(socialItems)
+    this.social = Object.freeze(socialItems)
     this.text = Object.freeze(text)
 
   },
@@ -68,5 +68,10 @@ export default {
       lang: state => state.locale.lang
     }),
   },
+  methods: {
+    ...mapMutations({
+      setSocial: 'footer/setSocial'
+    }),
+  }
 }
 </script>

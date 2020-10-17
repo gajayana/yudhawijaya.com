@@ -1,23 +1,33 @@
 <template>
-  <div class="container mx-auto py-8">
-    <h1 class="font-bold font-sans leading-tight mb-4 px-4 md:px-0 text-gray-600 text-3xl sm:text-4xl">{{ pageTitle }}</h1>
-    <div v-if="stories" class="flex flex-wrap mx-0 md:-mx-4">
-      <div class="flex w-full md:w-1/2 lg:w-1/3 px-4 mb-4" v-for="story in stories" :key="story.uuid">
-        <journal-card :story="story"></journal-card>
+  <div class="container mx-auto pb-8 pt-16">
+
+    <app-sheet-section class="mx-4 lg:mx-0 my-8">{{ sectionTitle }}</app-sheet-section>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
+      <div class="flex" v-for="story in stories" :key="story.uuid">
+        <app-card-story :story="story" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import JournalCard from '~/components/journal/card'
+import { mapState } from 'vuex'
+import AppSheetSection from '~/components/sheets/Section'
+import AppCardStory from '~/components/cards/Story'
 export default {
   name: 'Journal',
+  watchQuery: ['hl'],
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
       const { hl = 'id' } = query || {}
-      store.commit('locale/setLang', hl)
 
-      const journals = await app.$storyapi.get(
+      if (hl) store.commit('locale/setLang', hl)
+
+      const {
+        data: {
+          stories
+        }
+      } = await app.$storyapi.get(
         'cdn/stories',
         {
           cv: store.state.storyblok.cv,
@@ -26,15 +36,16 @@ export default {
           starts_with: `${ hl ? hl + '/' : '' }posts/`,
           version: 'published'
         }
-      )
+      ) || {}
+
       return {
         metas : {
           description : hl ? 'A collection of stories in yudhawijaya.com' : 'Kumpulan kisah di yudhawijaya.com',
           image: 'https://a.storyblok.com/f/76789/480x640/7157934e9e/img_20150606_174246.jpg',
-          title: `${ hl ? 'Journals' : 'Jurnal' } – yudhawijaya.com`,
+          title: `${ hl ? 'Journal' : 'Jurnal' } – yudhawijaya.com`,
         },
-        stories: Object.freeze(journals.data.stories),
-        pageTitle: (hl ? 'Journals' : 'Jurnal'),
+        stories: Object.freeze(stories),
+        pageTitle: (hl !== 'id' ? 'Journal' : 'Jurnal'),
       }
     } catch(err) {
       error({
@@ -43,9 +54,17 @@ export default {
       })
     }
   },
-  watchQuery: ['hl'],
   components: {
-    JournalCard,
+    AppCardStory,
+    AppSheetSection,
+  },
+  computed: {
+    ...mapState({
+      lang: state => state.locale.lang,
+    }),
+    sectionTitle() {
+      return this.lang !== 'id' ? 'Journal' : 'Jurnal'
+    }
   },
   head() {
     return {
