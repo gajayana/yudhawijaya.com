@@ -14,7 +14,7 @@ export default {
   name: 'Journal',
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
-      const { hl } = query
+      const { hl = 'id' } = query || {}
       store.commit('locale/setLang', hl)
 
       const journals = await app.$storyapi.get(

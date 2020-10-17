@@ -6,7 +6,7 @@
       </header>
       <section v-if="excerpt" class="mb-6 px-4">
         <p class="italic mb-4 mx-auto max-w-3xl text-base md:text-lg text-center text-gray-700">{{ excerpt }}</p>
-        <p class="mx-auto max-w-3xl text-base text-center text-gray-600 text-sm md:text-base">
+        <p class="mx-auto max-w-3xl text-base text-center text-gray-600 md:text-base">
           <span>Yosef Yudha Wijaya</span>
           <span class="mx-1">&middot;</span>
           <time :datetime="firstPublishedAt">{{ firstPublishedAt | dateTimeFormatter($route.query.hl) }}</time>
