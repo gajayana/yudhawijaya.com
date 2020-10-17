@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="w-full relative">
     <app-header />
     <nuxt />
     <app-footer />
