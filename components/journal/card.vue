@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="permalink" class="bg-white flex flex-col h-full overflow-hidden rounded shadow">
+  <nuxt-link :to="permalink" class="bg-white flex flex-col h-full overflow-hidden rounded shadow w-full">
     <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url(${image})`, paddingBottom: '56.25%' }"></div>
     <div class="flex flex-col h-full justify-between p-4">
       <div class="flex flex-col mb-3">

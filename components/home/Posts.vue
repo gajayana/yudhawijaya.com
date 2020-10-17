@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto md:px-4 py-20">
-    <h2 class="font-bold font-sans leading-tight mb-4 px-4 md:px-0 text-gray-600 text-3xl sm:text-4xl">
-      <nuxt-link :to="`/jurnal${ lang ? '?hl=' + lang : ''}`">{{ lang ? 'Journals' : 'Jurnal'}}</nuxt-link>
+    <h2 class="font-bold font-sans leading-tight mb-4 px-4 md:px-0 text-indigo-600 text-3xl sm:text-4xl">
+      <nuxt-link :to="`/jurnal${ lang !== 'id' ? '?hl=' + lang : ''}`">{{ sectionTitle }}</nuxt-link>
     </h2>
-    <div v-if="stories" class="flex flex-wrap mx-0 md:-mx-4">
-      <div class="flex w-full md:w-1/2 lg:w-1/3 px-4 mb-4" v-for="story in stories" :key="story.uuid">
+    <div v-if="stories" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-0">
+      <div class="flex" v-for="story in stories" :key="story.uuid">
         <journal-card :story="story"></journal-card>
       </div>
     </div>
@@ -43,7 +43,10 @@ export default {
     ...mapState({
       cv: state => state.storyblok.cv,
       lang: state => state.locale.lang,
-    })
+    }),
+    sectionTitle() {
+      return this.lang !== 'id' ? 'Journal' : 'Jurnal'
+    }
   },
   components: {
     JournalCard,
