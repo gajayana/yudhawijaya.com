@@ -101,14 +101,14 @@ module.exports = {
     }
   },
 
-  serverMiddleware: [
-    // '~/api/index'
-  ],
+  // serverMiddleware: [
+  //   '~/api/index'
+  // ],
 
-  server: {
-    port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
-  },
+  // server: {
+  //   port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
+  //   host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
+  // },
 
   loading: {
     color: '#3182ce',
