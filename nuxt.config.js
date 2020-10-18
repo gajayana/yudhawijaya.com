@@ -45,6 +45,7 @@ module.exports = {
       '@nuxtjs/fontawesome',
       {
         icons: {
+          solid: ['faExternalLinkAlt'],
           brands: ['faGithub', 'faGitlab', 'faLinkedin','faTwitter'],
         },
       }
