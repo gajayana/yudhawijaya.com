@@ -2,7 +2,7 @@
   <div class="container mx-auto pb-8 pt-16">
     <app-sheet-section class="mx-4 lg:mx-0 my-8">{{ sectionTitle }}</app-sheet-section>
     <div class="flex flex-col items-center">
-      <h2 class="leading-tight mb-8 text-center text-4xl max-w-md">{{ intro }}</h2>
+      <h2 class="leading-tight mb-8 mx-4 md:mx-0 text-center text-4xl max-w-md">{{ intro }}</h2>
       <ul class="flex mb-8 -mx-2">
         <li v-for="(item, key) in socialItems" :key="`contact-social-${key}`" class="px-2">
           <a :href="item.link" :title="item.link" class="text-gray-600 hover:text-gray-900 text-3xl" rel="noreferrer" target="_blank">
