@@ -8,23 +8,24 @@
         <app-card-story
           :excerpt="story.content.excerpt"
           :featuredImage="story.content.featured_image"
-          :publishedAt="story.first_published_at"
-          path="jurnal"
+          path="karya"
           :slug="story.slug"
           :title="story.content.title"
         />
       </div>
     </div>
+
   </div>
 </template>
 <script>
+import consola from 'consola'
 import { mapState } from 'vuex'
 import AppCardStory from '~/components/cards/Story'
 import AppSheetSection from '~/components/sheets/Section'
 export default {
-  name: 'Journal',
+  name: 'Works',
   watchQuery: ['hl'],
-  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
+  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
     try {
       const { hl = 'id' } = query || {}
 
@@ -39,25 +40,23 @@ export default {
         {
           cv: store.state.storyblok.cv,
           per_page: 24,
-          sort_by: 'first_published_at:desc',
-          starts_with: `${ hl !== 'id' ? hl + '/' : '' }posts/`,
+          sort_by: 'content.date_end:desc',
+          starts_with: `${ hl !== 'id' ? hl + '/' : '' }projects/`,
           version: 'published'
         }
       ) || {}
 
       return {
         metas : {
-          description : hl !== 'id' ? 'A collection of stories in yudhawijaya.com' : 'Kumpulan kisah di yudhawijaya.com',
+          description : hl !== 'id' ? 'A collection of projects in which Yosef Yudha Wijaya author and make contributions' : 'Karya dan kontribusi Yosef Yudha Wijaya di proyek-proyek aplikasi berbasis web.',
           image: require('~/assets/img/me/64x64.png'),
-          title: `${ hl !== 'id' ? 'Journal' : 'Jurnal' } – yudhawijaya.com`,
+          title: `${ hl !== 'id' ? 'Works' : 'Karya' } – yudhawijaya.com`,
         },
-        stories: Object.freeze(stories),
+        stories: Object.freeze(stories)
       }
-    } catch(err) {
-      error({
-        statusCode: err.statusCode,
-        message: err.message,
-      })
+
+    } catch (error) {
+      consola.log(error)
     }
   },
   components: {
@@ -69,7 +68,7 @@ export default {
       lang: state => state.locale.lang,
     }),
     sectionTitle() {
-      return this.lang !== 'id' ? 'Journal' : 'Jurnal'
+      return this.lang !== 'id' ? 'Works' : 'Karya'
     }
   },
   head() {

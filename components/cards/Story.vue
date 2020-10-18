@@ -3,11 +3,11 @@
     <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url(${image})`, paddingBottom: '56.25%' }"></div>
     <div class="flex flex-col h-full justify-between p-4">
       <div class="flex flex-col mb-3">
-        <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ story.content.title }}</h3>
-        <p class="text-gray-800">{{ story.content.excerpt }}</p>
+        <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ title }}</h3>
+        <p class="text-gray-800">{{ excerpt }}</p>
       </div>
-      <div class="flex text-gray-700 text-sm">
-        <time :datetime="story.first_published_at">{{ story.first_published_at | dateTimeFormatter(lang) }}</time>
+      <div v-if="publishedAt" class="flex text-gray-700 text-sm">
+        <time :datetime="publishedAt">{{ publishedAt | dateTimeFormatter(lang) }}</time>
       </div>
     </div>
   </nuxt-link>
@@ -17,9 +17,29 @@ import { mapState } from 'vuex'
 export default {
   name: 'AppCardStory',
   props: {
-    story: {
-      type: Object,
-      default: () => ({})
+    excerpt: {
+      type: String,
+      default: ''
+    },
+    featuredImage: {
+      type: String,
+      default: ''
+    },
+    path: {
+      type: String,
+      default: ''
+    },
+    publishedAt: {
+      type: String,
+      default: ''
+    },
+    slug: {
+      type: String,
+      default: ''
+    },
+    title: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -27,11 +47,11 @@ export default {
       lang: state => state.locale.lang
     }),
     image() {
-      return this.story.content.featured_image.replace('a.storyblok.com', 'img2.storyblok.com/400x0')
+      return this.featuredImage.replace('a.storyblok.com', 'img2.storyblok.com/400x0')
     },
     permalink() {
       const locale = this.lang !== 'id' ? `?hl=${this.lang}` : ''
-      return `/jurnal/${this.story.slug + locale}`
+      return `/${this.path}/${this.slug + locale}`
     }
   }
 }

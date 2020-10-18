@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto py-8">
+  <div class="container mx-auto pb-8 pt-16">
     <article>
       <header v-if="title" class="mb-6 px-4">
         <h1 class="font-bold font-sans leading-tight mx-auto text-center text-gray-900 text-2xl sm:text-3xl md:text-4xl max-w-3xl">{{ title }}</h1>
@@ -24,7 +24,7 @@ import '~/assets/css/_post.css'
 export default {
   name: 'JournalSingle',
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
-    const { hl } = query
+    const { hl = 'id' } = query || {}
     store.commit('locale/setLang', hl)
 
     const story = await app.$storyapi.get(

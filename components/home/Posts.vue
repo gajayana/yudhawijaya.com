@@ -5,14 +5,21 @@
     </h2>
     <div v-if="stories" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-0">
       <div class="flex" v-for="story in stories" :key="story.uuid">
-        <journal-card :story="story"></journal-card>
+        <app-card-story
+          :excerpt="story.content.excerpt"
+          :featuredImage="story.content.featured_image"
+          :publishedAt="story.first_published_at"
+          path="jurnal"
+          :slug="story.slug"
+          :title="story.content.title"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import JournalCard from '~/components/journal/card'
+import AppCardStory from '~/components/cards/Story'
 export default {
   name: 'HomePosts',
   watch: {
@@ -49,7 +56,7 @@ export default {
     }
   },
   components: {
-    JournalCard,
+    AppCardStory,
   },
 }
 </script>
