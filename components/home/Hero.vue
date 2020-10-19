@@ -1,15 +1,16 @@
 <template>
-  <div v-if="teaser" class="bg-gray-100 shadow-md">
-    <div class="container flex flex-col items-center mx-auto px-4 py-20">
-      <h1 class="font-bold font-sans leading-tight mb-4 text-center text-gray-900 text-4xl sm:text-6xl">{{ teaser.headline }}</h1>
-      <span class="mb-2 text-center text-base sm:text-2xl text-gray-900">{{ teaser.occupation }}</span>
-      <ul class="flex -mx-4">
-        <li v-for="(item, key) in socialAccounts" :key="`social-${key}`" class="px-4">
-          <a :href="item.link" :title="item.link" class="text-gray-700 hover:text-gray-600 text-3xl sm:text-2xl" rel="noreferrer" target="_blank">
-            <font-awesome-icon :icon="item.icon" />
-          </a>
-        </li>
-      </ul>
+  <div
+    class="bg-indigo-600 flex items-center h-screen relative"
+  >
+    <div class="container max-w-lg mx-auto">
+      <div class="flex flex-col items-center mx-4 sm:mx-0 text-white">
+        <h1 class="font-sans leading-none mb-4 sm:mb-8 text-center text-4xl sm:text-6xl">{{ headline }}</h1>
+        <div class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl" v-html="$md.render(teaser)"></div>
+        <div class="font-sans flex">
+          <nuxt-link class="border border-white px-8 py-2 mr-4 rounded-sm" :to="buttonWork.to">{{ buttonWork.label }}</nuxt-link>
+          <nuxt-link class="bg-white text-indigo-600 px-8 py-2 rounded-sm" :to="buttonContact.to">{{ buttonContact.label }}</nuxt-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -18,18 +19,34 @@ import { mapState } from 'vuex'
 export default {
   name: 'HomeHero',
   props: {
-    teaser: {
+    contents: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     }
   },
   computed: {
     ...mapState({
-      lang: state => state.locale.lang
+      cv: state => state.storyblok.cv,
+      lang: state => state.locale.lang,
     }),
-    socialAccounts() {
-      if (this.teaser.social_accounts) return this.$socialParser(this.teaser.social_accounts)
-    }
-  }
+    buttonContact() {
+      return {
+        label: this.lang !== 'id' ? 'Contact' : 'Kontak Saya',
+        to: this.lang !== 'id' ? `/kontak?hl=${this.lang}` : '/kontak',
+      }
+    },
+    buttonWork() {
+      return {
+        label: this.lang !== 'id' ? 'Works' : 'Karya',
+        to: this.lang !== 'id' ? `/karya?hl=${this.lang}` : '/karya',
+      }
+    },
+    headline() {
+      return this.contents.headline || ''
+    },
+    teaser() {
+      return this.contents.teaser || ''
+    },
+  },
 }
 </script>

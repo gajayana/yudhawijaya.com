@@ -1,6 +1,6 @@
 <template>
   <div>
-    <home-hero :teaser="teaser" />
+    <home-hero :contents="hero" />
     <home-posts />
   </div>
 </template>
@@ -14,10 +14,10 @@ export default {
   watchQuery: ['hl'],
   async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error, $axios}) {
     try {
-      const { hl } = query
+      const { hl = 'id' } = query
       const config = { cv: store.state.storyblok.cv, version: 'published' }
 
-      store.commit('locale/setLang', hl)
+      if (hl) store.commit('locale/setLang', hl)
       // data.story.content.body
       const {
         data: {
@@ -32,8 +32,8 @@ export default {
       if (!body) return
 
       return {
+        hero: Object.freeze( body.find( ob => ob.component === 'hero') ),
         metas: Object.freeze( body.find( ob => ob.component === 'meta').page_metas ),
-        teaser: Object.freeze( body.find( ob => ob.component === 'teaser') ),
       }
 
     } catch (err) {

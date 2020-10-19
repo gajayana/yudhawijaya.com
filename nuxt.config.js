@@ -14,7 +14,7 @@ module.exports = {
       { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@tuan_yudha' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       { rel:'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
     ]
   },
@@ -45,6 +45,7 @@ module.exports = {
       '@nuxtjs/fontawesome',
       {
         icons: {
+          solid: ['faExternalLinkAlt'],
           brands: ['faGithub', 'faGitlab', 'faLinkedin','faTwitter'],
         },
       }
@@ -101,14 +102,14 @@ module.exports = {
     }
   },
 
-  serverMiddleware: [
-    // '~/api/index'
-  ],
+  // serverMiddleware: [
+  //   '~/api/index'
+  // ],
 
-  server: {
-    port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
-  },
+  // server: {
+  //   port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
+  //   host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
+  // },
 
   loading: {
     color: '#3182ce',
