@@ -14,7 +14,7 @@ export default {
   components: {
     AppHeader,
     AppFooter,
-    AppOfflineMessage,
+    AppOfflineMessage
   }
 }
 </script>

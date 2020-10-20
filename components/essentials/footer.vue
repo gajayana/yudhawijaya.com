@@ -1,6 +1,7 @@
 <template>
   <div class="bg-gray-900 flex flex-col items-center px-4 pb-8 pt-6">
-    <span v-if="text" class="font-mono mb-2 text-white text-center text-xs" v-html="$md.render(text)"></span>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <span v-if="text" class="font-mono mb-2 text-white text-center text-xs" v-html="$md.render(text)" />
     <ul v-if="social" class="flex -mx-2">
       <li v-for="(item, key) in social" :key="`social-${key}`" class="px-2">
         <a :href="item.link" :title="item.link" class="text-white hover:text-gray-600 text-sm" rel="noreferrer" target="_blank">
@@ -12,14 +13,9 @@
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex'
-import axios from 'axios'
-
 export default {
   name: 'AppFooter',
-  watch: {
-    '$route.query': '$fetch'
-  },
-  async fetch() {
+  async fetch () {
     const config = { cv: this.cv, version: 'published' }
     // .data.story.content.name
     const {
@@ -45,7 +41,7 @@ export default {
 
     const socialItems = social
       .split('||')
-      .map(ob => {
+      .map((ob) => {
         const a = ob.split('|')
         return {
           icon: a[1].split(','),
@@ -56,22 +52,24 @@ export default {
     this.setSocial(socialItems)
     this.social = Object.freeze(socialItems)
     this.text = Object.freeze(text)
-
   },
   data: () => ({
     social: '',
-    text: '',
+    text: ''
   }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,
       lang: state => state.locale.lang
-    }),
+    })
+  },
+  watch: {
+    '$route.query': '$fetch'
   },
   methods: {
     ...mapMutations({
       setSocial: 'footer/setSocial'
-    }),
+    })
   }
 }
 </script>

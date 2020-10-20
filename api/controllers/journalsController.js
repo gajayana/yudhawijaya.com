@@ -1,9 +1,9 @@
 require('dotenv').config()
 
-const StoryblokClient = require('storyblok-js-client');
-let Storyblok = new StoryblokClient({
+const StoryblokClient = require('storyblok-js-client')
+const Storyblok = new StoryblokClient({
   accessToken: process.env.STORYBLOK_TOKEN || ''
-});
+})
 
 module.exports.fetch = (req, res, next) => {
   const lang = req.params.lang || ''
@@ -15,7 +15,7 @@ module.exports.fetch = (req, res, next) => {
         cv: Date.now(),
         per_page: 24,
         sort_by: 'first_published_at:desc',
-        starts_with: `${ lang ? lang + '/' : '' }posts/`,
+        starts_with: `${lang ? lang + '/' : ''}posts/`,
         version: 'published'
       }
     )
@@ -28,7 +28,7 @@ module.exports.fetch = (req, res, next) => {
           metas: {
             description,
             image,
-            title,
+            title
           },
           stories: response.data.stories
         }

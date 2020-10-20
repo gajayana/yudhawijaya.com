@@ -3,40 +3,36 @@
     <div class="container flex items-center justify-between mx-auto px-4 xl:px-0 py-2">
       <div class="flex rounded-full overflow-hidden">
         <nuxt-link :to="`${ lang !== 'id' ? '/?hl=' + lang : '/'}`">
-          <img class="h-8 w-8" src="~/assets/img/me/64x64.png" alt="Yosef Yudha Wijaya" />
+          <img class="h-8 w-8" src="~/assets/img/me/64x64.png" alt="Yosef Yudha Wijaya">
         </nuxt-link>
       </div>
       <div class="flex">
         <ul v-if="menus" class="flex items-center mr-6 text-sm">
           <li
             v-for="(item, key) in menus"
-            class="mx-4"
             :key="`menu-main-${key}`"
+            class="mx-4"
           >
-            <nuxt-link class="text-white" :to="link(item.to)">{{ item.name }}</nuxt-link>
+            <nuxt-link class="text-white" :to="link(item.to)">
+              {{ item.name }}
+            </nuxt-link>
           </li>
         </ul>
 
         <app-header-language-switcher />
-
       </div>
     </div>
   </div>
 </template>
 <script>
-import consola from 'consola'
 import { mapState } from 'vuex'
 import AppHeaderLanguageSwitcher from '~/components/essentials/header-language-switcher'
 export default {
   name: 'AppHeader',
-  watch: {
-    '$route.query': '$fetch'
-  },
   components: {
-    AppHeaderLanguageSwitcher,
+    AppHeaderLanguageSwitcher
   },
-  async fetch() {
-
+  async fetch () {
     // data.story.content.main
     const {
       data: {
@@ -51,7 +47,7 @@ export default {
       { cv: this.cv, version: 'published' }
     ) || {}
 
-    if ( main ) {
+    if (main) {
       this.menus = Object.freeze(
         main
           .split('||')
@@ -59,25 +55,26 @@ export default {
             const a = ob.split('|')
             return {
               name: a[0],
-              to: a[1],
+              to: a[1]
             }
           })
       )
     }
-
-
   },
-  data:() => ({
-    menus: '',
+  data: () => ({
+    menus: ''
   }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,
-      lang: state => state.locale.lang,
-    }),
+      lang: state => state.locale.lang
+    })
+  },
+  watch: {
+    '$route.query': '$fetch'
   },
   methods: {
-    link(to) {
+    link (to) {
       const locale = this.lang !== 'id' ? '?hl=' + this.lang : ''
       return to + locale
     }

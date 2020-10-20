@@ -15,13 +15,17 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
-      { rel:'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
     ]
   },
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: {
+    color: '#3182ce',
+    height: '0.25rem'
+  },
+
   /*
   ** Global CSS
   */
@@ -33,12 +37,14 @@ module.exports = {
   plugins: [
     '~/plugins/directives/scroll',
     '~/plugins/filters/dateTimeFormatter',
-    '~/plugins/injects/socialParser',
+    '~/plugins/injects/socialParser'
   ],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
+    // Doc: https://github.com/nuxt-community/eslint-module
+    '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
     [
@@ -46,10 +52,10 @@ module.exports = {
       {
         icons: {
           solid: ['faExternalLinkAlt'],
-          brands: ['faGithub', 'faGitlab', 'faLinkedin','faTwitter'],
-        },
+          brands: ['faGithub', 'faGitlab', 'faLinkedin', 'faTwitter']
+        }
       }
-    ],
+    ]
   ],
   /*
   ** Nuxt.js modules
@@ -111,11 +117,6 @@ module.exports = {
   //   host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
   // },
 
-  loading: {
-    color: '#3182ce',
-    height: '0.25rem',
-  },
-
-  telemetry: false,
+  telemetry: false
 
 }

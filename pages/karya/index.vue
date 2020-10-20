@@ -1,20 +1,20 @@
 <template>
   <div class="container mx-auto pb-8 pt-16">
-
-    <app-sheet-section class="mx-4 lg:mx-0 my-8">{{ sectionTitle }}</app-sheet-section>
+    <app-sheet-section class="mx-4 lg:mx-0 my-8">
+      {{ sectionTitle }}
+    </app-sheet-section>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
-      <div class="flex" v-for="story in stories" :key="story.uuid">
+      <div v-for="story in stories" :key="story.uuid" class="flex">
         <app-card-story
           :excerpt="story.content.excerpt"
-          :featuredImage="story.content.featured_image"
+          :featured-image="story.content.featured_image"
           path="karya"
           :slug="story.slug"
           :title="story.content.title"
         />
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -25,11 +25,15 @@ import AppSheetSection from '~/components/sheets/Section'
 export default {
   name: 'Works',
   watchQuery: ['hl'],
-  async asyncData({app, isDev, route, store, env, params, query, req, res, redirect, error}) {
+  components: {
+    AppCardStory,
+    AppSheetSection
+  },
+  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     try {
       const { hl = 'id' } = query || {}
 
-      if (hl) store.commit('locale/setLang', hl)
+      if (hl) { store.commit('locale/setLang', hl) }
 
       const {
         data: {
@@ -41,37 +45,32 @@ export default {
           cv: store.state.storyblok.cv,
           per_page: 24,
           sort_by: 'content.date_end:desc',
-          starts_with: `${ hl !== 'id' ? hl + '/' : '' }projects/`,
+          starts_with: `${hl !== 'id' ? hl + '/' : ''}projects/`,
           version: 'published'
         }
       ) || {}
 
       return {
-        metas : {
-          description : hl !== 'id' ? 'A collection of projects in which Yosef Yudha Wijaya author and make contributions' : 'Karya dan kontribusi Yosef Yudha Wijaya di proyek-proyek aplikasi berbasis web.',
+        metas: {
+          description: hl !== 'id' ? 'A collection of projects in which Yosef Yudha Wijaya author and make contributions' : 'Karya dan kontribusi Yosef Yudha Wijaya di proyek-proyek aplikasi berbasis web.',
           image: require('~/assets/img/me/64x64.png'),
-          title: `${ hl !== 'id' ? 'Works' : 'Karya' } – yudhawijaya.com`,
+          title: `${hl !== 'id' ? 'Works' : 'Karya'} – yudhawijaya.com`
         },
         stories: Object.freeze(stories)
       }
-
     } catch (error) {
       consola.log(error)
     }
   },
-  components: {
-    AppCardStory,
-    AppSheetSection,
-  },
   computed: {
     ...mapState({
-      lang: state => state.locale.lang,
+      lang: state => state.locale.lang
     }),
-    sectionTitle() {
+    sectionTitle () {
       return this.lang !== 'id' ? 'Works' : 'Karya'
     }
   },
-  head() {
+  head () {
     return {
       title: this.metas.title,
       meta: [
@@ -79,9 +78,9 @@ export default {
         { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.metas.description },
         { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.metas.image },
         { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.metas.title },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${ this.$route.path }` },
-      ],
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` }
+      ]
     }
-  },
+  }
 }
 </script>

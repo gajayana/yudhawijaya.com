@@ -4,11 +4,18 @@
   >
     <div class="container max-w-lg mx-auto">
       <div class="flex flex-col items-center mx-4 sm:mx-0 text-white">
-        <h1 class="font-sans leading-none mb-4 sm:mb-8 text-center text-4xl sm:text-6xl">{{ headline }}</h1>
-        <div class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl" v-html="$md.render(teaser)"></div>
+        <h1 class="font-sans leading-none mb-4 sm:mb-8 text-center text-4xl sm:text-6xl">
+          {{ headline }}
+        </h1>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl" v-html="$md.render(teaser)" />
         <div class="font-sans flex">
-          <nuxt-link class="border border-white px-8 py-2 mr-4 rounded-sm" :to="buttonWork.to">{{ buttonWork.label }}</nuxt-link>
-          <nuxt-link class="bg-white text-indigo-600 px-8 py-2 rounded-sm" :to="buttonContact.to">{{ buttonContact.label }}</nuxt-link>
+          <nuxt-link class="border border-white px-8 py-2 mr-4 rounded-sm" :to="buttonWork.to">
+            {{ buttonWork.label }}
+          </nuxt-link>
+          <nuxt-link class="bg-white text-indigo-600 px-8 py-2 rounded-sm" :to="buttonContact.to">
+            {{ buttonContact.label }}
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -27,26 +34,26 @@ export default {
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,
-      lang: state => state.locale.lang,
+      lang: state => state.locale.lang
     }),
-    buttonContact() {
+    buttonContact () {
       return {
         label: this.lang !== 'id' ? 'Contact' : 'Kontak Saya',
-        to: this.lang !== 'id' ? `/kontak?hl=${this.lang}` : '/kontak',
+        to: this.lang !== 'id' ? `/kontak?hl=${this.lang}` : '/kontak'
       }
     },
-    buttonWork() {
+    buttonWork () {
       return {
         label: this.lang !== 'id' ? 'Works' : 'Karya',
-        to: this.lang !== 'id' ? `/karya?hl=${this.lang}` : '/karya',
+        to: this.lang !== 'id' ? `/karya?hl=${this.lang}` : '/karya'
       }
     },
-    headline() {
+    headline () {
       return this.contents.headline || ''
     },
-    teaser() {
+    teaser () {
       return this.contents.teaser || ''
-    },
-  },
+    }
+  }
 }
 </script>
