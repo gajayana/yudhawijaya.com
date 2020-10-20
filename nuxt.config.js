@@ -84,6 +84,8 @@ module.exports = {
         injected: true
       }
     ],
+    // See https://github.com/nuxt-community/robots-module
+    '@nuxtjs/robots',
     // See https://github.com/nuxt-community/sitemap-module
     '@nuxtjs/sitemap'
   ],
