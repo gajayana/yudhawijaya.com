@@ -20,10 +20,10 @@ module.exports = {
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
+        '"Noto Color Emoji"'
       ],
       serif: ['"Open Sans"', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
-      mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
+      mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace']
     }
   },
   variants: {},
@@ -45,11 +45,11 @@ module.exports = {
         'fa-linkedin',
         'fa-twitter',
         'fa-w-16'
-      ],
+      ]
     }
   },
   future: {
     purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-  },
+    removeDeprecatedGapUtilities: true
+  }
 }

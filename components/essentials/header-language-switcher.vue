@@ -20,21 +20,21 @@
 import { mapState } from 'vuex'
 export default {
   name: 'AppHeaderLanguageSwitcher',
-  data:() => ({
+  data: () => ({
     languages: [
       {
         key: 'id',
-        label: 'Indonesia',
+        label: 'Indonesia'
       },
       {
         key: 'en',
         label: 'English'
       }
-    ],
+    ]
   }),
   computed: {
     ...mapState({
-      lang: state => state.locale.lang,
+      lang: state => state.locale.lang
     })
   }
 }

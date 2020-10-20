@@ -17,6 +17,6 @@ app.get('/journals/:lang*?', journalsController.fetch)
 app.use((err, req, res, next) => {
   return res.status(err.statusCode).json({
     status: err.statusCode,
-    message: err.message,
+    message: err.message
   })
 })

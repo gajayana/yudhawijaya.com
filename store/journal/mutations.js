@@ -1,5 +1,5 @@
 export default {
-  setStory(state, payload) {
+  setStory (state, payload) {
     state.story = Object.freeze(payload)
-  },
+  }
 }

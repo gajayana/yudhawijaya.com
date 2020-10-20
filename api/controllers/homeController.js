@@ -1,15 +1,15 @@
 require('dotenv').config()
 
-const StoryblokClient = require('storyblok-js-client');
-let Storyblok = new StoryblokClient({
+const StoryblokClient = require('storyblok-js-client')
+const Storyblok = new StoryblokClient({
   accessToken: process.env.STORYBLOK_TOKEN || ''
-});
+})
 
 module.exports.fetch = (req, res, next) => {
   const lang = req.params.lang || ''
   const module = req.params.module
 
-  if ( module === 'page') {
+  if (module === 'page') {
     const url = lang ? `cdn/stories/${lang}/home` : 'cdn/stories/home'
     Storyblok
       .get(url, { version: 'published' })
@@ -17,9 +17,7 @@ module.exports.fetch = (req, res, next) => {
         return res.status(200).json(response.data.story.content.body)
       })
       .catch(next)
-  }
-
-  else if ( module === 'stories' ) {
+  } else if (module === 'stories') {
     Storyblok
       .get(
         'cdn/stories',
@@ -27,7 +25,7 @@ module.exports.fetch = (req, res, next) => {
           cv: Date.now(),
           per_page: 6,
           sort_by: 'first_published_at:desc',
-          starts_with: `${ lang ? lang + '/' : '' }posts/`,
+          starts_with: `${lang ? lang + '/' : ''}posts/`,
           version: 'published'
         }
       )
@@ -35,9 +33,7 @@ module.exports.fetch = (req, res, next) => {
         return res.status(200).json(response.data.stories)
       })
       .catch(next)
-  }
-
-  else {
+  } else {
     return res.status(200).json({})
   }
 }

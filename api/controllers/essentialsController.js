@@ -1,15 +1,15 @@
 require('dotenv').config()
 
-const StoryblokClient = require('storyblok-js-client');
-let Storyblok = new StoryblokClient({
+const StoryblokClient = require('storyblok-js-client')
+const Storyblok = new StoryblokClient({
   accessToken: process.env.STORYBLOK_TOKEN || ''
-});
+})
 
 module.exports.fetch = (req, res, next) => {
   const lang = req.params.lang || ''
   const module = req.params.module
 
-  if ( module === 'footer-text') {
+  if (module === 'footer-text') {
     const url = lang ? `cdn/stories/${lang}/essentials/footer-text` : 'cdn/stories/essentials/footer-text'
     Storyblok
       .get(url, { cv: Date.now(), version: 'published' })
@@ -17,9 +17,7 @@ module.exports.fetch = (req, res, next) => {
         return res.status(200).json(response.data.story.content.main)
       })
       .catch(next)
-  }
-
-  else if ( module === 'menus' ) {
+  } else if (module === 'menus') {
     const url = lang ? `cdn/stories/${lang}/essentials/menus` : 'cdn/stories/essentials/menus'
     Storyblok
       .get(url, { cv: Date.now(), version: 'published' })
@@ -35,15 +33,13 @@ module.exports.fetch = (req, res, next) => {
               const a = ob.split('|')
               return {
                 name: a[0],
-                to: a[1],
+                to: a[1]
               }
             })
         )
       })
       .catch(next)
-  }
-
-  else if ( module === 'social-accounts' ) {
+  } else if (module === 'social-accounts') {
     Storyblok
       .get('cdn/stories/essentials/social-accounts', { cv: Date.now(), version: 'published' })
       .then((response) => {
@@ -54,7 +50,7 @@ module.exports.fetch = (req, res, next) => {
             .content
             .name
             .split('||')
-            .map(ob => {
+            .map((ob) => {
               const a = ob.split('|')
               return {
                 icon: a[1].split(','),
@@ -64,8 +60,7 @@ module.exports.fetch = (req, res, next) => {
         )
       })
       .catch(next)
-  }
-  else {
+  } else {
     return res.status(200).json({})
   }
 }
