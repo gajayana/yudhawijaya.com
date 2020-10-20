@@ -75,10 +75,10 @@ export default {
       title: this.metas.title,
       meta: [
         { hid: 'description', name: 'description', content: this.metas.description },
-        { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.metas.description },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.metas.image },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.metas.title },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` }
+        { hid: 'og:description', property: 'og:description', content: this.metas.description },
+        { hid: 'og:image', property: 'og:image', content: this.metas.image },
+        { hid: 'og:title', property: 'og:title', content: this.metas.title },
+        { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` }
       ]
     }
   }

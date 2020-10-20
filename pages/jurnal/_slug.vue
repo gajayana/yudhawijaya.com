@@ -65,11 +65,11 @@ export default {
       title: `${this.title} – yudhawijaya.com`,
       meta: [
         { hid: 'description', name: 'description', content: this.excerpt },
-        { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.excerpt },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.featuredImage },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.title} – yudhawijaya.com` },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` },
-        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.firstPublishedAt }
+        { hid: 'og:description', property: 'og:description', content: this.excerpt },
+        { hid: 'og:image', property: 'og:image', content: this.featuredImage },
+        { hid: 'og:title', property: 'og:title', content: `${this.title} – yudhawijaya.com` },
+        { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` },
+        { hid: 'article:published_time', property: 'article:published_time', content: this.firstPublishedAt }
       ]
     }
   }
