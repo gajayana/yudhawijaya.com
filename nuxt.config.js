@@ -14,7 +14,7 @@ module.exports = {
       { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@tuan_yudha' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
     ]
   },
@@ -83,7 +83,9 @@ module.exports = {
       {
         injected: true
       }
-    ]
+    ],
+    // See https://github.com/nuxt-community/sitemap-module
+    '@nuxtjs/sitemap'
   ],
   /*
   ** Axios module configuration
