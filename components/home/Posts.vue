@@ -8,12 +8,12 @@
     <div v-if="stories" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-0">
       <div v-for="story in stories" :key="story.uuid" class="flex">
         <app-card-story
-          :excerpt="story.content.excerpt"
-          :featured-image="story.content.featured_image"
-          :published-at="story.first_published_at"
+          :excerpt="story.excerpt"
+          :featured-image="story.featuredImage"
+          :published-at="story.publishedAt"
           path="jurnal"
           :slug="story.slug"
-          :title="story.content.title"
+          :title="story.title"
         />
       </div>
     </div>
@@ -43,7 +43,25 @@ export default {
       }
     )
 
-    this.stories = Object.freeze(stories)
+    this.stories = stories.map((ob) => {
+      const {
+        content: {
+          excerpt = '',
+          featured_image: featuredImage,
+          title = ''
+        },
+        first_published_at: publishedAt,
+        slug = ''
+      } = ob || {}
+
+      return {
+        excerpt,
+        featuredImage,
+        publishedAt,
+        slug,
+        title
+      }
+    })
   },
   data: () => ({
     stories: ''
