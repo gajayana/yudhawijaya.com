@@ -83,7 +83,9 @@ module.exports = {
       {
         injected: true
       }
-    ]
+    ],
+    // See https://github.com/nuxt-community/sitemap-module
+    '@nuxtjs/sitemap'
   ],
   /*
   ** Axios module configuration
