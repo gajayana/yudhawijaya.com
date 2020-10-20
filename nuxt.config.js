@@ -9,9 +9,9 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
-      { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-      { hid: 'twitter:creator', name: 'twitter:creator', property: 'twitter:creator', content: '@tuan_yudha' },
-      { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@tuan_yudha' }
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:creator', name: 'twitter:creator', content: '@tuan_yudha' },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@tuan_yudha' }
     ],
     link: [
       { rel: 'icon', type: 'image/png', href: '/favicon.png' },

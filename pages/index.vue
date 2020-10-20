@@ -64,11 +64,11 @@ export default {
       title,
       meta: [
         { hid: 'description', name: 'description', content: description },
-        { hid: 'og:description', name: 'og:description', property: 'og:description', content: og_description },
+        { hid: 'og:description', property: 'og:description', content: og_description },
         // eslint-disable-next-line camelcase
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: `https:${og_image}` },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: og_title },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' }
+        { hid: 'og:image', property: 'og:image', content: `https:${og_image}` },
+        { hid: 'og:title', property: 'og:title', content: og_title },
+        { hid: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' }
       ]
     }
   }
