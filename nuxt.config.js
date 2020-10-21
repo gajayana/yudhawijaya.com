@@ -69,7 +69,9 @@ module.exports = {
           brands: ['faGithub', 'faGitlab', 'faLinkedin', 'faTwitter']
         }
       }
-    ]
+    ],
+    // See https://pwa.nuxtjs.org/setup
+    '@nuxtjs/pwa'
   ],
   /*
   ** Nuxt.js modules
@@ -83,7 +85,6 @@ module.exports = {
         only: []
       }
     ],
-    '@nuxtjs/pwa',
     [
       'storyblok-nuxt',
       {
