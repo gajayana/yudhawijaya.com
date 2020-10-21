@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="permalink" class="bg-white flex flex-col h-full overflow-hidden rounded shadow w-full">
-    <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url(${image})`, paddingBottom: '56.25%' }" />
+    <div class="bg-center bg-cover bg-no-repeat flex" :style="{ backgroundImage: `url('${image}')`, paddingBottom: '56.25%' }" />
     <div class="flex flex-col h-full justify-between p-4">
       <div class="flex flex-col mb-3">
         <h3 class="font-bold font-sans leading-tight mb-2 text-xl">
@@ -51,7 +51,7 @@ export default {
       lang: state => state.locale.lang
     }),
     image () {
-      return this.featuredImage.replace('a.storyblok.com', 'img2.storyblok.com/400x0')
+      return this.featuredImage.replace('a.storyblok.com', 'img2.storyblok.com/420x0/filters:format(webp)')
     },
     permalink () {
       const locale = this.lang !== 'id' ? `?hl=${this.lang}` : ''
