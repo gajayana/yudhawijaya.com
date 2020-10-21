@@ -14,8 +14,8 @@ module.exports = {
       { hid: 'twitter:site', name: 'twitter:site', content: '@tuan_yudha' }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
     ]
   },
   /*
@@ -45,6 +45,20 @@ module.exports = {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    // https://github.com/nuxt-community/google-fonts-module
+    [
+      '@nuxtjs/google-fonts',
+      {
+        display: 'swap',
+        families: {
+          'Open+Sans': {
+            wght: [400, 700],
+            ital: [400]
+          },
+          Roboto: [700]
+        }
+      }
+    ],
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
     [
