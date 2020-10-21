@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-import consola from 'consola'
 import { mapState } from 'vuex'
 import AppCardStory from '~/components/cards/Story'
 import AppSheetSection from '~/components/sheets/Section'
@@ -49,8 +48,6 @@ export default {
           version: 'published'
         }
       ) || {}
-
-      consola.log(stories)
 
       return {
         metas: {
@@ -84,8 +81,11 @@ export default {
           })
         )
       }
-    } catch (error) {
-      consola.log(error)
+    } catch (err) {
+      error({
+        statusCode: err.statusCode,
+        message: err.message
+      })
     }
   },
   computed: {

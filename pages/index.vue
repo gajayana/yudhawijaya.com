@@ -1,7 +1,9 @@
 <template>
   <div>
     <home-hero :contents="hero" />
-    <home-posts />
+    <client-only>
+      <home-posts />
+    </client-only>
   </div>
 </template>
 

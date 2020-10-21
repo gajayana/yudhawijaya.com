@@ -19,7 +19,6 @@
   </div>
 </template>
 <script>
-import consola from 'consola'
 import { mapState } from 'vuex'
 import AppCardStory from '~/components/cards/Story'
 import AppSheetSection from '~/components/sheets/Section'
@@ -59,7 +58,6 @@ export default {
         },
         stories: Object.freeze(
           stories.map((ob) => {
-            consola.log(ob)
             const {
               content: {
                 excerpt = '',
