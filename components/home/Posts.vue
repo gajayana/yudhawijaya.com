@@ -47,11 +47,14 @@ export default {
       const {
         content: {
           excerpt = '',
-          featured_image: featuredImage,
+          featured_image: {
+            filename: featuredImage = ''
+          },
           title = ''
         },
         first_published_at: publishedAt,
-        slug = ''
+        slug = '',
+        uuid = ''
       } = ob || {}
 
       return {
@@ -59,7 +62,8 @@ export default {
         featuredImage,
         publishedAt,
         slug,
-        title
+        title,
+        uuid
       }
     })
   },

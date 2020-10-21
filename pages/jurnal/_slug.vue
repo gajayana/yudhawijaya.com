@@ -51,7 +51,7 @@ export default {
       return this.story.content.excerpt || ''
     },
     featuredImage () {
-      return this.story.content.featured_image.replace('a.storyblok.com', 'img2.storyblok.com/768x0') || ''
+      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/768x0') || ''
     },
     firstPublishedAt () {
       return this.story.first_published_at || ''
