@@ -28,14 +28,16 @@ export default {
           story: {
             content: {
               body = {},
-              meta_description: description,
-              meta_keywords: keywords,
-              meta_title: title,
-              og_image: image
+              meta_description: description = '',
+              meta_keywords: keywords = '',
+              meta_title: title = '',
+              og_image: {
+                filename: image = ''
+              }
             }
           }
         }
-      } = await app.$storyapi.get(`cdn/stories/${hl ? hl + '/' : ''}root`, config)
+      } = await app.$storyapi.get(`cdn/stories/${hl ? hl + '/' : ''}home`, config) || {}
 
       if (!body) { return }
       const {

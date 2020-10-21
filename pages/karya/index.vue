@@ -7,11 +7,11 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
       <div v-for="story in stories" :key="story.uuid" class="flex">
         <app-card-story
-          :excerpt="story.content.excerpt"
-          :featured-image="story.content.featured_image"
+          :excerpt="story.excerpt"
+          :featured-image="story.featuredImage"
           path="karya"
           :slug="story.slug"
-          :title="story.content.title"
+          :title="story.title"
         />
       </div>
     </div>
@@ -45,10 +45,12 @@ export default {
           cv: store.state.storyblok.cv,
           per_page: 24,
           sort_by: 'content.date_end:desc',
-          starts_with: `${hl !== 'id' ? hl + '/' : ''}projects/`,
+          starts_with: `${hl !== 'id' ? hl + '/' : ''}works/`,
           version: 'published'
         }
       ) || {}
+
+      consola.log(stories)
 
       return {
         metas: {
@@ -56,7 +58,31 @@ export default {
           image: require('~/assets/img/me/64x64.png'),
           title: `${hl !== 'id' ? 'Works' : 'Karya'} – yudhawijaya.com`
         },
-        stories: Object.freeze(stories)
+        stories: Object.freeze(
+          stories.map((ob) => {
+            const {
+              content: {
+                excerpt = '',
+                featured_image: {
+                  filename: featuredImage = ''
+                },
+                tag_list: tagList = '',
+                title = ''
+              },
+              slug = '',
+              uuid
+            } = ob || {}
+
+            return {
+              excerpt,
+              featuredImage,
+              slug,
+              tagList,
+              title,
+              uuid
+            }
+          })
+        )
       }
     } catch (error) {
       consola.log(error)
