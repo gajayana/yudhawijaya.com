@@ -7,18 +7,19 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
       <div v-for="story in stories" :key="story.uuid" class="flex">
         <app-card-story
-          :excerpt="story.content.excerpt"
-          :featured-image="story.content.featured_image"
-          :published-at="story.first_published_at"
+          :excerpt="story.excerpt"
+          :featured-image="story.featuredImage"
+          :published-at="story.firstPublishedAt"
           path="jurnal"
           :slug="story.slug"
-          :title="story.content.title"
+          :title="story.title"
         />
       </div>
     </div>
   </div>
 </template>
 <script>
+import consola from 'consola'
 import { mapState } from 'vuex'
 import AppCardStory from '~/components/cards/Story'
 import AppSheetSection from '~/components/sheets/Section'
@@ -56,7 +57,32 @@ export default {
           image: require('~/assets/img/me/64x64.png'),
           title: `${hl !== 'id' ? 'Journal' : 'Jurnal'} – yudhawijaya.com`
         },
-        stories: Object.freeze(stories)
+        stories: Object.freeze(
+          stories.map((ob) => {
+            consola.log(ob)
+            const {
+              content: {
+                excerpt = '',
+                featured_image: {
+                  filename: featuredImage = ''
+                },
+                title = ''
+              },
+              first_published_at: publishedAt,
+              slug = '',
+              uuid = ''
+            } = ob || {}
+
+            return {
+              excerpt,
+              featuredImage,
+              publishedAt,
+              slug,
+              title,
+              uuid
+            }
+          })
+        )
       }
     } catch (err) {
       error({
