@@ -74,8 +74,10 @@
   & ul {
     @apply list-disc;
     @apply list-inside;
+    @apply mb-6;
     @apply mx-auto;
     @apply text-gray-900;
+    @apply text-lg;
     @apply max-w-xl;
   }
 }
