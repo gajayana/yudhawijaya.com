@@ -1,23 +1,17 @@
 <template>
   <div>
-    <home-hero :contents="hero" />
+    <hero-home :contents="hero" />
     <client-only>
-      <home-posts />
+      <stories-works />
+      <stories-journals />
     </client-only>
   </div>
 </template>
 
 <script>
-import HomeHero from '~/components/home/Hero.vue'
-import HomePosts from '~/components/home/Posts.vue'
-
 export default {
   name: 'Home',
   watchQuery: ['hl'],
-  components: {
-    HomeHero,
-    HomePosts
-  },
   async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
     try {
       const { hl = 'id' } = query

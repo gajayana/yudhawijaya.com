@@ -19,7 +19,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'AppCardStory',
+  name: 'CardStory',
   props: {
     excerpt: {
       type: String,

@@ -24,7 +24,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'HomeHero',
+  name: 'HeroHome',
   props: {
     contents: {
       type: Object,

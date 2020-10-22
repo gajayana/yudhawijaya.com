@@ -15,9 +15,15 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/png', href: '/favicon.png' }
-      // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700|Roboto:700&display=swap' }
     ]
   },
+
+  /**
+   * Components auto discovery
+   * See: https://github.com/nuxt/components
+   */
+  components: true,
+
   /*
   ** Customize the progress-bar color
   */
@@ -78,7 +84,7 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    // '@nuxtjs/axios',
     [
       '@nuxtjs/dotenv',
       {
@@ -108,9 +114,9 @@ module.exports = {
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000'
-  },
+  // axios: {
+  //   baseURL: process.env.BASE_URL || 'http://localhost:3000'
+  // },
   /*
   ** TailwindCSS module configuration
   ** See https://github.com/nuxt-community/tailwindcss-module
@@ -130,11 +136,6 @@ module.exports = {
   // serverMiddleware: [
   //   '~/api/index'
   // ],
-
-  // server: {
-  //   port: process.env.NODE_ENV !== 'production' ? 3000 : 80,
-  //   host: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.BASE_URL
-  // },
 
   telemetry: false
 

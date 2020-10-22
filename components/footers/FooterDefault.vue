@@ -14,7 +14,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'AppFooter',
+  name: 'FooterDefault',
   async fetch () {
     const config = { cv: this.cv, version: 'published' }
     // .data.story.content.name

@@ -1,8 +1,8 @@
 <template>
   <div class="container mx-auto pb-8 pt-16">
-    <app-sheet-section class="mx-4 lg:mx-0 my-8">
+    <sheet-section class="mx-4 lg:mx-0 my-8">
       {{ sectionTitle }}
-    </app-sheet-section>
+    </sheet-section>
     <div class="flex flex-col items-center">
       <h2 class="leading-tight mb-8 mx-4 md:mx-0 text-center text-4xl max-w-md">
         {{ intro }}
@@ -19,13 +19,9 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import AppSheetSection from '~/components/sheets/Section'
 export default {
   name: 'Contact',
   watchQuery: ['hl'],
-  components: {
-    AppSheetSection
-  },
   async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     const { hl = 'id' } = query || {}
 

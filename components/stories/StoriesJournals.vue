@@ -5,21 +5,23 @@
         {{ sectionTitle }}
       </nuxt-link>
     </h2>
-    <div class="flex">
-      <app-progress-loader v-if="$fetchState.pending" />
-      <div v-else-if="$fetchState.error">
-        Error
-      </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-0 w-full">
-        <div v-for="story in stories" :key="story.uuid" class="flex">
-          <app-card-story
-            :excerpt="story.excerpt"
-            :featured-image="story.featuredImage"
-            :published-at="story.publishedAt"
-            path="jurnal"
-            :slug="story.slug"
-            :title="story.title"
-          />
+    <div class="flex flex-col">
+      <div>
+        <progress-loader v-if="$fetchState.pending" />
+        <div v-else-if="$fetchState.error">
+          Error
+        </div>
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-0 w-full">
+          <div v-for="story in stories" :key="story.uuid" class="flex">
+            <card-story
+              :excerpt="story.excerpt"
+              :featured-image="story.featuredImage"
+              :published-at="story.publishedAt"
+              path="jurnal"
+              :slug="story.slug"
+              :title="story.title"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -27,14 +29,8 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import AppProgressLoader from '~/components/progress/loader'
-import AppCardStory from '~/components/cards/Story'
 export default {
-  name: 'HomePosts',
-  components: {
-    AppCardStory,
-    AppProgressLoader
-  },
+  name: 'StoriesJournals',
   async fetch () {
     const {
       data: {
@@ -49,7 +45,7 @@ export default {
         starts_with: `${this.lang ? this.lang + '/' : ''}posts/`,
         version: 'published'
       }
-    )
+    ) || {}
 
     this.stories = stories.map((ob) => {
       const {
