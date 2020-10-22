@@ -6,7 +6,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'AppProgressLoader',
+  name: 'ProgressLoader',
   computed: {
     ...mapState({
       lang: state => state.locale.lang

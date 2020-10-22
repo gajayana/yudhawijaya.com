@@ -1,13 +1,13 @@
 <template>
   <div class="absolute bg-indigo-600 w-full z-10">
-    <div class="container flex items-center justify-between mx-auto px-4 xl:px-0 py-2">
+    <div class="flex items-center justify-between px-4 py-2">
       <div class="flex rounded-full overflow-hidden">
         <nuxt-link :to="`${ lang !== 'id' ? '/?hl=' + lang : '/'}`">
           <img class="h-8 w-8" src="~/assets/img/me/64x64.png" alt="Yosef Yudha Wijaya">
         </nuxt-link>
       </div>
       <div class="flex">
-        <ul v-if="menus" class="flex items-center mr-6 text-sm">
+        <ul class="flex items-center mr-6 text-sm">
           <li
             v-for="(item, key) in menus"
             :key="`menu-main-${key}`"
@@ -19,19 +19,15 @@
           </li>
         </ul>
 
-        <app-header-language-switcher />
+        <header-language-switcher />
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import AppHeaderLanguageSwitcher from '~/components/essentials/header-language-switcher'
 export default {
-  name: 'AppHeader',
-  components: {
-    AppHeaderLanguageSwitcher
-  },
+  name: 'HeaderDefault',
   async fetch () {
     // data.story.content.main
     const {

@@ -1,12 +1,12 @@
 <template>
   <div class="container mx-auto pb-8 pt-16">
-    <app-sheet-section class="mx-4 lg:mx-0 my-8">
+    <sheet-section class="mx-4 lg:mx-0 my-8">
       {{ sectionTitle }}
-    </app-sheet-section>
+    </sheet-section>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
       <div v-for="story in stories" :key="story.uuid" class="flex">
-        <app-card-story
+        <card-story
           :excerpt="story.excerpt"
           :featured-image="story.featuredImage"
           :published-at="story.firstPublishedAt"
@@ -20,15 +20,9 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import AppCardStory from '~/components/cards/Story'
-import AppSheetSection from '~/components/sheets/Section'
 export default {
   name: 'Journal',
   watchQuery: ['hl'],
-  components: {
-    AppCardStory,
-    AppSheetSection
-  },
   async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
     try {
       const { hl = 'id' } = query || {}
