@@ -32,5 +32,7 @@ module.exports.create = (req, res, next) => {
         return res.status(200).json({ body: req.body })
       })
       .catch(next)
+  } else {
+    return res.status(400).json({ msg: 'no body' })
   }
 }
