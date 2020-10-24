@@ -7,11 +7,14 @@
       "config": {
         "serverFiles": [
           "package.json",
-          "api/**",
           "./.nuxt/dist/sitemap-routes.json",
           "./static/favicon.png"
         ]
       }
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@now/node"
     }
   ],
   "routes": [
