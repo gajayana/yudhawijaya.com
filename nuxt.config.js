@@ -41,7 +41,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/directives/scroll',
+    // '~/plugins/directives/scroll',
     '~/plugins/filters/dateTimeFormatter',
     '~/plugins/injects/socialParser'
   ],
@@ -133,9 +133,9 @@ module.exports = {
     }
   },
 
-  // serverMiddleware: [
-  //   '~/api/index'
-  // ],
+  serverMiddleware: [
+    '~/api/index'
+  ],
 
   telemetry: false
 

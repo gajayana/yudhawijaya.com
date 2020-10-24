@@ -1,22 +1,24 @@
 const app = require('express')()
+const bodyParser = require('body-parser');
+const consola = require('consola')
 
 module.exports = { path: '/api', handler: app }
 
+// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
 // controllers
-const essentialsController = require('./controllers/essentialsController')
-const homeController = require('./controllers/homeController')
-const journalController = require('./controllers/journalController')
-const journalsController = require('./controllers/journalsController')
+// const essentialsController = require('./controllers/essentialsController')
+const storyblokController = require('./controllers/storyblokController')
 
 // routes
-app.get('/essentials/:module/:lang*?', essentialsController.fetch)
-app.get('/home/:module/:lang*?', homeController.fetch)
-app.get('/journal/:slug/:lang*?', journalController.fetch)
-app.get('/journals/:lang*?', journalsController.fetch)
+// app.get('/essentials/:module/:lang*?', essentialsController.fetch)
+app.post('/sb/hook', storyblokController.create)
 
 app.use((err, req, res, next) => {
-  return res.status(err.statusCode).json({
-    status: err.statusCode,
-    message: err.message
-  })
+  consola.log(err)
+  // return res.status(err.statusCode).json({
+  //   status: err.statusCode,
+  //   message: err.message
+  // })
 })
