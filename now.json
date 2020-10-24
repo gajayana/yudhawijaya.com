@@ -11,10 +11,6 @@
           "./static/favicon.png"
         ]
       }
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@now/node"
     }
   ],
   "routes": [

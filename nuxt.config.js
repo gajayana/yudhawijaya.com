@@ -133,9 +133,9 @@ module.exports = {
     }
   },
 
-  serverMiddleware: [
-    '~/api/index'
-  ],
+  // serverMiddleware: [
+  //   '~/api/index'
+  // ],
 
   telemetry: false
 
