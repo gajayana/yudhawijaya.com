@@ -7,7 +7,7 @@
       "config": {
         "serverFiles": [
           "package.json",
-          "./api/**",
+          "./api/**/*.js",
           "./.nuxt/dist/sitemap-routes.json",
           "./static/favicon.png"
         ]
