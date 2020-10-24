@@ -1,7 +1,7 @@
 const app = require('express')()
 const bodyParser = require('body-parser')
 
-module.exports = { path: '/api', handler: app }
+module.exports = { handler: app }
 
 // app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

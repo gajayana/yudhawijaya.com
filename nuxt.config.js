@@ -133,9 +133,12 @@ module.exports = {
     }
   },
 
-  // serverMiddleware: [
-  //   '~/api/index'
-  // ],
+  serverMiddleware: [
+    {
+      path: '/api',
+      handler: '~/api/index.js'
+    }
+  ],
 
   telemetry: false
 
