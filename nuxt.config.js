@@ -59,7 +59,7 @@ module.exports = {
         families: {
           'Open+Sans': {
             wght: [400, 700],
-            ital: [400]
+            ital: [400, 700]
           },
           Roboto: [700]
         }
@@ -133,12 +133,13 @@ module.exports = {
     }
   },
 
-  serverMiddleware: [
-    {
-      path: '/api',
-      handler: '~/api/index.js'
-    }
-  ],
+  // See https://github.com/nuxt/vercel-builder/issues/178
+  // serverMiddleware: [
+  //   {
+  //     path: '/api',
+  //     handler: '~/api/index.js'
+  //   }
+  // ],
 
   telemetry: false
 
