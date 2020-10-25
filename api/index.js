@@ -1,18 +1,16 @@
 const app = require('express')()
+const bodyParser = require('body-parser')
 
-module.exports = { path: '/api', handler: app }
+module.exports = { handler: app }
+
+// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 // controllers
-const essentialsController = require('./controllers/essentialsController')
-const homeController = require('./controllers/homeController')
-const journalController = require('./controllers/journalController')
-const journalsController = require('./controllers/journalsController')
+const storyblokController = require('./controllers/storyblokController')
 
 // routes
-app.get('/essentials/:module/:lang*?', essentialsController.fetch)
-app.get('/home/:module/:lang*?', homeController.fetch)
-app.get('/journal/:slug/:lang*?', journalController.fetch)
-app.get('/journals/:lang*?', journalsController.fetch)
+app.post('/sb/hook', storyblokController.create)
 
 app.use((err, req, res, next) => {
   return res.status(err.statusCode).json({

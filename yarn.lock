@@ -9534,7 +9534,7 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
-qs@^6.5.2:
+qs@^6.5.2, qs@^6.9.4:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
   integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
@@ -10548,6 +10548,13 @@ storyblok-js-client@^2.5.2:
     "@babel/runtime-corejs3" "^7.4.5"
     axios "^0.19.0"
     qs "^6.5.2"
+
+storyblok-js-client@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/storyblok-js-client/-/storyblok-js-client-3.1.1.tgz#863a5c076a88cce140934df32863a52012ce8912"
+  integrity sha512-TCpX/1WikWq+ZDuOqZ90msklcZW7qTA/xPbyZdVKFFfu4VdeSqE41UCanE7+oRN7uQT6Sdo1C3VAkk5c60e23A==
+  dependencies:
+    qs "^6.9.4"
 
 storyblok-nuxt@^1.3.0:
   version "1.3.0"

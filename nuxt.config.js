@@ -41,7 +41,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/directives/scroll',
+    // '~/plugins/directives/scroll',
     '~/plugins/filters/dateTimeFormatter',
     '~/plugins/injects/socialParser'
   ],
@@ -59,7 +59,7 @@ module.exports = {
         families: {
           'Open+Sans': {
             wght: [400, 700],
-            ital: [400]
+            ital: [400, 700]
           },
           Roboto: [700]
         }
@@ -133,8 +133,12 @@ module.exports = {
     }
   },
 
+  // See https://github.com/nuxt/vercel-builder/issues/178
   // serverMiddleware: [
-  //   '~/api/index'
+  //   {
+  //     path: '/api',
+  //     handler: '~/api/index.js'
+  //   }
   // ],
 
   telemetry: false
