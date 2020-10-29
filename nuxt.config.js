@@ -141,6 +141,13 @@ module.exports = {
   //   }
   // ],
 
-  telemetry: false
+  telemetry: false,
 
+  pwa: {
+    manifest: {
+      name: 'Yudha Wijaya',
+      short_name: 'Yudha Wijaya',
+      theme_color: '#5A67D8'
+    }
+  }
 }
