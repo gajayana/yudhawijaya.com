@@ -6,6 +6,5 @@ stages:
 eslint:
   stage: lint
   script:
-    - npm install -g eslint
-    - eslint --init
-    - eslint --ext .js,.vue --ignore-path .gitignore .
+    - npm install
+    - npm run lint
