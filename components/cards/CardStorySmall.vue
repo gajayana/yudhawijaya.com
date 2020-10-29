@@ -4,7 +4,9 @@
       <img class="w-full" :src="image">
     </div>
     <div class="flex flex-col justify-center overflow-hidden p-2">
-      <h3 class="text-lg truncate">{{ title }}</h3>
+      <h3 class="text-lg truncate">
+        {{ title }}
+      </h3>
       <p class="truncate">
         {{ excerpt }}
       </p>
