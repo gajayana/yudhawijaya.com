@@ -1,38 +1,53 @@
 <template>
-  <div class="container mx-auto pb-8 pt-16">
-    <article>
-      <header v-if="title" class="mb-6 px-4">
-        <h1 class="font-bold font-sans leading-tight mx-auto text-center text-gray-900 text-2xl sm:text-3xl md:text-4xl max-w-3xl">
-          {{ title }}
-        </h1>
-      </header>
+  <div class="pb-8 pt-8 w-full">
+    <div
+      class="bg-no-repeat bg-center bg-cover mb-6"
+      :style="{
+        backgroundImage: `url('${featuredImage}')`,
+        height: '75vh'
+      }"
+    />
+    <div class="-mt-16">
+      <article class="bg-white border-t-8 border-indigo-400 mx-auto p-4 max-w-2xl">
+        <header class="mb-4 md:mb-6">
+          <story-title>
+            {{ title }}
+          </story-title>
+        </header>
 
-      <section class="mb-6 px-4">
-        <p class="mx-auto max-w-3xl text-base text-center text-gray-600 md:text-base">
-          {{ period }}
-        </p>
-        <p v-if="url" class="flex flex-col mx-auto max-w-3xl text-base text-center md:text-base">
-          <a
-            :href="url"
-            :title="url"
-            :class="[
-              urlIsInvalid ? 'text-red-600' : 'text-blue-600'
-            ]"
-            target="_blank"
-          >
-            <span class="underline">{{ url }}</span>
-            <font-awesome-icon v-if="!urlIsInvalid" class="ml-1" :icon="['fas', 'external-link-alt']" />
-          </a>
-        </p>
-      </section>
+        <section class="border-b border-gray-400 border-solid mb-8 md:mb-16 pb-4">
+          <story-excerpt>
+            {{ excerpt }}
+          </story-excerpt>
+          <p class="text-base text-gray-600">
+            {{ period }}
+          </p>
+          <p v-if="url" class="flex flex-col text-base">
+            <a
+              :href="url"
+              :title="url"
+              :class="[
+                urlIsInvalid ? 'text-red-600' : 'text-blue-600'
+              ]"
+              target="_blank"
+            >
+              <span class="underline">{{ url }}</span>
+              <font-awesome-icon v-if="!urlIsInvalid" class="ml-1" :icon="['fas', 'external-link-alt']" />
+            </a>
+          </p>
+        </section>
 
-      <section v-if="featuredImage" class="border border-gray-600 max-w-3xl mb-6 mx-4 lg:mx-auto shadow-md">
-        <img :alt="title" :src="featuredImage" class="block w-full">
-      </section>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <section v-if="body" class="story-body" v-html="$md.render(body)" />
 
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <section v-if="body" class="story-body" v-html="$md.render(body)" />
-    </article>
+        <section>
+          <lazy-story-tags v-if="tags" :tags="tags" class="mb-8" />
+          <client-only>
+            <lazy-stories-related v-if="tags" :excluding-ids="id" :tags="tags" path="karya" />
+          </client-only>
+        </section>
+      </article>
+    </div>
   </div>
 </template>
 <script>
@@ -74,10 +89,13 @@ export default {
       return this.story.content.excerpt || ''
     },
     featuredImage () {
-      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/768x0') || ''
+      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/960x0') || ''
     },
     firstPublishedAt () {
       return this.story.first_published_at || ''
+    },
+    id () {
+      return this.story.id || 0
     },
     period () {
       const {
@@ -96,6 +114,9 @@ export default {
       }
 
       return `${format(new Date(dateStart), 'PPP', config)} - ${end}`
+    },
+    tags () {
+      return this.story.tag_list.length > 0 ? this.story.tag_list : ''
     },
     title () {
       return this.story.content.title || ''

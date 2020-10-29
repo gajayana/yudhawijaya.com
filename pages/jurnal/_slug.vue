@@ -1,27 +1,39 @@
 <template>
-  <div class="container mx-auto pb-8 pt-16">
-    <article>
-      <header v-if="title" class="mb-6 px-4">
-        <h1 class="font-bold font-sans leading-tight mx-auto text-center text-gray-900 text-2xl sm:text-3xl md:text-4xl max-w-3xl">
-          {{ title }}
-        </h1>
-      </header>
-      <section v-if="excerpt" class="mb-6 px-4">
-        <p class="italic mb-4 mx-auto max-w-3xl text-base md:text-lg text-center text-gray-700">
-          {{ excerpt }}
-        </p>
-        <p class="mx-auto max-w-3xl text-base text-center text-gray-600 md:text-base">
-          <span>Yosef Yudha Wijaya</span>
-          <span class="mx-1">&middot;</span>
-          <time :datetime="firstPublishedAt">{{ firstPublishedAt | dateTimeFormatter($route.query.hl) }}</time>
-        </p>
-      </section>
-      <section v-if="featuredImage" class="max-w-3xl mb-6 mx-4 lg:mx-auto p-2 lg:p-4 shadow-md">
-        <img :alt="title" :src="featuredImage" class="block w-full">
-      </section>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <section v-if="body" class="story-body" v-html="$md.render(body)" />
-    </article>
+  <div class="pb-8 pt-8 w-full">
+    <div
+      class="bg-no-repeat bg-center bg-cover mb-6"
+      :style="{
+        backgroundImage: `url('${featuredImage}')`,
+        height: '75vh'
+      }"
+    />
+    <div class="-mt-16">
+      <article class="bg-white border-t-8 border-indigo-400 mx-auto p-4 max-w-2xl">
+        <header class="mb-4 md:mb-6">
+          <story-title>{{ title }}</story-title>
+        </header>
+        <section class="border-b border-gray-400 border-solid mb-8 md:mb-16 pb-4">
+          <story-excerpt>
+            {{ excerpt }}
+          </story-excerpt>
+          <p class="mx-auto max-w-3xl text-base text-gray-800 md:text-base">
+            <span>Yosef Yudha Wijaya</span>
+            <span class="mx-1">&middot;</span>
+            <time :datetime="firstPublishedAt">{{ firstPublishedAt | dateTimeFormatter($route.query.hl) }}</time>
+          </p>
+        </section>
+
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <section v-if="body" class="story-body" v-html="$md.render(body)" />
+
+        <section>
+          <lazy-story-tags v-if="tags" :tags="tags" class="mb-8" />
+          <client-only>
+            <lazy-stories-related v-if="tags" :excluding-ids="id" :tags="tags" path="jurnal" />
+          </client-only>
+        </section>
+      </article>
+    </div>
   </div>
 </template>
 <script>
@@ -51,10 +63,16 @@ export default {
       return this.story.content.excerpt || ''
     },
     featuredImage () {
-      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/768x0') || ''
+      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/960x540/smart') || ''
     },
     firstPublishedAt () {
       return this.story.first_published_at || ''
+    },
+    id () {
+      return this.story.id || 0
+    },
+    tags () {
+      return this.story.tag_list.length > 0 ? this.story.tag_list : ''
     },
     title () {
       return this.story.content.title || ''
