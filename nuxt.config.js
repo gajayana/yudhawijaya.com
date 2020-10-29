@@ -141,6 +141,16 @@ module.exports = {
   //   }
   // ],
 
-  telemetry: false
+  telemetry: false,
 
+  pwa: {
+    icon: {
+      source: './static/icon.png'
+    },
+    manifest: {
+      name: 'Yudha Wijaya',
+      short_name: 'Yudha Wijaya',
+      theme_color: '#5A67D8'
+    }
+  }
 }
