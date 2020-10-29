@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between px-4 py-2">
       <div class="flex rounded-full overflow-hidden">
         <nuxt-link :to="`${ lang !== 'id' ? '/?hl=' + lang : '/'}`">
-          <img class="h-8 w-8" src="~/assets/img/me/64x64.png" alt="Yosef Yudha Wijaya">
+          <img class="h-8 w-8" src="~/assets/img/me/96x96.png" alt="Yosef Yudha Wijaya">
         </nuxt-link>
       </div>
       <div class="flex">

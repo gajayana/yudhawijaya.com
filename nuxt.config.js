@@ -144,6 +144,9 @@ module.exports = {
   telemetry: false,
 
   pwa: {
+    icon: {
+      source: './static/icon.png'
+    },
     manifest: {
       name: 'Yudha Wijaya',
       short_name: 'Yudha Wijaya',
