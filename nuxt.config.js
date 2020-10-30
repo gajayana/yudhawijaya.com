@@ -4,7 +4,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s – yudhawijaya.com',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -71,7 +71,7 @@ module.exports = {
       '@nuxtjs/fontawesome',
       {
         icons: {
-          solid: ['faExternalLinkAlt'],
+          solid: ['faBars', 'faExternalLinkAlt', 'faTimes'],
           brands: ['faGithub', 'faGitlab', 'faLinkedin', 'faTwitter']
         }
       }
