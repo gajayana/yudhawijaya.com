@@ -1,6 +1,9 @@
 <template>
   <div
-    class="bg-indigo-600 flex items-center h-screen relative"
+    class="bg-indigo-600 flex items-center relative"
+    :style="{
+      height: 'calc(100vh - 64px)'
+    }"
   >
     <div class="container max-w-lg mx-auto">
       <div class="flex flex-col items-center mx-4 sm:mx-0 text-white">

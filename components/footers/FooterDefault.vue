@@ -12,63 +12,13 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'FooterDefault',
-  async fetch () {
-    const config = { cv: this.cv, version: 'published' }
-    // .data.story.content.name
-    const {
-      data: {
-        story: {
-          content: {
-            name: social
-          }
-        }
-      }
-    } = await this.$storyapi.get('cdn/stories/essentials/social-accounts', config)
-
-    // data.story.content.main
-    const {
-      data: {
-        story: {
-          content: {
-            main: text
-          }
-        }
-      }
-    } = await this.$storyapi.get(`cdn/stories/${this.lang ? this.lang + '/' : ''}essentials/footer-text`, config)
-
-    const socialItems = social
-      .split('||')
-      .map((ob) => {
-        const a = ob.split('|')
-        return {
-          icon: a[1].split(','),
-          link: a[0]
-        }
-      })
-
-    this.setSocial(socialItems)
-    this.social = Object.freeze(socialItems)
-    this.text = Object.freeze(text)
-  },
-  data: () => ({
-    social: '',
-    text: ''
-  }),
   computed: {
     ...mapState({
-      cv: state => state.storyblok.cv,
-      lang: state => state.locale.lang
-    })
-  },
-  watch: {
-    '$route.query': '$fetch'
-  },
-  methods: {
-    ...mapMutations({
-      setSocial: 'footer/setSocial'
+      text: state => state.core.footer_text,
+      social: state => state.core.social
     })
   }
 }

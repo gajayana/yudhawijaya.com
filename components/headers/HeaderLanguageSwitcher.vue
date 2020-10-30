@@ -1,17 +1,20 @@
 <template>
-  <ul class="flex items-center -mx-2 text-sm">
-    <li v-for="(item, id) in languages" :key="item.key">
+  <ul class="flex items-center w-full text-base">
+    <li v-for="item in languages" :key="item.key">
       <nuxt-link
         :class="[
+          'flex',
           'leading-none',
-          'px-2',
-          'text-white',
-          'uppercase',
-          { 'border-r border-white' : id === 0}
+          'p-2',
+          'rounded-sm',
+          { 'text-white': dark },
+          { 'text-black': !dark },
+          'uppercase'
         ]"
         :to="`${ item.key !== 'id' ? '?hl=' + item.key : '' }`"
       >
-        {{ item.key }}
+        <span class="hidden md:flex">{{ item.key }}</span>
+        <span class="flex md:hidden">{{ item.label }}</span>
       </nuxt-link>
     </li>
   </ul>
@@ -20,6 +23,12 @@
 import { mapState } from 'vuex'
 export default {
   name: 'AppHeaderLanguageSwitcher',
+  props: {
+    dark: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
     languages: [
       {
@@ -42,6 +51,6 @@ export default {
 <style scoped>
   .nuxt-link-exact-active {
     @apply font-bold;
-    @apply underline;
+    background-color: rgba(0,0,0,0.1);
   }
 </style>
