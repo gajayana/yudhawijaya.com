@@ -68,9 +68,9 @@ export default {
       this.setSocial(
         socialAccounts.split('||')
           .map((ob) => {
-            const [icon, link] = ob.split('|')
+            const [link, icon] = ob.split('|')
             return {
-              icon,
+              icon: icon.split(','),
               link
             }
           })
