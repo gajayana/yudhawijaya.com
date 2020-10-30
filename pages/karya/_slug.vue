@@ -1,10 +1,10 @@
 <template>
-  <div class="pb-8 pt-8 w-full">
+  <div class="pb-8 w-full">
     <div
       class="bg-no-repeat bg-center bg-cover mb-6"
       :style="{
         backgroundImage: `url('${featuredImage}')`,
-        height: '75vh'
+        height: 'calc(75vh - 64px)'
       }"
     />
     <div class="-mt-16">
@@ -89,7 +89,7 @@ export default {
       return this.story.content.excerpt || ''
     },
     featuredImage () {
-      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/960x0') || ''
+      return this.story.content.featured_image.filename.replace('a.storyblok.com', 'img2.storyblok.com/1440x0') || ''
     },
     firstPublishedAt () {
       return this.story.first_published_at || ''
@@ -130,12 +130,12 @@ export default {
   },
   head () {
     return {
-      title: `${this.title} – yudhawijaya.com`,
+      title: this.title,
       meta: [
         { hid: 'description', name: 'description', content: this.excerpt },
         { hid: 'og:description', property: 'og:description', content: this.excerpt },
         { hid: 'og:image', property: 'og:image', content: this.featuredImage },
-        { hid: 'og:title', property: 'og:title', content: `${this.title} – yudhawijaya.com` },
+        { hid: 'og:title', property: 'og:title', content: this.title },
         { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` },
         { hid: 'article:published_time', property: 'article:published_time', content: this.firstPublishedAt }
       ]

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto pb-8 pt-16">
+  <div class="container mx-auto pb-8">
     <sheet-section class="mx-4 lg:mx-0 my-8">
       {{ sectionTitle }}
     </sheet-section>
@@ -48,7 +48,7 @@ export default {
         metas: {
           description: hl !== 'id' ? 'A collection of stories in yudhawijaya.com' : 'Kumpulan kisah di yudhawijaya.com',
           image: require('~/assets/img/me/64x64.png'),
-          title: `${hl !== 'id' ? 'Journal' : 'Jurnal'} – yudhawijaya.com`
+          title: hl !== 'id' ? 'Journal' : 'Jurnal'
         },
         stories: Object.freeze(
           stories.map((ob) => {

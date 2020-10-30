@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto pb-8 pt-16">
+  <div class="container mx-auto pb-8">
     <sheet-section class="mx-4 lg:mx-0 my-8">
       {{ sectionTitle }}
     </sheet-section>
@@ -50,7 +50,7 @@ export default {
   computed: {
     ...mapState({
       lang: state => state.locale.lang,
-      social: state => state.footer.social
+      social: state => state.core.social
     }),
     sectionTitle () {
       return this.lang !== 'id' ? 'Contact' : 'Kontak'
@@ -59,6 +59,11 @@ export default {
       if (!this.social) { return }
       const items = [...this.social]
       return items.splice(0, 2)
+    }
+  },
+  head () {
+    return {
+      title: 'Kontak'
     }
   }
 }
