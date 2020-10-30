@@ -3,6 +3,7 @@
     <li
       v-for="(item, key) in menuItems"
       :key="`menu-main-${key}`"
+      @click.prevent="setShowMobileMenu(false)"
     >
       <nuxt-link
         :class="[
@@ -26,7 +27,7 @@
   </ul>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'HeaderMenu',
   props: {
@@ -45,6 +46,9 @@ export default {
     })
   },
   methods: {
+    ...mapMutations({
+      setShowMobileMenu: 'core/setShowMobileMenu'
+    }),
     link (to) {
       const locale = this.lang !== 'id' ? '?hl=' + this.lang : ''
       return to + locale

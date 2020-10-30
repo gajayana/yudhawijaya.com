@@ -10,7 +10,7 @@
       <!-- end: logo -->
       <!-- start: mobile bar button -->
       <div class="flex md:hidden">
-        <button class="outline-none focus:outline-none w-12 text-white text-2xl" @click.prevent="showMenu = !showMenu">
+        <button class="outline-none focus:outline-none w-12 text-white text-2xl" @click.prevent="setShowMobileMenu(true)">
           <font-awesome-icon :icon="['fas', 'bars']" />
         </button>
       </div>
@@ -26,7 +26,7 @@
     <div v-if="showMenu" class="fixed h-screen left-0 p-2 top-0 w-full">
       <div class="bg-white flex flex-col h-full shadow-xl w-full">
         <div class="flex justify-end">
-          <button class="p-4 text-2xl leading-none" @click.prevent="showMenu = !showMenu">
+          <button class="p-4 text-2xl leading-none" @click.prevent="setShowMobileMenu(false)">
             <font-awesome-icon :icon="['fas', 'times']" />
           </button>
         </div>
@@ -85,13 +85,13 @@ export default {
     this.content = content
   },
   data: () => ({
-    content: '',
-    showMenu: false
+    content: ''
   }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,
-      lang: state => state.locale.lang
+      lang: state => state.locale.lang,
+      showMenu: state => state.core.show_mobile_menu
     }),
     logo () {
       if (!this.content) { return }
@@ -117,11 +117,9 @@ export default {
   methods: {
     ...mapMutations({
       setFooterText: 'core/setFooterText',
+      setShowMobileMenu: 'core/setShowMobileMenu',
       setSocial: 'core/setSocial'
     }),
-    toggleMenu () {
-      this.setShowMobileMenu(!this.showMobileMenu)
-    },
     link (to) {
       const locale = this.lang !== 'id' ? '?hl=' + this.lang : ''
       return to + locale
