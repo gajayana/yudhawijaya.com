@@ -11,8 +11,7 @@
 <script>
 export default {
   name: 'Home',
-  watchQuery: ['hl'],
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
+  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     try {
       const { hl = 'id' } = query
       const config = { cv: store.state.storyblok.cv, version: 'published' }
@@ -82,6 +81,7 @@ export default {
         { hid: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' }
       ]
     }
-  }
+  },
+  watchQuery: ['hl']
 }
 </script>

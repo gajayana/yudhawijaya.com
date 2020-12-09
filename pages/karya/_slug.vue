@@ -58,7 +58,6 @@ import { enGB, id } from 'date-fns/locale'
 
 export default {
   name: 'WorkSingle',
-  watchQuery: ['hl'],
   async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     const { hl = 'id' } = query || {}
     store.commit('locale/setLang', hl)
@@ -128,6 +127,8 @@ export default {
       return this.story.content.url_is_invalid || false
     }
   },
+  watchQuery: ['hl'],
+  // eslint-disable-next-line vue/order-in-components
   head () {
     return {
       title: this.title,

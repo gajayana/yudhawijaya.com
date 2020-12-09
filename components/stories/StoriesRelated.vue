@@ -36,6 +36,9 @@ export default {
       default: () => ([])
     }
   },
+  data: () => ({
+    stories: ''
+  }),
   async fetch () {
     let folder
     switch (this.path) {
@@ -66,9 +69,6 @@ export default {
 
     this.stories = stories
   },
-  data: () => ({
-    stories: ''
-  }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,

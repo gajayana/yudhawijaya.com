@@ -22,8 +22,7 @@
 import { mapState } from 'vuex'
 export default {
   name: 'Journal',
-  watchQuery: ['hl'],
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
+  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     try {
       const { hl = 'id' } = query || {}
 
@@ -91,6 +90,8 @@ export default {
       return this.lang !== 'id' ? 'Journal' : 'Jurnal'
     }
   },
+  watchQuery: ['hl'],
+  // eslint-disable-next-line vue/order-in-components
   head () {
     return {
       title: this.metas.title,
