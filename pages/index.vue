@@ -75,7 +75,6 @@ export default {
         { hid: 'description', name: 'description', content: description },
         { hid: 'keywords', name: 'keywords', content: keywords },
         { hid: 'og:description', property: 'og:description', content: description },
-        // eslint-disable-next-line camelcase
         { hid: 'og:image', property: 'og:image', content: `https:${image}` },
         { hid: 'og:title', property: 'og:title', content: title },
         { hid: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' }
