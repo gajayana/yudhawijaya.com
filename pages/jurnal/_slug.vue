@@ -40,7 +40,7 @@
 import '~/assets/css/_post.css'
 export default {
   name: 'JournalSingle',
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
+  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     const { hl = 'id' } = query || {}
     store.commit('locale/setLang', hl)
 
@@ -54,7 +54,19 @@ export default {
       story: Object.freeze(story.data.story)
     }
   },
-  watchQuery: ['hl'],
+  head () {
+    return {
+      title: this.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.excerpt },
+        { hid: 'og:description', property: 'og:description', content: this.excerpt },
+        { hid: 'og:image', property: 'og:image', content: this.featuredImage },
+        { hid: 'og:title', property: 'og:title', content: this.title },
+        { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` },
+        { hid: 'article:published_time', property: 'article:published_time', content: this.firstPublishedAt }
+      ]
+    }
+  },
   computed: {
     body () {
       return this.story.content.body || ''
@@ -78,18 +90,6 @@ export default {
       return this.story.content.title || ''
     }
   },
-  head () {
-    return {
-      title: this.title,
-      meta: [
-        { hid: 'description', name: 'description', content: this.excerpt },
-        { hid: 'og:description', property: 'og:description', content: this.excerpt },
-        { hid: 'og:image', property: 'og:image', content: this.featuredImage },
-        { hid: 'og:title', property: 'og:title', content: this.title },
-        { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` },
-        { hid: 'article:published_time', property: 'article:published_time', content: this.firstPublishedAt }
-      ]
-    }
-  }
+  watchQuery: ['hl']
 }
 </script>

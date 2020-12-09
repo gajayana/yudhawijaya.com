@@ -43,6 +43,9 @@
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'HeaderDefault',
+  data: () => ({
+    content: ''
+  }),
   async fetch () {
     const {
       data: {
@@ -84,9 +87,6 @@ export default {
     // assign values
     this.content = content
   },
-  data: () => ({
-    content: ''
-  }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,

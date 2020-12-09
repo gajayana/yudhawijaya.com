@@ -11,8 +11,7 @@
 <script>
 export default {
   name: 'Home',
-  watchQuery: ['hl'],
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
+  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     try {
       const { hl = 'id' } = query
       const config = { cv: store.state.storyblok.cv, version: 'published' }
@@ -76,12 +75,12 @@ export default {
         { hid: 'description', name: 'description', content: description },
         { hid: 'keywords', name: 'keywords', content: keywords },
         { hid: 'og:description', property: 'og:description', content: description },
-        // eslint-disable-next-line camelcase
         { hid: 'og:image', property: 'og:image', content: `https:${image}` },
         { hid: 'og:title', property: 'og:title', content: title },
         { hid: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' }
       ]
     }
-  }
+  },
+  watchQuery: ['hl']
 }
 </script>

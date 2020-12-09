@@ -21,7 +21,6 @@
 import { mapState } from 'vuex'
 export default {
   name: 'Contact',
-  watchQuery: ['hl'],
   async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
     const { hl = 'id' } = query || {}
 
@@ -61,6 +60,8 @@ export default {
       return items.splice(0, 2)
     }
   },
+  watchQuery: ['hl'],
+  // eslint-disable-next-line vue/order-in-components
   head () {
     return {
       title: 'Kontak'

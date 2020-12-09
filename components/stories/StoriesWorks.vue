@@ -32,6 +32,9 @@
 import { mapState } from 'vuex'
 export default {
   name: 'StoriesWorks',
+  data: () => ({
+    stories: ''
+  }),
   async fetch () {
     const {
       data: {
@@ -68,9 +71,6 @@ export default {
       }
     })
   },
-  data: () => ({
-    stories: ''
-  }),
   computed: {
     ...mapState({
       cv: state => state.storyblok.cv,

@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 module.exports = {
   /*
   ** Headers of the page
@@ -83,14 +83,6 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    // '@nuxtjs/axios',
-    [
-      '@nuxtjs/dotenv',
-      {
-        only: []
-      }
-    ],
     [
       'storyblok-nuxt',
       {
@@ -111,13 +103,6 @@ module.exports = {
     '@nuxtjs/sitemap'
   ],
   /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  // axios: {
-  //   baseURL: process.env.BASE_URL || 'http://localhost:3000'
-  // },
-  /*
   ** TailwindCSS module configuration
   ** See https://github.com/nuxt-community/tailwindcss-module
   */
@@ -135,10 +120,6 @@ module.exports = {
 
   // See https://github.com/nuxt/vercel-builder/issues/178
   // serverMiddleware: [
-  //   {
-  //     path: '/api',
-  //     handler: '~/api/index.js'
-  //   }
   // ],
 
   telemetry: false,
