@@ -22,6 +22,7 @@
         </div>
       </div>
     </div>
+    <doodle-christmas class="absolute bottom-0 right-0" />
   </div>
 </template>
 <script>
