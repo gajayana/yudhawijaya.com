@@ -1,6 +1,4 @@
-# yudhawijaya
-
-> My extraordinary Nuxt.js project
+# nuxt-ts
 
 ## Build Setup
 

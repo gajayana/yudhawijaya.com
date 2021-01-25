@@ -1,137 +1,55 @@
-// require('dotenv').config()
-module.exports = {
-  /*
-  ** Headers of the page
-  */
+export default {
+  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s – yudhawijaya.com',
+    title: 'nuxt-ts',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
-      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-      { hid: 'twitter:creator', name: 'twitter:creator', content: '@tuan_yudha' },
-      { hid: 'twitter:site', name: 'twitter:site', content: '@tuan_yudha' }
+      { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 
-  /**
-   * Components auto discovery
-   * See: https://github.com/nuxt/components
-   */
-  components: true,
-
-  /*
-  ** Customize the progress-bar color
-  */
-  loading: {
-    color: '#3182ce',
-    height: '0.25rem'
-  },
-
-  /*
-  ** Global CSS
-  */
+  // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
-  /*
-  ** Plugins to load before mounting the App
-  */
+
+  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // '~/plugins/directives/scroll',
-    '~/plugins/filters/dateTimeFormatter',
-    '~/plugins/injects/socialParser'
   ],
-  /*
-  ** Nuxt.js dev-modules
-  */
+
+  // Auto import components: https://go.nuxtjs.dev/config-components
+  components: true,
+
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    // https://github.com/nuxt-community/google-fonts-module
-    [
-      '@nuxtjs/google-fonts',
-      {
-        display: 'swap',
-        families: {
-          'Open+Sans': {
-            wght: [400, 700],
-            ital: [400, 700]
-          },
-          Roboto: [700]
-        }
-      }
-    ],
-    // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss',
-    [
-      '@nuxtjs/fontawesome',
-      {
-        icons: {
-          solid: ['faBars', 'faExternalLinkAlt', 'faTimes'],
-          brands: ['faGithub', 'faGitlab', 'faLinkedin', 'faTwitter']
-        }
-      }
-    ],
-    // See https://pwa.nuxtjs.org/setup
+    // https://go.nuxtjs.dev/typescript
+    '@nuxt/typescript-build',
+    // https://go.nuxtjs.dev/tailwindcss
+    '@nuxtjs/tailwindcss'
+  ],
+
+  // Modules: https://go.nuxtjs.dev/config-modules
+  modules: [
+    // https://go.nuxtjs.dev/axios
+    '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa'
   ],
-  /*
-  ** Nuxt.js modules
-  */
-  modules: [
-    [
-      'storyblok-nuxt',
-      {
-        accessToken: process.env.STORYBLOK_TOKEN || '',
-        cacheProvider: 'memory'
-      }
-    ],
-    [
-      '@nuxtjs/markdownit',
-      // See https://github.com/markdown-it/markdown-it
-      {
-        injected: true
-      }
-    ],
-    // See https://github.com/nuxt-community/robots-module
-    '@nuxtjs/robots',
-    // See https://github.com/nuxt-community/sitemap-module
-    '@nuxtjs/sitemap'
-  ],
-  /*
-  ** TailwindCSS module configuration
-  ** See https://github.com/nuxt-community/tailwindcss-module
-  */
-  tailwindcss: {},
-  /*
-  ** Build configuration
-  */
-  build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
+
+  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  axios: {},
+
+  // PWA module configuration: https://go.nuxtjs.dev/pwa
+  pwa: {
+    manifest: {
+      lang: 'en'
     }
   },
 
-  // See https://github.com/nuxt/vercel-builder/issues/178
-  // serverMiddleware: [
-  // ],
-
-  telemetry: false,
-
-  pwa: {
-    icon: {
-      source: './static/icon.png'
-    },
-    manifest: {
-      name: 'Yudha Wijaya',
-      short_name: 'Yudha Wijaya',
-      theme_color: '#5A67D8'
-    }
+  // Build Configuration: https://go.nuxtjs.dev/config-build
+  build: {
   }
 }

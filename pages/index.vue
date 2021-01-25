@@ -1,86 +1,80 @@
 <template>
-  <div>
-    <hero-home :contents="hero" />
-    <client-only>
-      <stories-works />
-      <stories-journals />
-    </client-only>
+  <div class="container">
+    <div>
+      <Logo />
+      <h1 class="title">
+        nuxt-ts
+      </h1>
+      <div class="links">
+        <a
+          href="https://nuxtjs.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--green"
+        >
+          Documentation
+        </a>
+        <a
+          href="https://github.com/nuxt/nuxt.js"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--grey"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Home',
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
-    try {
-      const { hl = 'id' } = query
-      const config = { cv: store.state.storyblok.cv, version: 'published' }
+<script lang="ts">
+import Vue from 'vue'
 
-      if (hl) { store.commit('locale/setLang', hl) }
-      // data.story.content.body
-      const {
-        data: {
-          story: {
-            content: {
-              body = {},
-              meta_description: description = '',
-              meta_keywords: keywords = '',
-              meta_title: title = '',
-              og_image: {
-                filename: image = ''
-              }
-            }
-          }
-        }
-      } = await app.$storyapi.get(`cdn/stories/${hl ? hl + '/' : ''}home`, config) || {}
-
-      if (!body) { return }
-      const {
-        headline = '',
-        teaser = ''
-      } = body.find(ob => ob.component === 'hero') || {}
-
-      return {
-        hero: Object.freeze({
-          headline,
-          teaser
-        }),
-        metas: Object.freeze({
-          description,
-          image,
-          keywords,
-          title
-        })
-      }
-    } catch (err) {
-      error({
-        statusCode: err.statusCode,
-        message: err.message
-      })
-    }
-  },
-  head () {
-    if (!this.metas) { return }
-
-    const {
-      description = '',
-      image = '',
-      keywords = '',
-      title = ''
-    } = this.metas || {}
-
-    return {
-      title,
-      meta: [
-        { hid: 'description', name: 'description', content: description },
-        { hid: 'keywords', name: 'keywords', content: keywords },
-        { hid: 'og:description', property: 'og:description', content: description },
-        { hid: 'og:image', property: 'og:image', content: `https:${image}` },
-        { hid: 'og:title', property: 'og:title', content: title },
-        { hid: 'og:url', property: 'og:url', content: 'https://yudhawijaya.com/' }
-      ]
-    }
-  },
-  watchQuery: ['hl']
-}
+export default Vue.extend({})
 </script>
+
+<style>
+/* Sample `apply` at-rules with Tailwind CSS
+.container {
+@apply min-h-screen flex justify-center items-center text-center mx-auto;
+}
+*/
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-family:
+    'Quicksand',
+    'Source Sans Pro',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  display: block;
+  font-weight: 300;
+  font-size: 100px;
+  color: #35495e;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 42px;
+  color: #526488;
+  word-spacing: 5px;
+  padding-bottom: 15px;
+}
+
+.links {
+  padding-top: 15px;
+}
+</style>
