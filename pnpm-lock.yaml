@@ -4,12 +4,14 @@ specifiers:
   '@nuxtjs/google-fonts': 3.0.0-1
   '@nuxtjs/i18n': 8.0.0-beta.9
   '@nuxtjs/tailwindcss': ^6.4.0
+  '@storyblok/nuxt': ^5.1.0
   '@types/markdown-it': ^12.2.3
   markdown-it: ^13.0.1
   nuxt: ^3.1.2
   nuxt-icon: ^0.2.11
 
 dependencies:
+  '@storyblok/nuxt': 5.1.0
   nuxt-icon: 0.2.11
 
 devDependencies:
@@ -1444,6 +1446,28 @@ packages:
       picomatch: 2.3.1
       rollup: 3.15.0
     dev: true
+
+  /@storyblok/js/2.0.15:
+    resolution: {integrity: sha512-tfnr48j4p1muDzjyJtQQNqnF0M7Lyw03e8dBkom+715Nn29KAlrpRE5h4VTsL1vHU0+JPd4E01LcrV8SKgPYcA==}
+    dependencies:
+      storyblok-js-client: 5.4.2
+    dev: false
+
+  /@storyblok/nuxt/5.1.0:
+    resolution: {integrity: sha512-Sf/lJkBGH0zOrL0tnItnGhjQLLvr9H5hSl1jGa/4F+3JOTKkjmANmlqH4HEkxjbSBjxjL15/c2DIcSJb6/HMlg==}
+    dependencies:
+      '@nuxt/kit': 3.2.0
+      '@storyblok/vue': 7.0.0
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+    dev: false
+
+  /@storyblok/vue/7.0.0:
+    resolution: {integrity: sha512-r23LAho/M2fk6bNUW39XDTMM8V+Eug9gZoZf3ZBRoW40fpnjzP8eQj0hnCqhFK5gfOFVsmsL206AAbQx1xz3lQ==}
+    dependencies:
+      '@storyblok/js': 2.0.15
+    dev: false
 
   /@trysound/sax/0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -5318,6 +5342,10 @@ packages:
 
   /std-env/3.3.2:
     resolution: {integrity: sha512-uUZI65yrV2Qva5gqE0+A7uVAvO40iPo6jGhs7s8keRfHCmtg+uB2X6EiLGCI9IgL1J17xGhvoOqSz79lzICPTA==}
+
+  /storyblok-js-client/5.4.2:
+    resolution: {integrity: sha512-OKwIqRPkxTV+wVhTbH2MgfA82tQeve+Lt8ygsNyCKULPuvZ92XCQbBtSB+uf05SOPBKRzNQXCjUYyGiXaF3xKQ==}
+    dev: false
 
   /streamsearch/1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}

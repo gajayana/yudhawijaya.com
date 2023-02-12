@@ -37,6 +37,13 @@ export default defineNuxtConfig({
       }
     ],
     // https://nuxt.com/modules/icon
-    'nuxt-icon'
+    'nuxt-icon',
+
+    [
+      '@storyblok/nuxt',
+      {
+        accessToken: process.env.STORYBLOK_TOKEN_PUBLIC || ''
+      }
+    ]
   ],
 })
