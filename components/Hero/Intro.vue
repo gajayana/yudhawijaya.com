@@ -1,7 +1,14 @@
-<script setup></script>
+<script setup lang="ts">
+const { $mdit } = useNuxtApp()
+</script>
+
 <template>
   <div>
-    <div>{{ $t('hero.intro.greeting') }}</div>
-    <div>{{ $t('hero.intro.resume') }}</div>
+    <div
+      v-html="$mdit.renderInline($t('hero.intro.greeting'))"
+    />
+    <div
+      v-html="$mdit.renderInline($t('hero.intro.resume'))"
+    />
   </div>
 </template>
