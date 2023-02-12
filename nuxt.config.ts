@@ -44,6 +44,17 @@ export default defineNuxtConfig({
       {
         accessToken: process.env.STORYBLOK_TOKEN_PUBLIC || ''
       }
+    ],
+    // https://nuxt.com/modules/pinia
+    [
+      '@pinia/nuxt',
+      {
+        autoImports: ['defineStore', 'acceptHMRUpdate'],
+      }
     ]
   ],
+
+  imports: {
+    dirs: ['./stores'],
+  },
 })

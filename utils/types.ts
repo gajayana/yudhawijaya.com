@@ -4,6 +4,16 @@ type SocialAccount = {
   url: string;
 }
 
+interface StoryblokSpace {
+  space: {
+    id: number;
+    name: string;
+    domain: string;
+    version: number,
+    language_codes: string[]
+  }
+}
+
 interface StoryblokStory {
   name: string;
   created_at: string;
@@ -50,6 +60,7 @@ type StoryblokStoryResponse = {
 
 export type {
   SocialAccount,
+  StoryblokSpace,
   StoryblokStory,
   StoryblokStoryResponse
 }
