@@ -13,5 +13,7 @@ export default defineNuxtConfig({
       },
       vueI18nLoader: true
     }],
+    // https://github.com/nuxt-modules/tailwindcss
+    '@nuxtjs/tailwindcss'
   ],
 })
