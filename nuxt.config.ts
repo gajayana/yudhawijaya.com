@@ -35,6 +35,8 @@ export default defineNuxtConfig({
         },
         // overwriting: false
       }
-    ]
+    ],
+    // https://nuxt.com/modules/icon
+    'nuxt-icon'
   ],
 })

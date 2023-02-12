@@ -2,5 +2,6 @@
   <div>
     <HeaderDefault />
     <slot />
+    <FooterDefault />
   </div>
 </template>
