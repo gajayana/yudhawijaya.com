@@ -1,4 +1,6 @@
-import { SocialAccount } from "~~/types"
+import { SocialAccount } from "~~/utils/types"
+
+const IMAGE_OF_ME = 'https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg'
 
 const SOCIAL_ACCOUNTS:SocialAccount[] = [
   {
@@ -24,5 +26,6 @@ const SOCIAL_ACCOUNTS:SocialAccount[] = [
 ]
 
 export {
+  IMAGE_OF_ME,
   SOCIAL_ACCOUNTS
 }

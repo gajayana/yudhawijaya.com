@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main class="flex flex-col w-full">
     <HeroIntro/>
-  </div>
+  </main>
 </template>

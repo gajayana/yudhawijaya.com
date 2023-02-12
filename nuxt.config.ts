@@ -1,4 +1,4 @@
-import { MESSAGES } from './constants/localizations';
+import { MESSAGES } from './utils/localizations';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({

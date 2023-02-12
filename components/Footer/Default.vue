@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { SOCIAL_ACCOUNTS } from '~~/constants'
+import { SOCIAL_ACCOUNTS } from '~~/utils/constants.js'
 const { $mdit } = useNuxtApp()
 </script>
 
 <template>
-  <footer class="footer bg-gray-900 flex flex-col items-center px-4 pb-8 pt-6">
+  <footer class="absolute bottom-0 footer backdrop-blur-sm bg-indigo-600/50 flex flex-col items-center left-0 px-4 pb-8 pt-6 w-full">
     <p class="font-mono mb-2 text-white text-center text-xs">
       <span v-html="$mdit.renderInline($t('footer.text'))" />
     </p>
