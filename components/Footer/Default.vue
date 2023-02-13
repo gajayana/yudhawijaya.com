@@ -4,8 +4,9 @@ const { $mdit } = useNuxtApp()
 </script>
 
 <template>
-  <footer class="absolute bottom-0 footer backdrop-blur-sm bg-indigo-600/50 flex flex-col items-center left-0 px-4 pb-8 pt-6 w-full">
-    <p class="font-mono mb-2 text-white text-center text-xs">
+  <footer class="footer backdrop-blur-sm flex flex-col items-center px-4 pb-8 pt-6 w-full">
+    <div class="border-t border-solid border-gray-300 mb-8 w-full" />
+    <p class="font-mono mb-2 text-gray-500 text-center text-xs">
       <span v-html="$mdit.renderInline($t('footer.text'))" />
     </p>
     <ul class="flex gap-2">
@@ -15,7 +16,7 @@ const { $mdit } = useNuxtApp()
           :title="url" 
           rel="noreferrer"
           target="_blank" 
-          class="text-white hover:text-gray-600 text-2xl"
+          class="text-gray-500 hover:text-gray-600 text-2xl"
         >
           <Icon :name="icon" />
         </a>

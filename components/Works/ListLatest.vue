@@ -24,11 +24,13 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
-    <div class="container flex flex-col mx-auto p-4 w-full">
-      <h2>Karya</h2>
+  <div id="latest-works" class="flex flex-col w-full">
+    <div class="container flex flex-col items-center mx-auto p-4 w-full">
+      <h2 class="flex font-medium font-sans mb-4 lg:mb-8 text-2xl lg:text-5xl">
+        {{ $t('hero.intro.button.work') }}
+      </h2>
       <div class="flex w-full">
-        <div v-if="stories" class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+        <div v-if="stories" class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
           <CardStory v-for="story in stories" :story="story" :key="story.uuid" />
         </div>
         <div v-else>

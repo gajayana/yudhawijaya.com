@@ -33,7 +33,7 @@ const title = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col overflow-hidden rounded shadow shadow-black/30 w-full">
+  <div class="bg-white flex flex-col overflow-hidden rounded shadow shadow-black/30 w-full">
     <img v-if="featuredImage" :src="featuredImage" />
     <div class="flex flex-col p-3">
       <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ title }}</h3>

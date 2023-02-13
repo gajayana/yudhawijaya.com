@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply flex flex-col font-serif min-h-screen relative w-full;
+    @apply flex flex-col font-serif min-h-screen relative w-full bg-indigo-50;
   }
 
   a {

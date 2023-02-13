@@ -8,11 +8,11 @@
     width: 48,
   })
 
-  const languages = ['id', 'en']
+  
 </script>
 
 <template>
-  <header class="absolute flex left-0 top-0 w-full">
+  <header class="flex w-full">
     <div class="flex items-center justify-between mx-auto px-4 py-2 w-full">
       <!-- start: picture of me -->
       <div class="flex rounded-full overflow-hidden">
@@ -23,17 +23,12 @@
       <!-- end: picture of me -->
 
       <div class="flex gap-4">
-        <div class="flex gap-1">
-          <NuxtLink 
-            v-for="language in languages" 
-            :key="`switcher-${language}`" 
-            :to="switchLocalePath(language)"
-            class="border border-gray-300 border-solid no-underline outline-none focus:outline-none px-2 py-1 rounded text-center"
-          >
-            {{ language.toUpperCase() }}
-          </NuxtLink>
-        </div>
+        <ButtonLanguageSwitcher />
       </div>
     </div>
   </header>
 </template>
+
+<style>
+
+</style>
