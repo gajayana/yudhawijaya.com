@@ -4,6 +4,17 @@ type SocialAccount = {
   url: string;
 }
 
+interface StoryblokImage {
+  id: number;
+  alt: string;
+  name: string;
+  focus: string;
+  title: string;
+  filename: string;
+  copyright: string;
+  fieldtype: string;
+}
+
 interface StoryblokSpace {
   space: {
     id: number;
@@ -22,21 +33,21 @@ interface StoryblokStory {
   uuid: string;
   content: {
     _uid: string;
-    // sizes: StoryblokTable;
-    // images: StoryblokImage[]
-    // component: string;
-    // description: ISbRichtext;
-    // discount_idr: string;
-    // original_price_idr: string;
-    // displayed_price_idr: string;
-    // shopee?: StoryblokLink;
-    // tokopedia?: StoryblokLink;
+    body?: string;
+    component?: string; 
+    date_end?: string;
+    date_start?: string;
+    excerpt?:string;
+    featured_image?: StoryblokImage;
+    title?: string;
+    url?: string;
+    url_is_invalid?:boolean
   },
   slug: string;
   full_slug: string;
   sort_by_date: any | null;
   position: number;
-  tag_list: any;
+  tag_list: string[];
   is_startpage: boolean;
   parent_id: number;
   meta_data: any | null;
@@ -51,8 +62,8 @@ interface StoryblokStory {
 }
 
 
-type StoryblokStoryResponse = {
-  story: StoryblokStory;
+type StoryblokStoriesResponse = {
+  stories: StoryblokStory[];
   cv: number;
   rels: any;
   links: any;
@@ -62,5 +73,5 @@ export type {
   SocialAccount,
   StoryblokSpace,
   StoryblokStory,
-  StoryblokStoryResponse
+  StoryblokStoriesResponse
 }
