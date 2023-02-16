@@ -13,7 +13,7 @@ export default defineNuxtConfig({
           fallbackLocale: 'id',
           messages: MESSAGES
         },
-        vueI18nLoader: true
+        vueI18nLoader: true,
       }
     ],
     // https://github.com/nuxt-modules/tailwindcss

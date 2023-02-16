@@ -4,6 +4,14 @@ const MESSAGES = {
     footer: {
       text: 'Built with 🤔 by Yosef Yudha Wijaya'
     },
+    header: {
+      menu: {
+        about: 'About',
+        home: 'Home',
+        journals: 'Journals',
+        works: 'Works',
+      }
+    },
     hero: {
       intro: {
         button: {
@@ -12,9 +20,18 @@ const MESSAGES = {
         greeting: 'Hi, I\'m Yudha',
         resume: 'I am a professional fullstack developer who specializes in [Vue.js](https://vuejs.org/), [Nuxt.js](https://nuxtjs.org/), [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [Laravel](https://laravel.com/), [WordPress](https://wordpress.org/), and [Strapi](https://strapi.io/).'
       }
-    }
+    },
+    works: 'Works'
   },
   id: {
+    header: {
+      menu: {
+        about: 'Tentang',
+        home: 'Muka',
+        journals: 'Jurnal',
+        works: 'Karya',
+      }
+    },
     footer: {
       text: 'Terbikin dengan penuh [🤔](https://kbbi.kemdikbud.go.id/entri/kemelitan) oleh Yosef Yudha Wijaya'
     },
@@ -26,7 +43,8 @@ const MESSAGES = {
         greeting: 'Halo, saya Yudha',
         resume: 'Saya pengembang aplikasi berbasis web profesional yang berpengalaman dengan [Vue.js](https://vuejs.org/), [Nuxt.js](https://nuxtjs.org/), [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [Laravel](https://laravel.com/), [WordPress](https://wordpress.org/), dan [Strapi](https://strapi.io/).'
       }
-    }
+    },
+    works: 'Sejumlah Karya'
   }
 }
 

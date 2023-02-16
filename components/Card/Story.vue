@@ -8,8 +8,6 @@ const props = defineProps({
   }
 })
 
-console.log({story: props.story})
-
 const excerpt = computed(() => {
   return props.story.content.excerpt
 })
@@ -34,7 +32,12 @@ const title = computed(() => {
 
 <template>
   <div class="bg-white flex flex-col overflow-hidden rounded shadow shadow-black/30 w-full">
-    <img v-if="featuredImage" :src="featuredImage" />
+    <div 
+      class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette"
+      :style="{
+        backgroundImage: `url(${featuredImage})`
+      }"
+    />
     <div class="flex flex-col p-3">
       <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ title }}</h3>
       <p class="font-serif text-gray-800">{{ excerpt }}</p>
@@ -42,3 +45,9 @@ const title = computed(() => {
       
   </div>
 </template>
+
+<style lang="postcss">
+.vignette {
+  box-shadow: 0 0 4rem rgba(0, 0, 0, 0.3) inset;
+}
+</style>

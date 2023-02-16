@@ -1,6 +1,5 @@
 <script setup lang="ts">
   const localePath = useLocalePath()
-  const switchLocalePath = useSwitchLocalePath()
 
   const imageOfMe = storyblokImage({
     height: 48,
@@ -8,7 +7,6 @@
     width: 48,
   })
 
-  
 </script>
 
 <template>
@@ -23,6 +21,7 @@
       <!-- end: picture of me -->
 
       <div class="flex gap-4">
+        <NavigationMenuMain />
         <ButtonLanguageSwitcher />
       </div>
     </div>

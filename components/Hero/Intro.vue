@@ -20,7 +20,7 @@ const scrollToWorks = () => {
       height: 'calc(100vh - 4rem)'
     }"
   >
-    <div class="bg-indigo-600 flex h-full items-center justify-center rounded-md w-full p-4">
+    <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4">
       <div class="max-w-lg mx-auto">
         <h1 class="font-sans leading-none mb-4 sm:mb-8 text-center text-4xl sm:text-6xl text-white"
           v-html="$mdit.renderInline($t('hero.intro.greeting'))" />
