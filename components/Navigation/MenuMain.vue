@@ -25,14 +25,21 @@ const items = [
 </script>
 
 <template>
-  <div class="flex gap-2 items-center">
+  <div class="flex gap-1 items-center">
     <NuxtLink
       v-for="({label, path, name}) in items"
       :key="`menu-${label}`"
       :to="localePath({name})"
+      class="hover:bg-indigo-100 flex font-serif leading-none px-2 py-1 rounded no-underline"
     >
       {{ $t(label) }}
     </NuxtLink>
 
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.router-link-active {
+  @apply bg-indigo-200;
+}
+</style>

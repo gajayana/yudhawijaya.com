@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { StoryblokStory } from '~~/utils/types';
 
+const localePath = useLocalePath()
+
 const props = defineProps({
   story: {
     type: Object as PropType<StoryblokStory>,
@@ -31,7 +33,10 @@ const title = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white flex flex-col overflow-hidden rounded shadow shadow-black/30 w-full">
+  <NuxtLink 
+    class="bg-white flex flex-col no-underline overflow-hidden rounded shadow shadow-black/30 w-full"
+    :to="localePath(`/karya/${story.slug}`)"
+  >
     <div 
       class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette"
       :style="{
@@ -43,7 +48,7 @@ const title = computed(() => {
       <p class="font-serif text-gray-800">{{ excerpt }}</p>
     </div>
       
-  </div>
+  </NuxtLink>
 </template>
 
 <style lang="postcss">
