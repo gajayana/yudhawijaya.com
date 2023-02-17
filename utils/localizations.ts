@@ -21,7 +21,11 @@ const MESSAGES = {
         resume: 'I am a professional fullstack developer who specializes in [Vue.js](https://vuejs.org/), [Nuxt.js](https://nuxtjs.org/), [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [Laravel](https://laravel.com/), [WordPress](https://wordpress.org/), and [Strapi](https://strapi.io/).'
       }
     },
-    works: 'Works'
+    works: {
+      heading: 'Works',
+      intro: 'My contributions in clients and personal digital applications developments',
+      ongoing: 'ongoing'
+    },
   },
   id: {
     header: {
@@ -44,7 +48,11 @@ const MESSAGES = {
         resume: 'Saya pengembang aplikasi berbasis web profesional yang berpengalaman dengan [Vue.js](https://vuejs.org/), [Nuxt.js](https://nuxtjs.org/), [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [Laravel](https://laravel.com/), [WordPress](https://wordpress.org/), dan [Strapi](https://strapi.io/).'
       }
     },
-    works: 'Sejumlah Karya'
+    works: {
+      heading: 'Sejumlah Karya',
+      intro: 'Kontribusi saya terhadap pengembangan produk-produk digital klien dan personal',
+      ongoing: 'berlangsung'
+    },
   }
 }
 

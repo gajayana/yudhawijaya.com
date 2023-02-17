@@ -1,7 +1,15 @@
-import { MESSAGES } from './utils/localizations';
+import { MESSAGES } from './utils/localizations'
+import { SEO_TITLE_DEFAULT } from './utils/constants'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      title: SEO_TITLE_DEFAULT
+    }
+  },
   modules: [
     // See https://v8.i18n.nuxtjs.org/
     [
@@ -57,4 +65,10 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['./stores'],
   },
+
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000'
+    }
+  }
 })

@@ -8,6 +8,7 @@ specifiers:
   '@storyblok/nuxt': ^5.1.0
   '@types/markdown-it': ^12.2.3
   '@types/node': ^18.13.0
+  date-fns: ^2.29.3
   markdown-it: ^13.0.1
   nuxt: ^3.1.2
   nuxt-icon: ^0.2.11
@@ -23,6 +24,7 @@ devDependencies:
   '@nuxtjs/tailwindcss': 6.4.0
   '@types/markdown-it': 12.2.3
   '@types/node': 18.13.0
+  date-fns: 2.29.3
   markdown-it: 13.0.1
   nuxt: 3.2.0_@types+node@18.13.0
 
@@ -2506,6 +2508,11 @@ packages:
   /data-uri-to-buffer/4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
+    dev: true
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
     dev: true
 
   /debug/2.6.9:

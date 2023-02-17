@@ -63,7 +63,8 @@ interface StoryblokStory {
 
 
 type StoryblokStoriesResponse = {
-  stories: StoryblokStory[];
+  story?: StoryblokStory;
+  stories?: StoryblokStory[];
   cv: number;
   rels: any;
   links: any;
