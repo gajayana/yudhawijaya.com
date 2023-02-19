@@ -36,7 +36,7 @@ id:
     }"
   >
     <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4">
-      <div class="max-w-lg mx-auto">
+      <div class="max-w-xl mx-auto">
         <HeadingPrimary class="text-white">
           <span v-html="$mdit.renderInline(t('greeting'))" />
         </HeadingPrimary>
