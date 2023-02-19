@@ -18,6 +18,6 @@ id:
 <template>
   <main class="flex flex-col w-full">
     <HeroIntro/>
-    <WorksListLatest />
+    <WorksListFeatured />
   </main>
 </template>

@@ -38,6 +38,7 @@ interface StoryblokStory {
     date_end?: string;
     date_start?: string;
     excerpt?:string;
+    is_featured?:boolean;
     featured_image?: StoryblokImage;
     title?: string;
     url?: string;

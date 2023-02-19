@@ -18,6 +18,7 @@ onMounted(async() => {
         version: "published",
         starts_with: "works",
         per_page: 6,
+        sort_by: 'content.is_featured:asc',
         cv: sb.cv || Number(Date.now())
       }
     )
