@@ -20,21 +20,21 @@ const items = [
     name: 'jurnal'
   },
   {
-    label: 'about',
-    path: '/tentang',
-    name: 'tentang'
+    label: 'contact',
+    path: '/kontak',
+    name: 'kontak'
   }
 ]
 </script>
 
 <i18n lang="yaml">
 en:
-  about: 'About'
+  contact: 'Contact'
   home: 'Home'
   journals: 'Journals'
   works: 'Works'
 id:
-  about: 'Tentang'
+  contact: 'Kontak'
   home: 'Muka'
   journals: 'Jurnal'
   works: 'Karya'
@@ -45,8 +45,8 @@ id:
     <NuxtLink
       v-for="({label, path, name}) in items"
       :key="`menu-${label}`"
-      :to="localePath({name})"
-      class="hover:bg-indigo-100 flex font-serif leading-none px-2 py-1 rounded no-underline"
+      :to="localePath({path})"
+      class="hover:bg-indigo-100 flex font-serif leading-none px-3 py-2 rounded no-underline"
     >
       {{ t(label) }}
     </NuxtLink>
