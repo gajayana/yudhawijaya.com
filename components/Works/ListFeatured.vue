@@ -40,9 +40,9 @@ id:
 <template>
   <div id="latest-works" class="flex flex-col w-full">
     <div class="container flex flex-col items-center mx-auto p-4 w-full">
-      <h2 class="flex font-medium font-sans mb-4 lg:mb-8 text-2xl lg:text-5xl">
+      <HeadingSecondary>
         {{ t('heading') }}
-      </h2>
+      </HeadingSecondary>
       <div class="flex w-full">
         <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
           <CardStory 

@@ -72,7 +72,7 @@ const tags = computed<string[]|undefined>(() => {
 })
 
 const title = computed<string | undefined>(() => {
-  return story.value?.name
+  return story.value?.content.title
 })
 
 const url = computed<string | undefined>(() => {
@@ -104,7 +104,7 @@ id:
 
 <template>
   <main class="flex flex-col">
-    <h1>{{ title }}</h1>
+    <HeadingPrimary>{{ title }}</HeadingPrimary>
     <p v-html="excerpt" />
     <p v-html="url" />
     <span>{{ period }}</span>

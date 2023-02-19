@@ -33,8 +33,6 @@ const title = computed(() => {
   return props.story.content.title
 })
 
-console.log({story: props.story})
-
 </script>
 
 <template>

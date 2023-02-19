@@ -53,7 +53,7 @@ const tags = computed<string[] | undefined>(() => {
 })
 
 const title = computed<string | undefined>(() => {
-  return story.value?.name
+  return story.value?.content.title
 })
 
 useHead(seo({
@@ -77,7 +77,7 @@ id:
 
 <template>
   <main class="flex flex-col">
-    <h1>{{ title }}</h1>
+    <HeadingPrimary>{{ title }}</HeadingPrimary>
     <p v-html="excerpt" />
     <div class="flex flex-col" v-html="body" />
     <ul>

@@ -24,7 +24,7 @@ en:
   heading: 'Contact'
   intro: 'For enquiries, or just to say hello, please contact me at these following platforms:'
 id:
-  heading: 'Contact'
+  heading: 'Kontak'
   intro: 'Silakan menyapa saya melalui platform berikut:'
 </i18n>
 
@@ -37,9 +37,10 @@ id:
       }"
     >
       <div class="container flex flex-col items-center mx-auto p-4 w-full">
-        <h1 class="flex font-medium font-sans mb-4 lg:mb-8 text-2xl lg:text-5xl">
+        
+        <HeadingPrimary>
           {{ t('heading') }}
-        </h1>
+        </HeadingPrimary>
 
         <p class="font-serif mb-8 italic">{{ t('intro') }}</p>
 
