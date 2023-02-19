@@ -48,7 +48,7 @@ en:
   of: 'of'
   ongoing: 'ongoing'
 id:
-  heading: 'Sejumlah Karya & Kontribusi'
+  heading: 'Karya & Kontribusi'
   intro: 'Kontribusi saya terhadap pengembangan produk-produk digital klien dan personal'
   of: 'oleh'
   ongoing: 'berlangsung'
