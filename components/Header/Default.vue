@@ -15,15 +15,21 @@
       <!-- start: picture of me -->
       <div class="flex rounded-full overflow-hidden">
         <nuxt-link :to="localePath('/')">
-          <img class="h-12 w-12" :src="imageOfMe" alt="Yosef Yudha Wijaya" />
+          <img class="h-9 w-9 md:h-12 md:w-12" :src="imageOfMe" alt="Yosef Yudha Wijaya" />
         </nuxt-link>
       </div>
       <!-- end: picture of me -->
 
-      <div class="flex gap-4">
+      <!-- start: mobile menu -->
+      <NavigationMobile />
+      <!-- end: mobile menu -->
+
+      <!-- start: desktop menu -->
+      <div class="gap-4 hidden md:flex">
         <NavigationMenuMain />
         <ButtonLanguageSwitcher />
       </div>
+      <!-- end: desktop menu -->
     </div>
   </header>
 </template>

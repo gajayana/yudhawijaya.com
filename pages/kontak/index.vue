@@ -36,13 +36,13 @@ id:
         height: 'calc(100vh - 4rem - 9.063rem - 2rem)'
       }"
     >
-      <div class="container flex flex-col items-center mx-auto p-4 w-full">
+      <div class="container flex flex-col items-center mx-auto w-full">
         
         <HeadingPrimary>
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic">{{ t('intro') }}</p>
+        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
 
         <ul class="flex gap-4">
           <li v-for="{ icon, medium, url } in socialAccounts" :key="`footer-social-${medium}`" class="flex">

@@ -41,12 +41,13 @@ id:
 </i18n>
 
 <template>
-  <div class="flex gap-1 items-center">
+  <div class="border-b border-solid border-indigo-100 md:border-transparent flex flex-col md:flex-row gap-1 md:items-center">
     <NuxtLink
       v-for="({label, path, name}) in items"
       :key="`menu-${label}`"
       :to="localePath({path})"
-      class="hover:bg-indigo-100 flex font-serif leading-none px-3 py-2 rounded no-underline"
+      class="hover:bg-indigo-100 flex font-serif leading-none px-3 py-2 md:rounded no-underline"
+      @click="$emit('menuClicked')"
     >
       {{ t(label) }}
     </NuxtLink>

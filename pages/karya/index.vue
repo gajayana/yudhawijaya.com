@@ -57,13 +57,13 @@ id:
 <template>
   <main class="flex flex-col w-full p-4">
     <div class="flex flex-col w-full">
-      <div class="container flex flex-col items-center mx-auto p-4 w-full">
+      <div class="container flex flex-col items-center mx-auto w-full">
         
         <HeadingPrimary>
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic">{{ t('intro') }}</p>
+        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
 
         <WorksListAll :stories="stories" />
       </div>

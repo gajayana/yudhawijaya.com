@@ -103,7 +103,7 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col">
+  <main class="flex flex-col p-4">
     <HeadingPrimary>{{ title }}</HeadingPrimary>
     <p v-html="excerpt" />
     <p v-html="url" />
