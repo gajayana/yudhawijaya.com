@@ -16,13 +16,13 @@ const story = ref<StoryblokStory | null | undefined>(null);
 
 defineI18nRoute({
   paths: {
-    en: '/works/[slug]',
-    id: '/karya/[slug]'
+    en: '/journals/[slug]',
+    id: '/jurnal/[slug]'
   }
 })
 
 const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-  `cdn/stories/works/${route.params.slug}`,
+  `cdn/stories/posts/${route.params.slug}`,
   {
     language: locale.value,
     version: "published",
@@ -48,39 +48,12 @@ const featuredImage = computed<string | undefined>(() => {
   })
 })
 
-const period = computed<string | undefined>(() => {
-  if (!story.value?.content.date_start) { return }
-  const start = format(
-    new Date(story.value?.content.date_start || ''), 
-    'dd MMMM yyyy', 
-    { locale: locale.value === 'en' ? en : id }
-  )
-  const end = isFuture(new Date(story.value?.content.date_end || '')) ? 
-    t('ongoing') 
-    : 
-    format(
-      new Date(story.value?.content.date_end || ''), 
-      'dd MMMM yyyy',
-      { locale: locale.value === 'en' ? en : id }
-    )
-
-  return `${start} - ${end}`
-})
-
-const tags = computed<string[]|undefined>(() => {
+const tags = computed<string[] | undefined>(() => {
   return story.value?.tag_list
 })
 
 const title = computed<string | undefined>(() => {
   return story.value?.name
-})
-
-const url = computed<string | undefined>(() => {
-  return $mdit.renderInline(story.value?.content.url)
-})
-
-const urlIsInvalid = computed<boolean>(() => {
-  return story.value?.content.url_is_invalid || false
 })
 
 useHead(seo({
@@ -106,12 +79,10 @@ id:
   <main class="flex flex-col">
     <h1>{{ title }}</h1>
     <p v-html="excerpt" />
-    <p v-html="url" />
-    <span>{{ period }}</span>
     <div class="flex flex-col" v-html="body" />
     <ul>
       <li v-for="tag in tags" :key="tag">{{ tag }}</li>
     </ul>
     <img :src="featuredImage" />
-</main>
+  </main>
 </template>

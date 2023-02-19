@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { StoryblokStory, StoryblokStoriesResponse } from "~~/utils/types";
+import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
+import { format, isFuture } from 'date-fns'
+import { enGB as en, id } from 'date-fns/locale'
+
+const route = useRoute()
 const sb = useSb()
-const storyblokApi = useStoryblokApi();
 const { t, locale } = useI18n({
   useScope: 'local'
 })
+
+const storyblokApi = useStoryblokApi()
+const { $mdit } = useNuxtApp()
 
 const stories = ref<StoryblokStory[] | null | undefined>(null);
 
 defineI18nRoute({
   paths: {
-    en: '/works',
-    id: '/karya'
+    en: '/journals',
+    id: '/jurnal'
   }
 })
 
@@ -26,9 +32,9 @@ try {
     {
       language: locale.value,
       version: 'published',
-      starts_with: 'works',
+      starts_with: 'posts',
       per_page: 12,
-      sort_by: 'content.date_end:desc',
+      sort_by: 'first_published_at:desc',
       cv: sb.cv || Number(Date.now())
     }
   )
@@ -43,20 +49,18 @@ try {
 
 <i18n lang="yaml">
 en:
-  heading: 'Works & Contributions'
-  intro: 'My contributions in clients and personal digital applications developments'
+  heading: 'Journals'
+  intro: 'Journals on things that I am interested in.'
   of: 'of'
-  ongoing: 'ongoing'
 id:
-  heading: 'Sejumlah Karya & Kontribusi'
-  intro: 'Kontribusi saya terhadap pengembangan produk-produk digital klien dan personal'
+  heading: 'Jurnal'
+  intro: 'Catatan bebas mengenai apa saja yang saya minati.'
   of: 'oleh'
-  ongoing: 'berlangsung'
 </i18n>
 
 <template>
   <main class="flex flex-col w-full p-4">
-    <div class="flex flex-col w-full">
+    <div id="latest-works" class="flex flex-col w-full">
       <div class="container flex flex-col items-center mx-auto p-4 w-full">
         <h1 class="flex font-medium font-sans mb-4 lg:mb-8 text-2xl lg:text-5xl">
           {{ t('heading') }}
@@ -64,7 +68,7 @@ id:
 
         <p class="font-serif mb-8 italic">{{ t('intro') }}</p>
 
-        <WorksListAll :stories="stories" />
+        <JournalsListAll :stories="stories" />
       </div>
     </div>
   </main>

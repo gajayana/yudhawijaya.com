@@ -17,7 +17,7 @@ const props = defineProps({
           v-for="story in stories" 
           :story="story" 
           :key="story.uuid"
-          path="karya"
+          path="jurnal"
         />
       </div>
     </div>

@@ -1,13 +1,22 @@
-import { MESSAGES } from './utils/localizations'
 import { SEO_TITLE_DEFAULT } from './utils/constants'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
     head: {
-      charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1',
-      title: SEO_TITLE_DEFAULT
+      title: SEO_TITLE_DEFAULT,
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      ],
+      meta: [
+        { hid: 'charset', charset: 'utf-8' },
+        { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+        { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:creator', name: 'twitter:creator', content: '@tuan_yudha' },
+        { hid: 'twitter:site', name: 'twitter:site', content: '@tuan_yudha' },
+        { hid: 'og:site_name', name: 'og:site_name', content: 'Yosef Yudha Wijaya', property: 'og:site_name' },
+      ],
     }
   },
   modules: [
@@ -19,7 +28,6 @@ export default defineNuxtConfig({
         defaultLocale: 'id',
         vueI18n: {
           fallbackLocale: 'id',
-          messages: MESSAGES
         },
         vueI18nLoader: true,
       }

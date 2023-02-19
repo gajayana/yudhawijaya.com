@@ -1,28 +1,44 @@
 <script setup lang="ts">
+const { t, locale } = useI18n({
+  useScope: 'local'
+})
 const localePath = useLocalePath()
 const items = [
   {
-    label: 'header.menu.home',
+    label: 'home',
     path: '/',
     name: 'index'
   },
   {
-    label: 'header.menu.works',
+    label: 'works',
     path: '/karya',
     name: 'karya'
   },
   {
-    label: 'header.menu.journals',
+    label: 'journals',
     path: '/jurnal',
     name: 'jurnal'
   },
   {
-    label: 'header.menu.about',
+    label: 'about',
     path: '/tentang',
     name: 'tentang'
   }
 ]
 </script>
+
+<i18n lang="yaml">
+en:
+  about: 'About'
+  home: 'Home'
+  journals: 'Journals'
+  works: 'Works'
+id:
+  about: 'Tentang'
+  home: 'Muka'
+  journals: 'Jurnal'
+  works: 'Karya'
+</i18n>
 
 <template>
   <div class="flex gap-1 items-center">
@@ -32,7 +48,7 @@ const items = [
       :to="localePath({name})"
       class="hover:bg-indigo-100 flex font-serif leading-none px-2 py-1 rounded no-underline"
     >
-      {{ $t(label) }}
+      {{ t(label) }}
     </NuxtLink>
 
   </div>
