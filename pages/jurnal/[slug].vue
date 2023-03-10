@@ -77,12 +77,37 @@ id:
 
 <template>
   <main class="flex flex-col p-4">
-    <HeadingPrimary>{{ title }}</HeadingPrimary>
+    <div 
+      class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+      :style="{ backgroundImage: `url(${featuredImage})` }"
+    />
+    <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+      <HeadingPrimary class="mb-8">{{ title }}</HeadingPrimary>
+      <p class="flex italic mb-8 text-center w-full" v-html="excerpt" />
+      <div class="_body flex flex-col mb-8" v-html="body" />
+
+      <!-- <ul class="flex items-center justify-center w-full gap-2">
+        <li v-for="tag in tags" :key="tag">{{ tag }}</li>
+      </ul> -->
+    </div>
+    <!-- <HeadingPrimary>{{ title }}</HeadingPrimary>
     <p v-html="excerpt" />
     <div class="flex flex-col" v-html="body" />
     <ul>
       <li v-for="tag in tags" :key="tag">{{ tag }}</li>
     </ul>
-    <img :src="featuredImage" />
+    <img :src="featuredImage" /> -->
   </main>
 </template>
+
+<style lang="postcss" scoped>
+:deep(._body) {
+  p {
+    @apply mb-4 mx-0;
+
+    @screen md {
+      @apply mx-20;
+    }
+  }
+}
+</style>
