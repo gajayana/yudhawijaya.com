@@ -3,6 +3,7 @@ import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
 import { format, isFuture } from 'date-fns'
 import { enGB as en, id } from 'date-fns/locale'
 
+const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
 const { t, locale } = useI18n({
@@ -23,7 +24,9 @@ defineI18nRoute({
 
 useHead(seo({
   description: t('intro'),
-  title: `${t('heading')} ${t('of')} ${SEO_TITLE_DEFAULT}`
+  title: `${t('heading')} ${t('of')} ${SEO_TITLE_DEFAULT}`,
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/jurnal`
 }))
 
 try {

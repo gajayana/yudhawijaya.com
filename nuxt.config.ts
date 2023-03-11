@@ -9,13 +9,13 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ],
       meta: [
-        { hid: 'charset', charset: 'utf-8' },
-        { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
-        { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:creator', name: 'twitter:creator', content: '@tuan_yudha' },
-        { hid: 'twitter:site', name: 'twitter:site', content: '@tuan_yudha' },
-        { hid: 'og:site_name', name: 'og:site_name', content: 'Yosef Yudha Wijaya', property: 'og:site_name' },
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: process.env.npm_package_description || '' },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:creator', content: '@tuan_yudha' },
+        { name: 'twitter:site', content: '@tuan_yudha' },
+        { name: 'og:site_name', content: 'Yosef Yudha Wijaya', property: 'og:site_name' },
       ],
     }
   },

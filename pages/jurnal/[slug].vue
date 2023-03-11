@@ -3,6 +3,7 @@ import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
 import { format, isFuture } from 'date-fns'
 import { enGB as en, id } from 'date-fns/locale'
 
+const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
 const { t, locale } = useI18n({
@@ -59,7 +60,9 @@ const title = computed<string | undefined>(() => {
 useHead(seo({
   description: excerpt.value || '',
   image: featuredImage.value || undefined,
-  title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`
+  title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`,
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/jurnal/${route.params.slug}`
 }))
 
 </script>

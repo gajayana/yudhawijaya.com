@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const runtimeConfig = useRuntimeConfig()
+const route = useRoute()
 const { t, locale } = useI18n({
   useScope: 'local'
 })
@@ -12,7 +14,9 @@ defineI18nRoute({
 
 useHead(seo({
   description: t('intro'),
-  title: `${t('heading')} ${SEO_TITLE_DEFAULT}`
+  title: `${t('heading')} ${SEO_TITLE_DEFAULT}`,
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/kontak`
 }))
 
 const socialAccounts = SOCIAL_ACCOUNTS.filter(({medium}) => ['linkedin', 'twitter'].includes(medium))

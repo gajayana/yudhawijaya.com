@@ -1,11 +1,15 @@
 <script setup lang="ts">
+const runtimeConfig = useRuntimeConfig()
+const route = useRoute()
 const { t } = useI18n({
   useScope: 'local'
 })
+
 useHead(seo({
   description: t('description'),
-  // title: `${t('heading')} ${t('of')} ${SEO_TITLE_DEFAULT}`
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`
 }))
+
 </script>
 
 <i18n lang="yaml">

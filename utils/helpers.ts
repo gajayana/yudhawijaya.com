@@ -7,6 +7,7 @@ interface StoryblokImageParams {
 }
 
 interface seoParams {
+  canonical?:string;
   description: string;
   image?: string;
   keywords?: string;
@@ -17,11 +18,14 @@ interface seoParams {
 
 interface seoResult {
   meta: {
-    hid: string;
     name: string;
     content: string;
   }[];
   title: string;
+  link: {
+    rel: string;
+    href: string;
+  }[]
 }
 
 const storyblokImage = ({blur = 0, url, grayscale = false, height, width}:StoryblokImageParams):string => {
@@ -33,18 +37,22 @@ const storyblokImage = ({blur = 0, url, grayscale = false, height, width}:Storyb
   return `${url}/m/${width}x${height}${filters.length ? '/filters:' + filters.join(':') : ''}`;
 }
 
-const seo = <seoResult>({description, image, keywords, title, type, url}: seoParams) => {
+const seo = <seoResult>({canonical, description, image, keywords, title, type, url}: seoParams) => {
+  const runtimeConfig = useRuntimeConfig()
   return {
     meta: [
-      { hid: 'description', name: 'description', content: description },
-      { hid: 'keywords', name: 'keywords', content: keywords || '' },
-      { hid: 'og:description', name: 'og:description', content: description },
-      { hid: 'og:image', name: 'og:image', content: image || '' },
-      { hid: 'og:title', name: 'og:title', content: title || SEO_TITLE_DEFAULT },
-      { hid: 'og:type', name: 'og:type', content: '' },
-      { hid: 'og:url', name: 'og:url', content: url || 'https://yudhawijaya.com' },
+      { name: 'description', content: description },
+      { name: 'keywords', content: keywords || '' },
+      { name: 'og:description', content: description },
+      { name: 'og:image', content: image || '' },
+      { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
+      { name: 'og:type', content: '' },
+      { name: 'og:url', content: url || runtimeConfig.baseUrl },
     ],
-    title: title || SEO_TITLE_DEFAULT
+    title: title || SEO_TITLE_DEFAULT,
+    link: [
+      {rel: 'canonical', href: canonical || runtimeConfig.baseUrl }
+    ] 
   }
 }
 

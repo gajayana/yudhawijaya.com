@@ -88,7 +88,8 @@ useHead(seo({
   description: excerpt.value || '',
   image: featuredImage.value || undefined,
   title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.baseUrl}${route.fullPath}`
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/karya/${route.params.slug}`
 }))
 
 </script>
