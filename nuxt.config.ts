@@ -67,6 +67,13 @@ export default defineNuxtConfig({
       {
         autoImports: ['defineStore', 'acceptHMRUpdate'],
       }
+    ],
+    // https://nuxt.com/modules/simple-sitemap
+    [
+      'nuxt-simple-sitemap',
+      {
+        hostname: process.env.NUXT_BASE_URL,
+      }
     ]
   ],
 
@@ -77,6 +84,22 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000'
+    }
+  },
+
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/karya',
+        '/jurnal',
+        '/kontak',
+        '/en',
+        '/en/works',
+        '/en/journals',
+        '/en/contact',
+      ]
     }
   }
 })

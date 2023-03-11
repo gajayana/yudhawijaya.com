@@ -16,7 +16,8 @@
     "@types/node": "^18.15.0",
     "date-fns": "^2.29.3",
     "markdown-it": "^13.0.1",
-    "nuxt": "^3.2.3"
+    "nuxt": "^3.2.3",
+    "nuxt-simple-sitemap": "^1.0.9"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.7",
