@@ -84,8 +84,6 @@ const urlIsInvalid = computed<boolean>(() => {
   return story.value?.content.url_is_invalid || false
 })
 
-console.log({route: route.fullPath})
-
 useHead(seo({
   description: excerpt.value || '',
   image: featuredImage.value || undefined,
@@ -114,7 +112,7 @@ id:
     />
     <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
       <HeadingPrimary class="mb-8">{{ title }}</HeadingPrimary>
-      <p class="flex italic mb-8 text-center w-full" v-html="excerpt" />
+      <p class="flex italic mb-8 text-center" v-html="excerpt" />
       <div class="flex flex-col items-center gap-2 mb-8">
         <p v-html="url" />
         <span>{{ period }}</span>
@@ -124,8 +122,16 @@ id:
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
+      
     </div>
-    
+    <div class="flex mx-auto w-full max-w-6xl">
+      <RecommenderStories 
+        v-if="story" 
+        :tags="tags" 
+        path="works"
+        :title="title || ''"
+      />
+    </div>
 </main>
 </template>
 

@@ -83,20 +83,22 @@ id:
     />
     <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
       <HeadingPrimary class="mb-8">{{ title }}</HeadingPrimary>
-      <p class="flex italic mb-8 text-center w-full" v-html="excerpt" />
+      <p class="flex italic mb-8 text-center" v-html="excerpt" />
       <div class="_body flex flex-col mb-8" v-html="body" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
     </div>
-    <!-- <HeadingPrimary>{{ title }}</HeadingPrimary>
-    <p v-html="excerpt" />
-    <div class="flex flex-col" v-html="body" />
-    <ul>
-      <li v-for="tag in tags" :key="tag">{{ tag }}</li>
-    </ul>
-    <img :src="featuredImage" /> -->
+    
+    <div class="flex mx-auto w-full max-w-6xl">
+      <RecommenderStories 
+        v-if="story" 
+        :tags="tags" 
+        path="posts"
+        :title="title || ''"
+      />
+    </div>
   </main>
 </template>
 
