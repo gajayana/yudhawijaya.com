@@ -1,108 +1,79 @@
-<template>
-  <div class="container mx-auto pb-8">
-    <sheet-section class="mx-4 lg:mx-0 my-8">
-      {{ sectionTitle }}
-    </sheet-section>
+<script setup lang="ts">
+import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
+import { format, isFuture } from 'date-fns'
+import { enGB as en, id } from 'date-fns/locale'
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
-      <div v-for="story in stories" :key="story.uuid" class="flex">
-        <card-story
-          :excerpt="story.excerpt"
-          :featured-image="story.featuredImage"
-          :published-at="story.firstPublishedAt"
-          path="jurnal"
-          :slug="story.slug"
-          :title="story.title"
-        />
+const runtimeConfig = useRuntimeConfig()
+const route = useRoute()
+const sb = useSb()
+const { t, locale } = useI18n({
+  useScope: 'local'
+})
+
+const storyblokApi = useStoryblokApi()
+const { $mdit } = useNuxtApp()
+
+const stories = ref<StoryblokStory[] | null | undefined>(null);
+
+defineI18nRoute({
+  paths: {
+    en: '/journals',
+    id: '/jurnal'
+  }
+})
+
+useHead(seo({
+  description: t('intro'),
+  title: `${t('heading')} ${t('of')} ${SEO_TITLE_DEFAULT}`,
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/jurnal`
+}))
+
+try {
+  const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
+    `cdn/stories`,
+    {
+      language: locale.value,
+      version: 'published',
+      starts_with: 'posts',
+      per_page: 12,
+      sort_by: 'first_published_at:desc',
+      cv: sb.cv || Number(Date.now())
+    }
+  )
+
+  stories.value = data.stories
+  sb.setCv(data.cv)
+} catch (error) {
+  console.log({ error })
+}
+
+</script>
+
+<i18n lang="yaml">
+en:
+  heading: 'Journals'
+  intro: 'Journals on things that I am interested in.'
+  of: 'of'
+id:
+  heading: 'Jurnal'
+  intro: 'Catatan bebas mengenai apa saja yang saya minati.'
+  of: 'oleh'
+</i18n>
+
+<template>
+  <main class="flex flex-col w-full p-4">
+    <div id="latest-works" class="flex flex-col w-full">
+      <div class="container flex flex-col items-center mx-auto w-full">
+        
+        <HeadingPrimary>
+          {{ t('heading') }}
+        </HeadingPrimary>
+
+        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
+
+        <JournalsListAll :stories="stories" />
       </div>
     </div>
-  </div>
+  </main>
 </template>
-<script>
-import { mapState } from 'vuex'
-export default {
-  name: 'Journal',
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
-    try {
-      const { hl = 'id' } = query || {}
-
-      if (hl) { store.commit('locale/setLang', hl) }
-
-      const {
-        data: {
-          stories
-        }
-      } = await app.$storyapi.get(
-        'cdn/stories',
-        {
-          cv: store.state.storyblok.cv,
-          per_page: 24,
-          sort_by: 'first_published_at:desc',
-          starts_with: `${hl !== 'id' ? hl + '/' : ''}posts/`,
-          version: 'published'
-        }
-      ) || {}
-
-      return {
-        metas: {
-          description: hl !== 'id' ? 'A collection of stories in yudhawijaya.com' : 'Kumpulan kisah di yudhawijaya.com',
-          image: require('~/assets/img/me/64x64.png'),
-          title: hl !== 'id' ? 'Journal' : 'Jurnal'
-        },
-        stories: Object.freeze(
-          stories.map((ob) => {
-            const {
-              content: {
-                excerpt = '',
-                featured_image: {
-                  filename: featuredImage = ''
-                },
-                title = ''
-              },
-              first_published_at: publishedAt,
-              slug = '',
-              uuid = ''
-            } = ob || {}
-
-            return {
-              excerpt,
-              featuredImage,
-              publishedAt,
-              slug,
-              title,
-              uuid
-            }
-          })
-        )
-      }
-    } catch (err) {
-      error({
-        statusCode: err.statusCode,
-        message: err.message
-      })
-    }
-  },
-  computed: {
-    ...mapState({
-      lang: state => state.locale.lang
-    }),
-    sectionTitle () {
-      return this.lang !== 'id' ? 'Journal' : 'Jurnal'
-    }
-  },
-  watchQuery: ['hl'],
-  // eslint-disable-next-line vue/order-in-components
-  head () {
-    return {
-      title: this.metas.title,
-      meta: [
-        { hid: 'description', name: 'description', content: this.metas.description },
-        { hid: 'og:description', property: 'og:description', content: this.metas.description },
-        { hid: 'og:image', property: 'og:image', content: this.metas.image },
-        { hid: 'og:title', property: 'og:title', content: this.metas.title },
-        { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` }
-      ]
-    }
-  }
-}
-</script>

@@ -1,107 +1,76 @@
-<template>
-  <div class="container mx-auto pb-8">
-    <sheet-section class="mx-4 lg:mx-0 my-8">
-      {{ sectionTitle }}
-    </sheet-section>
+<script setup lang="ts">
+import { StoryblokStory, StoryblokStoriesResponse } from "~~/utils/types";
+const runtimeConfig = useRuntimeConfig()
+const route = useRoute()
+const sb = useSb()
+const storyblokApi = useStoryblokApi();
+const { t, locale } = useI18n({
+  useScope: 'local'
+})
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 lg:mx-0">
-      <div v-for="story in stories" :key="story.uuid" class="flex">
-        <card-story
-          :excerpt="story.excerpt"
-          :featured-image="story.featuredImage"
-          path="karya"
-          :slug="story.slug"
-          :title="story.title"
-        />
+const stories = ref<StoryblokStory[] | null | undefined>(null);
+
+defineI18nRoute({
+  paths: {
+    en: '/works',
+    id: '/karya'
+  }
+})
+
+useHead(seo({
+  description: t('intro'),
+  title: `${t('heading')} ${t('of')} ${SEO_TITLE_DEFAULT}`,
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/karya`
+}))
+
+try {
+  const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
+    `cdn/stories`,
+    {
+      language: locale.value,
+      version: 'published',
+      starts_with: 'works',
+      per_page: 12,
+      sort_by: 'content.date_end:desc',
+      cv: sb.cv || Number(Date.now())
+    }
+  )
+
+  stories.value = data.stories
+  sb.setCv(data.cv)
+} catch (error) {
+  console.log({ error })
+}
+
+</script>
+
+<i18n lang="yaml">
+en:
+  heading: 'Works & Contributions'
+  intro: 'My contributions in clients and personal digital applications developments'
+  of: 'of'
+  ongoing: 'ongoing'
+id:
+  heading: 'Karya & Kontribusi'
+  intro: 'Kontribusi saya terhadap pengembangan produk-produk digital klien dan personal'
+  of: 'oleh'
+  ongoing: 'berlangsung'
+</i18n>
+
+<template>
+  <main class="flex flex-col w-full p-4">
+    <div class="flex flex-col w-full">
+      <div class="container flex flex-col items-center mx-auto w-full">
+        
+        <HeadingPrimary>
+          {{ t('heading') }}
+        </HeadingPrimary>
+
+        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
+
+        <WorksListAll :stories="stories" />
       </div>
     </div>
-  </div>
+  </main>
 </template>
-<script>
-import { mapState } from 'vuex'
-export default {
-  name: 'Works',
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
-    try {
-      const { hl = 'id' } = query || {}
-
-      if (hl) { store.commit('locale/setLang', hl) }
-
-      const {
-        data: {
-          stories
-        }
-      } = await app.$storyapi.get(
-        'cdn/stories',
-        {
-          cv: store.state.storyblok.cv,
-          per_page: 24,
-          sort_by: 'content.date_end:desc',
-          starts_with: `${hl !== 'id' ? hl + '/' : ''}works/`,
-          version: 'published'
-        }
-      ) || {}
-
-      return {
-        metas: {
-          description: hl !== 'id' ? 'A collection of projects in which Yosef Yudha Wijaya author and make contributions' : 'Karya dan kontribusi Yosef Yudha Wijaya di proyek-proyek aplikasi berbasis web.',
-          image: require('~/assets/img/me/64x64.png'),
-          title: hl !== 'id' ? 'Works' : 'Karya'
-        },
-        stories: Object.freeze(
-          stories.map((ob) => {
-            const {
-              content: {
-                excerpt = '',
-                featured_image: {
-                  filename: featuredImage = ''
-                },
-                tag_list: tagList = '',
-                title = ''
-              },
-              slug = '',
-              uuid
-            } = ob || {}
-
-            return {
-              excerpt,
-              featuredImage,
-              slug,
-              tagList,
-              title,
-              uuid
-            }
-          })
-        )
-      }
-    } catch (err) {
-      error({
-        statusCode: err.statusCode,
-        message: err.message
-      })
-    }
-  },
-  computed: {
-    ...mapState({
-      lang: state => state.locale.lang
-    }),
-    sectionTitle () {
-      return this.lang !== 'id' ? 'Works' : 'Karya'
-    }
-  },
-  watchQuery: ['hl'],
-  // eslint-disable-next-line vue/order-in-components
-  head () {
-    return {
-      title: this.metas.title,
-      meta: [
-        { hid: 'description', name: 'description', content: this.metas.description },
-        { hid: 'og:description', property: 'og:description', content: this.metas.description },
-        { hid: 'og:image', property: 'og:image', content: this.metas.image },
-        { hid: 'og:title', property: 'og:title', content: this.metas.title },
-        { hid: 'og:url', property: 'og:url', content: `https://yudhawijaya.com${this.$route.path}` }
-      ]
-    }
-  }
-}
-</script>

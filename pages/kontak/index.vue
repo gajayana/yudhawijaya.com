@@ -1,71 +1,67 @@
-<template>
-  <div class="container mx-auto pb-8">
-    <sheet-section class="mx-4 lg:mx-0 my-8">
-      {{ sectionTitle }}
-    </sheet-section>
-    <div class="flex flex-col items-center">
-      <h2 class="leading-tight mb-8 mx-4 md:mx-0 text-center text-4xl max-w-md">
-        {{ intro }}
-      </h2>
-      <ul class="flex mb-8 -mx-2">
-        <li v-for="(item, key) in socialItems" :key="`contact-social-${key}`" class="px-2">
-          <a :href="item.link" :title="item.link" class="text-gray-600 hover:text-gray-900 text-3xl" rel="noreferrer" target="_blank">
-            <font-awesome-icon :icon="item.icon" />
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
-<script>
-import { mapState } from 'vuex'
-export default {
-  name: 'Contact',
-  async asyncData ({ app, isDev, route, store, env, params, query, req, res, redirect, error }) {
-    const { hl = 'id' } = query || {}
+<script setup lang="ts">
+const runtimeConfig = useRuntimeConfig()
+const route = useRoute()
+const { t, locale } = useI18n({
+  useScope: 'local'
+})
 
-    if (hl) { store.commit('locale/setLang', hl) }
-
-    const {
-      data: {
-        story: {
-          content: {
-            intro = ''
-          }
-        }
-      }
-    } = await app.$storyapi.get(
-      `cdn/stories/${hl}/contact`,
-      {
-        cv: store.state.storyblok.cv,
-        version: 'published'
-      }
-    ) || {}
-
-    return {
-      intro
-    }
-  },
-  computed: {
-    ...mapState({
-      lang: state => state.locale.lang,
-      social: state => state.core.social
-    }),
-    sectionTitle () {
-      return this.lang !== 'id' ? 'Contact' : 'Kontak'
-    },
-    socialItems () {
-      if (!this.social) { return }
-      const items = [...this.social]
-      return items.splice(0, 2)
-    }
-  },
-  watchQuery: ['hl'],
-  // eslint-disable-next-line vue/order-in-components
-  head () {
-    return {
-      title: 'Kontak'
-    }
+defineI18nRoute({
+  paths: {
+    en: '/contact',
+    id: '/kontak'
   }
-}
+})
+
+useHead(seo({
+  description: t('intro'),
+  title: `${t('heading')} ${SEO_TITLE_DEFAULT}`,
+  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.baseUrl}/kontak`
+}))
+
+const socialAccounts = SOCIAL_ACCOUNTS.filter(({medium}) => ['linkedin', 'twitter'].includes(medium))
+
 </script>
+
+<i18n lang="yaml">
+en:
+  heading: 'Contact'
+  intro: 'For enquiries, or just to say hello, please contact me at these following platforms:'
+id:
+  heading: 'Kontak'
+  intro: 'Silakan menyapa saya melalui platform berikut:'
+</i18n>
+
+<template>
+  <main class="flex flex-col w-full p-4">
+    <div 
+      class="flex flex-col w-full"
+      :style="{
+        height: 'calc(100vh - 4rem - 9.063rem - 2rem)'
+      }"
+    >
+      <div class="container flex flex-col items-center mx-auto w-full">
+        
+        <HeadingPrimary>
+          {{ t('heading') }}
+        </HeadingPrimary>
+
+        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
+
+        <ul class="flex gap-4">
+          <li v-for="{ icon, medium, url } in socialAccounts" :key="`footer-social-${medium}`" class="flex">
+            <a 
+              :href="url" 
+              :title="url" 
+              rel="noreferrer"
+              target="_blank" 
+              class="text-gray-500 hover:text-gray-600 text-2xl"
+            >
+              <Icon :name="icon" size="3rem" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</template>

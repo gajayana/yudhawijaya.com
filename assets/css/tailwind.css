@@ -1,8 +1,13 @@
-/* purgecss start ignore */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import './_base.css';
+@layer base {
+  body {
+    @apply flex flex-col font-serif min-h-screen relative w-full bg-indigo-50;
+  }
 
-/* purgecss end ignore */
-@import 'tailwindcss/utilities';
+  a {
+    @apply underline;
+  }
+}
