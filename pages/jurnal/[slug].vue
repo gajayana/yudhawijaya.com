@@ -98,7 +98,7 @@ id:
       <RecommenderStories 
         v-if="story" 
         :tags="tags" 
-        path="posts"
+        path="jurnal"
         :title="title || ''"
       />
     </div>

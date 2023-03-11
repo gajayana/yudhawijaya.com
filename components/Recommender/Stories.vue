@@ -5,7 +5,7 @@ import sampleSize from 'lodash/sampleSize'
 const sb = useSb()
 const props = defineProps({
   path: {
-    type: String as PropType<'works' | 'posts'>,
+    type: String as PropType<'karya' | 'jurnal'>,
     required: true
   },
   tags: {
@@ -32,7 +32,7 @@ onMounted(async() => {
       {
         language: locale.value,
         version: 'published',
-        starts_with: props.path,
+        starts_with: props.path === 'karya' ? 'works' : 'posts',
         sort_by: 'content.date_end:desc',
         cv: sb.cv || Number(Date.now()),
         filter_query: {
@@ -44,10 +44,10 @@ onMounted(async() => {
         excluding_fields:['body'].join(',')
       }
     )
-    console.log(props.tags?.join(','))
+    
     stories.value = sampleSize(data.stories, 3)
     sb.setCv(data.cv)
-    console.log(data.stories)
+    
   } catch (error) {
     console.log({ error })
   } finally {

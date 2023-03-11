@@ -129,7 +129,7 @@ id:
       <RecommenderStories 
         v-if="story" 
         :tags="tags" 
-        path="works"
+        path="karya"
         :title="title || ''"
       />
     </div>
