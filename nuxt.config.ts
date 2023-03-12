@@ -74,6 +74,50 @@ export default defineNuxtConfig({
       {
         hostname: process.env.NUXT_BASE_URL,
       }
+    ],
+
+    [
+      '@vite-pwa/nuxt',
+      {
+        registerType: 'autoUpdate',
+        manifest: {
+          name: 'Yosef Yudha Wijaya',
+          short_name: 'yudhawijaya',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+          ],
+        },
+        workbox: {
+          navigateFallback: '/',
+          globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+        },
+        client: {
+          installPrompt: true,
+          // you don't need to include this: only for testing purposes
+          // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
+          // periodicSyncForUpdates: 20,
+        },
+        devOptions: {
+          enabled: true,
+          type: 'module',
+        },
+      }
     ]
   ],
 
