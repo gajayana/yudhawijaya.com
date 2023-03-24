@@ -77,7 +77,8 @@ const title = computed<string | undefined>(() => {
 })
 
 const url = computed<string | undefined>(() => {
-  return $mdit.renderInline(story.value?.content.url)
+  console.log({ urlIsInvalid: urlIsInvalid.value })
+  return urlIsInvalid.value ? story.value?.content.url : $mdit.renderInline(story.value?.content.url)
 })
 
 const urlIsInvalid = computed<boolean>(() => {
@@ -115,7 +116,7 @@ id:
       <HeadingPrimary class="mb-8">{{ title }}</HeadingPrimary>
       <p class="flex italic mb-8 text-center" v-html="excerpt" />
       <div class="flex flex-col items-center gap-2 mb-8">
-        <p v-html="url" />
+        <p class="_external" v-html="url" />
         <span>{{ period }}</span>
       </div>
       <div class="_body flex flex-col mb-8" v-html="body" />
@@ -138,11 +139,37 @@ id:
 
 <style lang="postcss" scoped>
 :deep(._body) {
+  a {
+    @apply text-blue-800;
+
+    &:visited {
+      @apply text-blue-900;
+    }
+  }
+
   p {
     @apply mb-4 mx-0;
 
     @screen md {
       @apply mx-20;
+    }
+  }
+
+  ul {
+    @apply list-disc list-outside mb-4 mx-0 pl-4;
+
+    @screen md {
+      @apply mx-20;
+    }
+  }
+}
+
+:deep(._external) {
+  a {
+    @apply text-blue-800;
+
+    &:visited {
+      @apply text-blue-900;
     }
   }
 }
