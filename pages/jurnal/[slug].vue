@@ -124,6 +124,14 @@ id:
     }
   }
 
+  pre {
+    @apply bg-black mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
+
+    @screen md {
+      @apply mx-20;
+    }
+  }
+
   table {
     @apply border-collapse mb-4 table-auto text-sm w-full;
 

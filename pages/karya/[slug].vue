@@ -158,6 +158,14 @@ id:
     }
   }
 
+  pre {
+    @apply bg-black mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
+
+    @screen md {
+      @apply mx-20;
+    }
+  }
+
   ul {
     @apply list-disc list-outside mb-4 mx-0 pl-4;
 
