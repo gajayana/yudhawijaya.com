@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MarkdownIt from 'markdown-it'
 import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
 
 const runtimeConfig = useRuntimeConfig()
@@ -31,11 +32,11 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
 story.value = data.story
 
 const body = computed<string | undefined>(() => {
-  return $mdit.render(story.value?.content.body)
+  return ($mdit as MarkdownIt).render(story.value?.content.body || '')
 })
 
 const excerpt = computed<string | undefined>(() => {
-  return $mdit.renderInline(story.value?.content.excerpt)
+  return ($mdit as MarkdownIt).renderInline(story.value?.content.excerpt || '')
 })
 
 const featuredImage = computed<string | undefined>(() => {
@@ -107,8 +108,36 @@ id:
 
 <style lang="postcss" scoped>
 :deep(._body) {
+  a {
+    @apply text-blue-800;
+
+    &:visited {
+      @apply text-blue-900;
+    }
+  }
+
   p {
     @apply mb-4 mx-0;
+
+    @screen md {
+      @apply mx-20;
+    }
+  }
+
+  table {
+    @apply border-collapse mb-4 table-auto text-sm w-full;
+
+    th {
+      @apply border-b dark:border-slate-600 font-bold p-2 text-left;
+    }
+
+    td {
+      @apply border-b border-slate-100 dark:border-slate-700 p-2;
+    }
+  }
+
+  ul {
+    @apply list-disc list-outside mb-4 mx-0 pl-4;
 
     @screen md {
       @apply mx-20;

@@ -69,7 +69,7 @@ id:
   <div v-if="loading">
     Loading...
   </div>
-  <div v-else class="flex flex-col items-center">
+  <div v-else class="flex flex-col items-center w-full">
     <HeadingSecondary>
       {{ t('heading') }}
     </HeadingSecondary>
