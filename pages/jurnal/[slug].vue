@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import MarkdownIt from 'markdown-it'
+// eslint-disable-next-line import/no-duplicates
+import { format } from 'date-fns'
+// eslint-disable-next-line import/no-duplicates
+import { enGB as en, id } from 'date-fns/locale'
 import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
 
 const runtimeConfig = useRuntimeConfig()
@@ -56,6 +60,11 @@ const title = computed<string | undefined>(() => {
   return story.value?.content.title
 })
 
+const publishDate = computed<string | undefined>(() => {
+  if (!story.value?.first_published_at) { return }
+  return format(new Date(story.value?.first_published_at || ''), DATETIME_FORMAT_DEFAULT, { locale: locale.value === 'en' ? en : id })
+})
+
 useHead(seo({
   description: excerpt.value || '',
   image: featuredImage.value || undefined,
@@ -87,6 +96,9 @@ id:
       <HeadingPrimary class="mb-8">
         {{ title }}
       </HeadingPrimary>
+      <div class="flex flex-col items-center gap-2 mb-8">
+        <span>{{ publishDate }}</span>
+      </div>
       <p class="flex italic mb-8 text-center" v-html="excerpt" />
       <div class="_body flex flex-col mb-8" v-html="body" />
 
