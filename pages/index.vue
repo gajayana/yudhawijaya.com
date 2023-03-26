@@ -21,7 +21,7 @@ id:
 
 <template>
   <main class="flex flex-col w-full">
-    <HeroIntro/>
+    <HeroIntro />
     <WorksListFeatured />
   </main>
 </template>

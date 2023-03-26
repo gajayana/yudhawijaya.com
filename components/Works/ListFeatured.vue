@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { StoryblokStory, StoryblokStoriesResponse } from "~~/utils/types";
+import consola from 'consola'
+import { StoryblokStory, StoryblokStoriesResponse } from '~~/utils/types'
 // import { useI18n } from 'vue-i18n';
 const { t, locale } = useI18n({
   useScope: 'local'
 })
 const sb = useSb()
-const storyblokApi = useStoryblokApi();
-const stories = ref<StoryblokStory[] | null | undefined>(null);
+const storyblokApi = useStoryblokApi()
+const stories = ref<StoryblokStory[] | null | undefined>(null)
 
-
-onMounted(async() => {
+onMounted(async () => {
   try {
     const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-      `cdn/stories`,
+      'cdn/stories',
       {
         language: locale.value,
-        version: "published",
-        starts_with: "works",
+        version: 'published',
+        starts_with: 'works',
         per_page: 6,
         sort_by: 'content.is_featured:asc',
         cv: sb.cv || Number(Date.now())
@@ -25,9 +25,9 @@ onMounted(async() => {
     stories.value = data.stories
     sb.setCv(data.cv)
   } catch (error) {
-    console.log({error})
+    consola.log({ error })
   }
-}) 
+})
 </script>
 
 <i18n lang="yaml">
@@ -45,10 +45,10 @@ id:
       </HeadingSecondary>
       <div class="flex w-full">
         <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
-          <CardStory 
-            v-for="story in stories" 
-            :story="story" 
+          <CardStory
+            v-for="story in stories"
             :key="story.uuid"
+            :story="story"
             path="karya"
           />
         </div>
@@ -57,10 +57,5 @@ id:
         </div>
       </div>
     </div>
-    
-
-      
-      
   </div>
-    
 </template>

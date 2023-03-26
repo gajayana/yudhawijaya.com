@@ -28,31 +28,37 @@ interface seoResult {
   }[]
 }
 
-const storyblokImage = ({blur = 0, url, grayscale = false, height, width}:StoryblokImageParams):string => {
+const storyblokImage = ({ blur = 0, url, grayscale = false, height, width }:StoryblokImageParams):string => {
   const filters:string[] = []
 
-  if (blur > 0) filters.push(`blur(${blur})`)
-  if (grayscale) filters.push('grayscale()')
-  
-  return `${url}/m/${width}x${height}${filters.length ? '/filters:' + filters.join(':') : ''}`;
+  if (blur > 0) { filters.push(`blur(${blur})`) }
+  if (grayscale) { filters.push('grayscale()') }
+
+  return `${url}/m/${width}x${height}${filters.length ? '/filters:' + filters.join(':') : ''}`
 }
 
-const seo = <seoResult>({canonical, description, image, keywords, title, type, url}: seoParams) => {
+const seo = ({ canonical, description, image, keywords, title, type, url }: seoParams):seoResult => {
   const runtimeConfig = useRuntimeConfig()
+
+  const meta = [
+    { name: 'description', content: description },
+    { name: 'keywords', content: keywords || '' },
+    { name: 'og:description', content: description },
+    { name: 'og:image', content: image || '' },
+    { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
+    { name: 'og:url', content: url || runtimeConfig.baseUrl }
+  ]
+
+  if (type) {
+    meta.push({ name: 'og:type', content: type || '' })
+  }
+
   return {
-    meta: [
-      { name: 'description', content: description },
-      { name: 'keywords', content: keywords || '' },
-      { name: 'og:description', content: description },
-      { name: 'og:image', content: image || '' },
-      { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
-      { name: 'og:type', content: '' },
-      { name: 'og:url', content: url || runtimeConfig.baseUrl },
-    ],
+    meta,
     title: title || SEO_TITLE_DEFAULT,
     link: [
-      {rel: 'canonical', href: canonical || runtimeConfig.baseUrl }
-    ] 
+      { rel: 'canonical', href: canonical || runtimeConfig.baseUrl }
+    ]
   }
 }
 

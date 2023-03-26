@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
-const { t, locale } = useI18n({
+const { t } = useI18n({
   useScope: 'local'
 })
 
@@ -19,7 +19,7 @@ useHead(seo({
   canonical: `${runtimeConfig.baseUrl}/kontak`
 }))
 
-const socialAccounts = SOCIAL_ACCOUNTS.filter(({medium}) => ['linkedin', 'twitter'].includes(medium))
+const socialAccounts = SOCIAL_ACCOUNTS.filter(({ medium }) => ['linkedin', 'twitter'].includes(medium))
 
 </script>
 
@@ -34,27 +34,28 @@ id:
 
 <template>
   <main class="flex flex-col w-full p-4">
-    <div 
+    <div
       class="flex flex-col w-full"
       :style="{
         height: 'calc(100vh - 4rem - 9.063rem - 2rem)'
       }"
     >
       <div class="container flex flex-col items-center mx-auto w-full">
-        
         <HeadingPrimary>
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
+        <p class="font-serif mb-8 italic text-center">
+          {{ t('intro') }}
+        </p>
 
         <ul class="flex gap-4">
           <li v-for="{ icon, medium, url } in socialAccounts" :key="`footer-social-${medium}`" class="flex">
-            <a 
-              :href="url" 
-              :title="url" 
+            <a
+              :href="url"
+              :title="url"
               rel="noreferrer"
-              target="_blank" 
+              target="_blank"
               class="text-gray-500 hover:text-gray-600 text-2xl"
             >
               <Icon :name="icon" size="3rem" />

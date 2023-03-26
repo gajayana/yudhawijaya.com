@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { StoryblokStory, StoryblokStoriesResponse } from "~~/utils/types";
+import consola from 'consola'
+import { StoryblokStory, StoryblokStoriesResponse } from '~~/utils/types'
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
-const storyblokApi = useStoryblokApi();
+const storyblokApi = useStoryblokApi()
 const { t, locale } = useI18n({
   useScope: 'local'
 })
 
-const stories = ref<StoryblokStory[] | null | undefined>(null);
+const stories = ref<StoryblokStory[] | null | undefined>(null)
 
 defineI18nRoute({
   paths: {
@@ -26,7 +27,7 @@ useHead(seo({
 
 try {
   const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-    `cdn/stories`,
+    'cdn/stories',
     {
       language: locale.value,
       version: 'published',
@@ -40,7 +41,7 @@ try {
   stories.value = data.stories
   sb.setCv(data.cv)
 } catch (error) {
-  console.log({ error })
+  consola.log({ error })
 }
 
 </script>
@@ -62,12 +63,13 @@ id:
   <main class="flex flex-col w-full p-4">
     <div class="flex flex-col w-full">
       <div class="container flex flex-col items-center mx-auto w-full">
-        
         <HeadingPrimary>
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic text-center">{{ t('intro') }}</p>
+        <p class="font-serif mb-8 italic text-center">
+          {{ t('intro') }}
+        </p>
 
         <WorksListAll :stories="stories" />
       </div>

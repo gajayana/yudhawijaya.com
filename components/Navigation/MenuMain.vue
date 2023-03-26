@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { t, locale } = useI18n({
+const { t } = useI18n({
   useScope: 'local'
 })
 const localePath = useLocalePath()
+const emit = defineEmits(['menuClicked'])
 const items = [
   {
     label: 'home',
@@ -25,6 +26,7 @@ const items = [
     name: 'kontak'
   }
 ]
+
 </script>
 
 <i18n lang="yaml">
@@ -43,15 +45,14 @@ id:
 <template>
   <div class="border-b border-solid border-indigo-100 md:border-transparent flex flex-col md:flex-row gap-1 md:items-center">
     <NuxtLink
-      v-for="({label, path, name}) in items"
+      v-for="({label, path}) in items"
       :key="`menu-${label}`"
       :to="localePath({path})"
       class="hover:bg-indigo-100 flex font-serif leading-none px-3 py-2 md:rounded no-underline"
-      @click="$emit('menuClicked')"
+      @click="emit('menuClicked')"
     >
       {{ t(label) }}
     </NuxtLink>
-
   </div>
 </template>
 

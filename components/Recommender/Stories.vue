@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
 import sampleSize from 'lodash/sampleSize'
+import consola from 'consola'
+import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
 
 const sb = useSb()
 const props = defineProps({
@@ -10,7 +11,8 @@ const props = defineProps({
   },
   tags: {
     type: Array as PropType<string[]>,
-    required: false
+    required: false,
+    default: () => ([])
   },
   title: {
     type: String,
@@ -23,12 +25,12 @@ const { t, locale } = useI18n({
 
 const storyblokApi = useStoryblokApi()
 const loading = ref<boolean>(true)
-const stories = ref<StoryblokStory[] | null | undefined>(null);
+const stories = ref<StoryblokStory[] | null | undefined>(null)
 
-onMounted(async() => {
+onMounted(async () => {
   try {
     const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-      `cdn/stories`,
+      'cdn/stories',
       {
         language: locale.value,
         version: 'published',
@@ -41,20 +43,18 @@ onMounted(async() => {
           }
         },
         with_tag: props?.tags?.join(','),
-        excluding_fields:['body'].join(',')
+        excluding_fields: ['body'].join(',')
       }
     )
-    
+
     stories.value = sampleSize(data.stories, 3)
     sb.setCv(data.cv)
-    
   } catch (error) {
-    console.log({ error })
+    consola.log({ error })
   } finally {
     loading.value = false
   }
 })
-
 
 </script>
 
@@ -66,8 +66,10 @@ id:
 </i18n>
 
 <template>
-  <div v-if="loading">Loading...</div>
-  <div v-else class="flex flex-col items-center">
+  <div v-if="loading">
+    Loading...
+  </div>
+  <div v-else class="flex flex-col items-center w-full">
     <HeadingSecondary>
       {{ t('heading') }}
     </HeadingSecondary>
@@ -77,8 +79,7 @@ id:
         :key="story.uuid"
         :path="props.path"
         :story="story"
-      />  
+      />
     </div>
   </div>
-  
 </template>
