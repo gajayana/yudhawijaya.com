@@ -73,6 +73,14 @@ useHead(seo({
   canonical: `${runtimeConfig.baseUrl}/jurnal/${route.params.slug}`
 }))
 
+useJsonld({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title.value,
+  datePublished: story.value?.first_published_at,
+  dateModified: story.value?.published_at
+})
+
 </script>
 
 <i18n lang="yaml">

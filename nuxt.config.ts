@@ -11,6 +11,7 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'author', content: 'Yosef Yudha Wijaya' },
         { name: 'description', content: process.env.npm_package_description || '' },
         { name: 'twitter:card', content: 'summary' },
         { name: 'twitter:creator', content: '@tuan_yudha' },
@@ -77,7 +78,10 @@ export default defineNuxtConfig({
     ],
 
     // https://github.com/nuxt-modules/eslint
-    ['@nuxtjs/eslint-module', { /* module options */ }]
+    ['@nuxtjs/eslint-module', { /* module options */ }],
+
+    // https://github.com/ymmooot/nuxt-jsonld
+    'nuxt-jsonld'
 
     // https://github.com/vite-pwa/nuxt
     // [

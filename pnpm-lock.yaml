@@ -19,6 +19,7 @@ specifiers:
   markdown-it: ^13.0.1
   nuxt: ^3.3.2
   nuxt-icon: ^0.3.3
+  nuxt-jsonld: ^2.0.7
   nuxt-simple-sitemap: ^2.2.0
   typescript: ^5.0.2
 
@@ -27,6 +28,7 @@ dependencies:
   '@storyblok/nuxt': 5.3.0
   lodash: 4.17.21
   nuxt-icon: 0.3.3
+  nuxt-jsonld: 2.0.7_typescript@5.0.2
 
 devDependencies:
   '@nuxtjs/eslint-config-typescript': 12.0.0_j4766f7ecgqbon3u7zlxn5zszu
@@ -6606,6 +6608,15 @@ packages:
       - vue
     dev: false
 
+  /nuxt-jsonld/2.0.7_typescript@5.0.2:
+    resolution: {integrity: sha512-BCjGSkfrXHtH2Z5IQPG3qnNlnvLP0pQqo9ezc41CZWd91Ax1FKobdWUX3ue1SYHgPfX9vGURj02BwWmKEbnRxQ==}
+    dependencies:
+      pathe: 0.3.9
+      schema-dts: 1.1.2_typescript@5.0.2
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
   /nuxt-simple-sitemap/2.2.0:
     resolution: {integrity: sha512-8BN9H4LFxYY8SGFDG8mhMNpBjh0IawsCwmry2Zhb1ynzdIy5sz6Fr+J864XJxbKX7u/tIsWdkVbnr2ch+kM4iw==}
     dependencies:
@@ -6940,6 +6951,10 @@ packages:
   /path-type/4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
+
+  /pathe/0.3.9:
+    resolution: {integrity: sha512-6Y6s0vT112P3jD8dGfuS6r+lpa0qqNrLyHPOwvXMnyNTQaYiwgau2DP3aNDsR13xqtGj7rrPo+jFUATpU6/s+g==}
+    dev: false
 
   /pathe/1.1.0:
     resolution: {integrity: sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==}
@@ -7833,6 +7848,14 @@ packages:
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
+
+  /schema-dts/1.1.2_typescript@5.0.2:
+    resolution: {integrity: sha512-MpNwH0dZJHinVxk9bT8XUdjKTxMYrA5bLtrrGmFA6PTLwlOKnhi67XoRd6/ty+Djt6ZC0slR57qFhZDNMI6DhQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 5.0.2
+    dev: false
 
   /schema-utils/3.1.1:
     resolution: {integrity: sha512-Y5PQxS4ITlC+EahLuXaY86TXfR7Dc5lw294alXOq86JAHCihAIZfqv8nNCWvaEJvaC51uN9hbLGeV0cFBdH+Fw==}

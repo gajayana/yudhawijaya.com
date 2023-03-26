@@ -39,16 +39,22 @@ const storyblokImage = ({ blur = 0, url, grayscale = false, height, width }:Stor
 
 const seo = ({ canonical, description, image, keywords, title, type, url }: seoParams):seoResult => {
   const runtimeConfig = useRuntimeConfig()
+
+  const meta = [
+    { name: 'description', content: description },
+    { name: 'keywords', content: keywords || '' },
+    { name: 'og:description', content: description },
+    { name: 'og:image', content: image || '' },
+    { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
+    { name: 'og:url', content: url || runtimeConfig.baseUrl }
+  ]
+
+  if (type) {
+    meta.push({ name: 'og:type', content: type || '' })
+  }
+
   return {
-    meta: [
-      { name: 'description', content: description },
-      { name: 'keywords', content: keywords || '' },
-      { name: 'og:description', content: description },
-      { name: 'og:image', content: image || '' },
-      { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
-      { name: 'og:type', content: type || '' },
-      { name: 'og:url', content: url || runtimeConfig.baseUrl }
-    ],
+    meta,
     title: title || SEO_TITLE_DEFAULT,
     link: [
       { rel: 'canonical', href: canonical || runtimeConfig.baseUrl }
