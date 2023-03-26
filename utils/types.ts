@@ -34,7 +34,7 @@ interface StoryblokStory {
   content: {
     _uid: string;
     body?: string;
-    component?: string; 
+    component?: string;
     date_end?: string;
     date_start?: string;
     excerpt?:string;
@@ -61,7 +61,6 @@ interface StoryblokStory {
   default_full_slug: any | null;
   translated_slugs: any | null;
 }
-
 
 type StoryblokStoriesResponse = {
   story?: StoryblokStory;

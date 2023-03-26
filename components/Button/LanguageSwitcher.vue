@@ -4,9 +4,9 @@ const languages = ['id', 'en']
 
 <template>
   <div class="flex border border-indigo-800 border-solid overflow-hidden rounded">
-    <NuxtLink 
-      v-for="language in languages" 
-      :key="`switcher-${language}`" 
+    <NuxtLink
+      v-for="language in languages"
+      :key="`switcher-${language}`"
       :to="switchLocalePath(language)"
       class="flex no-underline outline-none focus:outline-none px-2 py-1 text-center text-indigo-800"
     >

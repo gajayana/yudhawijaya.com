@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types';
+import { StoryblokStory } from '~~/utils/types'
 
 const localePath = useLocalePath()
 
 const props = defineProps({
   story: {
     type: Object as PropType<StoryblokStory>,
-    required:true
+    required: true
   },
   path: {
     type: String,
@@ -19,14 +19,13 @@ const excerpt = computed(() => {
 })
 
 const featuredImage = computed(() => {
-  return props.story.content.featured_image?.filename ?
-    storyblokImage({
-      height: (9/16) * 480,
+  return props.story.content.featured_image?.filename
+    ? storyblokImage({
+      height: (9 / 16) * 480,
       url: props.story.content.featured_image?.filename,
-      width: 480,
+      width: 480
     })
-    :
-    null
+    : null
 })
 
 const title = computed(() => {
@@ -36,21 +35,24 @@ const title = computed(() => {
 </script>
 
 <template>
-  <NuxtLink 
+  <NuxtLink
     class="bg-white flex flex-col no-underline overflow-hidden rounded shadow shadow-black/30 w-full"
     :to="localePath(`/${props.path}/${story.slug}`)"
   >
-    <div 
+    <div
       class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette"
       :style="{
         backgroundImage: `url(${featuredImage})`
       }"
     />
     <div class="flex flex-col p-3">
-      <h3 class="font-bold font-sans leading-tight mb-2 text-xl">{{ title }}</h3>
-      <p class="font-serif text-gray-800">{{ excerpt }}</p>
+      <h3 class="font-bold font-sans leading-tight mb-2 text-xl">
+        {{ title }}
+      </h3>
+      <p class="font-serif text-gray-800">
+        {{ excerpt }}
+      </p>
     </div>
-      
   </NuxtLink>
 </template>
 

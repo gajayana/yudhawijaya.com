@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
+// eslint-disable-next-line import/no-duplicates
 import { format, isFuture } from 'date-fns'
+// eslint-disable-next-line import/no-duplicates
 import { enGB as en, id } from 'date-fns/locale'
+import MarkdownIt from 'markdown-it'
+
+import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
@@ -13,7 +17,7 @@ const { t, locale } = useI18n({
 const storyblokApi = useStoryblokApi()
 const { $mdit } = useNuxtApp()
 
-const story = ref<StoryblokStory | null | undefined>(null);
+const story = ref<StoryblokStory | null | undefined>(null)
 
 defineI18nRoute({
   paths: {
@@ -26,18 +30,18 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
   `cdn/stories/works/${route.params.slug}`,
   {
     language: locale.value,
-    version: "published",
+    version: 'published',
     cv: sb.cv || Number(Date.now())
   }
 )
 story.value = data.story
 
 const body = computed<string | undefined>(() => {
-  return $mdit.render(story.value?.content.body)
+  return ($mdit as MarkdownIt).render(story.value?.content.body || '')
 })
 
 const excerpt = computed<string | undefined>(() => {
-  return $mdit.renderInline(story.value?.content.excerpt)
+  return ($mdit as MarkdownIt).renderInline(story.value?.content.excerpt || '')
 })
 
 const featuredImage = computed<string | undefined>(() => {
@@ -45,23 +49,22 @@ const featuredImage = computed<string | undefined>(() => {
   return storyblokImage({
     height: 0,
     url: story.value?.content.featured_image?.filename,
-    width: 1200,
+    width: 1200
   })
 })
 
 const period = computed<string | undefined>(() => {
   if (!story.value?.content.date_start) { return }
   const start = format(
-    new Date(story.value?.content.date_start || ''), 
-    'dd MMMM yyyy', 
+    new Date(story.value?.content.date_start || ''),
+    DATETIME_FORMAT_DEFAULT,
     { locale: locale.value === 'en' ? en : id }
   )
-  const end = isFuture(new Date(story.value?.content.date_end || '')) ? 
-    t('ongoing') 
-    : 
-    format(
-      new Date(story.value?.content.date_end || ''), 
-      'dd MMMM yyyy',
+  const end = isFuture(new Date(story.value?.content.date_end || ''))
+    ? t('ongoing')
+    : format(
+      new Date(story.value?.content.date_end || ''),
+      DATETIME_FORMAT_DEFAULT,
       { locale: locale.value === 'en' ? en : id }
     )
 
@@ -77,8 +80,7 @@ const title = computed<string | undefined>(() => {
 })
 
 const url = computed<string | undefined>(() => {
-  console.log({ urlIsInvalid: urlIsInvalid.value })
-  return urlIsInvalid.value ? story.value?.content.url : $mdit.renderInline(story.value?.content.url)
+  return urlIsInvalid.value ? story.value?.content.url : ($mdit as MarkdownIt).renderInline(story.value?.content.url || '')
 })
 
 const urlIsInvalid = computed<boolean>(() => {
@@ -108,12 +110,14 @@ id:
 
 <template>
   <main class="flex flex-col p-4">
-    <div 
+    <div
       class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       :style="{ backgroundImage: `url(${featuredImage})`}"
     />
     <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
-      <HeadingPrimary class="mb-8">{{ title }}</HeadingPrimary>
+      <HeadingPrimary class="mb-8">
+        {{ title }}
+      </HeadingPrimary>
       <p class="flex italic mb-8 text-center" v-html="excerpt" />
       <div class="flex flex-col items-center gap-2 mb-8">
         <p class="_external" v-html="url" />
@@ -124,17 +128,16 @@ id:
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
-      
     </div>
     <div class="flex mx-auto w-full max-w-6xl">
-      <RecommenderStories 
-        v-if="story" 
-        :tags="tags" 
+      <RecommenderStories
+        v-if="story"
+        :tags="tags"
         path="karya"
         :title="title || ''"
       />
     </div>
-</main>
+  </main>
 </template>
 
 <style lang="postcss" scoped>

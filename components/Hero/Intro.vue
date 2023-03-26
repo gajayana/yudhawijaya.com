@@ -1,13 +1,13 @@
 <script setup lang="ts">
-const { t, locale } = useI18n({
+const { t } = useI18n({
   useScope: 'local'
 })
 const { $mdit } = useNuxtApp()
 
 const scrollToWorks = () => {
-  if (!window) return
+  if (!window) { return }
   const el = document.getElementById('latest-works')
-  if (!el) return;
+  if (!el) { return }
 
   if ('scrollBehavior' in document.documentElement.style) {
     return window.scrollTo({ top: el.offsetTop, behavior: 'smooth' })
@@ -29,7 +29,7 @@ id:
 </i18n>
 
 <template>
-  <div 
+  <div
     class="flex flex-col p-4 w-full"
     :style="{
       height: 'calc(100vh - 4rem)'
@@ -40,10 +40,12 @@ id:
         <HeadingPrimary class="text-white">
           <span v-html="$mdit.renderInline(t('greeting'))" />
         </HeadingPrimary>
-        <p class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white"
-          v-html="$mdit.renderInline(t('resume'))" />
+        <p
+          class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white"
+          v-html="$mdit.renderInline(t('resume'))"
+        />
         <div class="flex items-center justify-center">
-          <button 
+          <button
             class="border border-white flex px-8 py-2 mr-4 rounded-sm text-white uppercase"
             @click="scrollToWorks"
           >
@@ -52,6 +54,5 @@ id:
         </div>
       </div>
     </div>
-      
   </div>
 </template>

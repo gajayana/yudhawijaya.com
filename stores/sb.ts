@@ -1,4 +1,4 @@
-import { StoryblokSpace } from "~~/utils/types";
+import { StoryblokSpace } from '~~/utils/types'
 
 export const useSb = defineStore(
   'storyblok',
@@ -9,15 +9,15 @@ export const useSb = defineStore(
 
     actions: {
       // runs only on server init
-      async serverInit() {
+      async serverInit () {
         // fetch storyblok space latest version
-        const storyblokApi = useStoryblokApi();
+        const storyblokApi = useStoryblokApi()
         const { data }: { data: StoryblokSpace } = await storyblokApi.get(
-          `cdn/spaces/me`
+          'cdn/spaces/me'
         )
         this.setCv(data.space.version)
       },
-      setCv(version:number) {
+      setCv (version:number) {
         this.cv = version
       }
     }

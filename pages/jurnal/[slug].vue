@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types';
-import { format, isFuture } from 'date-fns'
-import { enGB as en, id } from 'date-fns/locale'
+import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
@@ -13,7 +11,7 @@ const { t, locale } = useI18n({
 const storyblokApi = useStoryblokApi()
 const { $mdit } = useNuxtApp()
 
-const story = ref<StoryblokStory | null | undefined>(null);
+const story = ref<StoryblokStory | null | undefined>(null)
 
 defineI18nRoute({
   paths: {
@@ -26,7 +24,7 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
   `cdn/stories/posts/${route.params.slug}`,
   {
     language: locale.value,
-    version: "published",
+    version: 'published',
     cv: sb.cv || Number(Date.now())
   }
 )
@@ -45,7 +43,7 @@ const featuredImage = computed<string | undefined>(() => {
   return storyblokImage({
     height: 0,
     url: story.value?.content.featured_image?.filename,
-    width: 1200,
+    width: 1200
   })
 })
 
@@ -80,12 +78,14 @@ id:
 
 <template>
   <main class="flex flex-col p-4">
-    <div 
+    <div
       class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       :style="{ backgroundImage: `url(${featuredImage})` }"
     />
     <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
-      <HeadingPrimary class="mb-8">{{ title }}</HeadingPrimary>
+      <HeadingPrimary class="mb-8">
+        {{ title }}
+      </HeadingPrimary>
       <p class="flex italic mb-8 text-center" v-html="excerpt" />
       <div class="_body flex flex-col mb-8" v-html="body" />
 
@@ -93,11 +93,11 @@ id:
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
     </div>
-    
+
     <div class="flex mx-auto w-full max-w-6xl">
-      <RecommenderStories 
-        v-if="story" 
-        :tags="tags" 
+      <RecommenderStories
+        v-if="story"
+        :tags="tags"
         path="jurnal"
         :title="title || ''"
       />
