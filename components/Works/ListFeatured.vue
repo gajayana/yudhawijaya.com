@@ -6,8 +6,9 @@ const { t, locale } = useI18n({
 const sb = useSb()
 const storyblokApi = useStoryblokApi()
 const stories = ref<StoryblokStory[] | null | undefined>(null)
+const notifications = useToastNotifications()
 
-const { data, pending } = await useAsyncData( //, error, refresh
+const { data, pending, error } = await useAsyncData( //, refresh
   'works',
   async () => await storyblokApi.get(
     'cdn/stories',
@@ -21,6 +22,13 @@ const { data, pending } = await useAsyncData( //, error, refresh
     }
   )
 )
+
+if (error.value) {
+  notifications.add({
+    type: 'error',
+    message: 'Error fetching data'
+  })
+}
 
 stories.value = data.value.data.stories as StoryblokStory[]
 
