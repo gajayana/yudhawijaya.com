@@ -1,7 +1,6 @@
 // See https://github.com/jyotirmaybarman/nuxt3-tailwind-pinia/blob/main/plugins/markdownit.js
-import { defineNuxtPlugin } from '#app'
 import mdit from 'markdown-it'
-
+import { defineNuxtPlugin } from '#app'
 // eslint-disable-next-line new-cap
 const markdownit = new mdit({
   html: true,

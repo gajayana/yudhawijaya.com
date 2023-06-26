@@ -139,6 +139,14 @@ export default defineNuxtConfig({
     }
   },
 
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        moduleResolution: 'bundler'
+      }
+    }
+  },
+
   nitro: {
     prerender: {
       crawlLinks: true,
@@ -151,6 +159,14 @@ export default defineNuxtConfig({
         '/en/works',
         '/en/journals',
         '/en/contact'
+      ]
+    }
+  },
+
+  vite: {
+    optimizeDeps: {
+      exclude: [
+        'fsevents'
       ]
     }
   }

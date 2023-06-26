@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import consola from 'consola'
-import { StoryblokStory, StoryblokStoriesResponse } from '~~/utils/types'
-// import { useI18n } from 'vue-i18n';
+import { StoryblokStory } from '~~/utils/types'
 const { t, locale } = useI18n({
   useScope: 'local'
 })
@@ -9,25 +7,23 @@ const sb = useSb()
 const storyblokApi = useStoryblokApi()
 const stories = ref<StoryblokStory[] | null | undefined>(null)
 
-onMounted(async () => {
-  try {
-    const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-      'cdn/stories',
-      {
-        language: locale.value,
-        version: 'published',
-        starts_with: 'works',
-        per_page: 6,
-        sort_by: 'content.is_featured:asc',
-        cv: sb.cv || Number(Date.now())
-      }
-    )
-    stories.value = data.stories
-    sb.setCv(data.cv)
-  } catch (error) {
-    consola.log({ error })
-  }
-})
+const { data, pending } = await useAsyncData( //, error, refresh
+  'works',
+  async () => await storyblokApi.get(
+    'cdn/stories',
+    {
+      language: locale.value,
+      version: 'published',
+      starts_with: 'works',
+      per_page: 6,
+      sort_by: 'content.is_featured:asc',
+      cv: sb.cv || Number(Date.now())
+    }
+  )
+)
+
+stories.value = data.value.data.stories as StoryblokStory[]
+
 </script>
 
 <i18n lang="yaml">
@@ -44,16 +40,18 @@ id:
         {{ t('heading') }}
       </HeadingSecondary>
       <div class="flex w-full">
-        <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
-          <CardStory
-            v-for="story in stories"
-            :key="story.uuid"
-            :story="story"
-            path="karya"
-          />
-        </div>
-        <div v-else>
+        <div v-if="pending" class="flex items-center justify-center w-full">
           <p>Loading...</p>
+        </div>
+        <div v-else class="flex w-full">
+          <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
+            <CardStory
+              v-for="story in stories"
+              :key="story.uuid"
+              :story="story"
+              path="karya"
+            />
+          </div>
         </div>
       </div>
     </div>
