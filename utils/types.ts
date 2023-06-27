@@ -1,3 +1,8 @@
+type ToastNotification = {
+  type: 'error' | 'success' | 'warning',
+  message: string
+}
+
 type SocialAccount = {
   icon: string;
   medium: string;
@@ -71,6 +76,7 @@ type StoryblokStoriesResponse = {
 }
 
 export type {
+  ToastNotification,
   SocialAccount,
   StoryblokSpace,
   StoryblokStory,

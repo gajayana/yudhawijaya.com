@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import sampleSize from 'lodash/sampleSize'
-import consola from 'consola'
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
+import { StoryblokStory } from '~~/utils/types'
 
 const sb = useSb()
 const props = defineProps({
@@ -24,38 +23,38 @@ const { t, locale } = useI18n({
 })
 
 const storyblokApi = useStoryblokApi()
-const loading = ref<boolean>(true)
 const stories = ref<StoryblokStory[] | null | undefined>(null)
+const notifications = useToastNotifications()
 
-onMounted(async () => {
-  try {
-    const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-      'cdn/stories',
-      {
-        language: locale.value,
-        version: 'published',
-        starts_with: props.path === 'karya' ? 'works' : 'posts',
-        sort_by: 'content.date_end:desc',
-        cv: sb.cv || Number(Date.now()),
-        filter_query: {
-          title: {
-            not_in: props.title
-          }
-        },
-        with_tag: props?.tags?.join(','),
-        excluding_fields: ['body'].join(',')
-      }
-    )
+const { data, pending, error } = await useAsyncData( //, refresh
+  'posts',
+  async () => await storyblokApi.get(
+    'cdn/stories',
+    {
+      language: locale.value,
+      version: 'published',
+      starts_with: props.path === 'karya' ? 'works' : 'posts',
+      sort_by: 'content.date_end:desc',
+      cv: sb.cv || Number(Date.now()),
+      filter_query: {
+        title: {
+          not_in: props.title
+        }
+      },
+      with_tag: props?.tags?.join(','),
+      excluding_fields: ['body'].join(',')
+    }
+  )
+)
 
-    stories.value = sampleSize(data.stories, 3)
-    sb.setCv(data.cv)
-  } catch (error) {
-    consola.log({ error })
-  } finally {
-    loading.value = false
-  }
-})
+if (error.value) {
+  notifications.add({
+    type: 'error',
+    message: 'Error fetching data'
+  })
+}
 
+stories.value = sampleSize(data.value.data.stories as StoryblokStory[], 3)
 </script>
 
 <i18n lang="yaml">
@@ -66,8 +65,8 @@ id:
 </i18n>
 
 <template>
-  <div v-if="loading">
-    Loading...
+  <div v-if="pending">
+    {{ $t('loading') }}
   </div>
   <div v-else class="flex flex-col items-center w-full">
     <HeadingSecondary>

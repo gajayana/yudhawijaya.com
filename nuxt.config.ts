@@ -28,7 +28,15 @@ export default defineNuxtConfig({
         locales: ['en', 'id'],
         defaultLocale: 'id',
         vueI18n: {
-          fallbackLocale: 'id'
+          fallbackLocale: 'id',
+          messages: {
+            en: {
+              loading: 'Loading...'
+            },
+            id: {
+              loading: 'Memuat data...'
+            }
+          }
         },
         vueI18nLoader: true
       }
@@ -130,12 +138,20 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-    dirs: ['./stores']
+    dirs: ['./stores', './utils']
   },
 
   runtimeConfig: {
     public: {
       baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000'
+    }
+  },
+
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        moduleResolution: 'bundler'
+      }
     }
   },
 
@@ -151,6 +167,14 @@ export default defineNuxtConfig({
         '/en/works',
         '/en/journals',
         '/en/contact'
+      ]
+    }
+  },
+
+  vite: {
+    optimizeDeps: {
+      exclude: [
+        'fsevents'
       ]
     }
   }

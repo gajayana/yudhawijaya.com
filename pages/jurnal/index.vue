@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import consola from 'consola'
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
+import { StoryblokStory } from '~~/utils/types'
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
@@ -10,6 +9,7 @@ const { t, locale } = useI18n({
 })
 
 const storyblokApi = useStoryblokApi()
+const notifications = useToastNotifications()
 
 const stories = ref<StoryblokStory[] | null | undefined>(null)
 
@@ -27,8 +27,9 @@ useHead(seo({
   canonical: `${runtimeConfig.baseUrl}/jurnal`
 }))
 
-try {
-  const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
+const { data, pending, error } = await useAsyncData( //, refresh
+  'posts',
+  async () => await storyblokApi.get(
     'cdn/stories',
     {
       language: locale.value,
@@ -39,12 +40,16 @@ try {
       cv: sb.cv || Number(Date.now())
     }
   )
+)
 
-  stories.value = data.stories
-  sb.setCv(data.cv)
-} catch (error) {
-  consola.log({ error })
+if (error.value) {
+  notifications.add({
+    type: 'error',
+    message: 'Error fetching data'
+  })
 }
+
+stories.value = data.value.data.stories as StoryblokStory[]
 
 </script>
 
@@ -71,7 +76,12 @@ id:
           {{ t('intro') }}
         </p>
 
-        <JournalsListAll :stories="stories" />
+        <div class="flex items-center justify-center w-full">
+          <p v-if="pending">
+            {{ $t('loading') }}
+          </p>
+          <JournalsListAll v-else :stories="stories" />
+        </div>
       </div>
     </div>
   </main>
