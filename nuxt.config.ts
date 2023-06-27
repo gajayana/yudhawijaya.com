@@ -28,7 +28,15 @@ export default defineNuxtConfig({
         locales: ['en', 'id'],
         defaultLocale: 'id',
         vueI18n: {
-          fallbackLocale: 'id'
+          fallbackLocale: 'id',
+          messages: {
+            en: {
+              loading: 'Loading...'
+            },
+            id: {
+              loading: 'Memuat data...'
+            }
+          }
         },
         vueI18nLoader: true
       }

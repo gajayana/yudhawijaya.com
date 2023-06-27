@@ -49,7 +49,7 @@ id:
       </HeadingSecondary>
       <div class="flex w-full">
         <div v-if="pending" class="flex items-center justify-center w-full">
-          <p>Loading...</p>
+          <p>{{ $t('loading') }}</p>
         </div>
         <div v-else class="flex w-full">
           <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">

@@ -77,7 +77,7 @@ id:
 
         <div class="flex items-center justify-center w-full">
           <p v-if="pending">
-            Loading...
+            {{ $t('loading') }}
           </p>
           <WorksListAll v-else :stories="stories" />
         </div>

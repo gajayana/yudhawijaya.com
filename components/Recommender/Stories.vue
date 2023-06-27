@@ -66,7 +66,7 @@ id:
 
 <template>
   <div v-if="pending">
-    Loading...
+    {{ $t('loading') }}
   </div>
   <div v-else class="flex flex-col items-center w-full">
     <HeadingSecondary>
