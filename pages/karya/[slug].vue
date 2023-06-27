@@ -6,6 +6,7 @@ import { enGB as en, id } from 'date-fns/locale'
 import MarkdownIt from 'markdown-it'
 
 import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
+import { DATETIME_FORMAT_DEFAULT } from '~~/utils/constants'
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
