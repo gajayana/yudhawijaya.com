@@ -15,12 +15,11 @@ defineI18nRoute({
 useHead(seo({
   description: t('intro'),
   title: `${t('heading')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
-  canonical: `${runtimeConfig.baseUrl}/kontak`
+  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.public.baseUrl}/kontak`
 }))
 
 const socialAccounts = SOCIAL_ACCOUNTS.filter(({ medium }) => ['linkedin', 'twitter'].includes(medium))
-
 </script>
 
 <i18n lang="yaml">

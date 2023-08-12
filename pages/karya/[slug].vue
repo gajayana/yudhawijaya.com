@@ -92,8 +92,8 @@ useHead(seo({
   description: excerpt.value || '',
   image: featuredImage.value || undefined,
   title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
-  canonical: `${runtimeConfig.baseUrl}/karya/${route.params.slug}`
+  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`
 }))
 
 useJsonld({
