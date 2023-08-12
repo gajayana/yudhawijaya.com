@@ -7,7 +7,7 @@ const { t } = useI18n({
 
 useHead(seo({
   description: t('description'),
-  url: `${runtimeConfig.baseUrl}${route.fullPath}`
+  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`
 }))
 
 </script>

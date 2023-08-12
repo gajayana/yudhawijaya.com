@@ -20,8 +20,8 @@ defineI18nRoute({
 useHead(seo({
   description: t('intro'),
   title: `${t('heading')} ${t('of')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.baseUrl}${route.fullPath}`,
-  canonical: `${runtimeConfig.baseUrl}/karya`
+  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+  canonical: `${runtimeConfig.public.baseUrl}/karya`
 }))
 
 const { data, pending, error } = await useAsyncData( //, refresh
@@ -46,7 +46,7 @@ if (error.value) {
   })
 }
 
-stories.value = data.value.data.stories as StoryblokStory[]
+stories.value = data.value ? data.value.data.stories as StoryblokStory[] : null
 
 </script>
 

@@ -46,7 +46,7 @@ const seo = ({ canonical, description, image, keywords, title, type, url }: seoP
     { name: 'og:description', content: description },
     { name: 'og:image', content: image || '' },
     { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
-    { name: 'og:url', content: url || runtimeConfig.baseUrl as string }
+    { name: 'og:url', content: url || runtimeConfig.public.baseUrl as string }
   ]
 
   if (type) {
@@ -57,7 +57,7 @@ const seo = ({ canonical, description, image, keywords, title, type, url }: seoP
     meta,
     title: title || SEO_TITLE_DEFAULT,
     link: [
-      { rel: 'canonical', href: canonical || runtimeConfig.baseUrl as string }
+      { rel: 'canonical', href: canonical || runtimeConfig.public.baseUrl as string }
     ]
   }
 }
