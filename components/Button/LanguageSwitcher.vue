@@ -1,11 +1,11 @@
 <script setup language="ts">
-const languages = ['id', 'en']
+const locales = LOCALES // ['id', 'en']
 </script>
 
 <template>
   <div class="flex border border-indigo-800 border-solid overflow-hidden rounded">
     <NuxtLink
-      v-for="language in languages"
+      v-for="language in locales"
       :key="`switcher-${language}`"
       :to="switchLocalePath(language)"
       class="flex no-underline outline-none focus:outline-none px-2 py-1 text-center text-indigo-800"

@@ -25,8 +25,10 @@ const imageOfMe = storyblokImage({
       <!-- end: mobile menu -->
 
       <!-- start: desktop menu -->
-      <div class="gap-4 hidden md:flex">
+      <div class="hidden md:flex">
         <NavigationMenuMain />
+      </div>
+      <div class="hidden md:flex">
         <ButtonLanguageSwitcher />
       </div>
       <!-- end: desktop menu -->
