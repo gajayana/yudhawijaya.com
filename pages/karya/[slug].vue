@@ -1,9 +1,5 @@
 <script setup lang="ts">
-// eslint-disable-next-line import/no-duplicates
-import { format, isFuture } from 'date-fns'
-// eslint-disable-next-line import/no-duplicates
-import { enGB as en, id } from 'date-fns/locale'
-
+import { isFuture } from 'date-fns'
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
@@ -49,22 +45,30 @@ const featuredImage = computed<string | undefined>(() => {
   })
 })
 
-const period = computed<string | undefined>(() => {
-  if (!story.value?.content.date_start) { return }
-  const start = format(
-    new Date(story.value?.content.date_start || ''),
-    DATETIME_FORMAT_DEFAULT,
-    { locale: locale.value === 'en' ? en : id }
-  )
-  const end = isFuture(new Date(story.value?.content.date_end || ''))
-    ? t('ongoing')
-    : format(
-      new Date(story.value?.content.date_end || ''),
-      DATETIME_FORMAT_DEFAULT,
-      { locale: locale.value === 'en' ? en : id }
-    )
+// const period = computed<string | undefined>(() => {
+//   if (!story.value?.content.date_start) { return }
+//   const start = format(
+//     new Date(story.value?.content.date_start || ''),
+//     DATETIME_FORMAT_DEFAULT,
+//     { locale: locale.value === 'en' ? en : id }
+//   )
+//   const end = isFuture(new Date(story.value?.content.date_end || ''))
+//     ? t('ongoing')
+//     : format(
+//       new Date(story.value?.content.date_end || ''),
+//       DATETIME_FORMAT_DEFAULT,
+//       { locale: locale.value === 'en' ? en : id }
+//     )
 
-  return `${start} - ${end}`
+//   return `${start} - ${end}`
+// })
+
+const period = computed<{ startDate: string, endDate: string }>(() => {
+  const endDate = isFuture(new Date(story.value?.content.date_end || '')) ? t('ongoing') : story.value?.content.date_end || ''
+  return {
+    startDate: story.value?.content.date_start || '',
+    endDate
+  }
 })
 
 const tags = computed<string[]|undefined>(() => {
@@ -127,7 +131,12 @@ id:
 
       <div class="flex flex-col items-center gap-2 mb-8">
         <p class="_external" v-html="url" />
-        <span>{{ period }}</span>
+        <span v-if="period.startDate" class="flex gap-1 items-center">
+          <DatetimeParser :value="period.startDate" :locale="locale" />
+          <span>-</span>
+          <span v-if="period.endDate === t('ongoing')">{{ t('ongoing') }}</span>
+          <DatetimeParser v-else :value="period.endDate" :locale="locale" />
+        </span>
       </div>
 
       <MDC :value="body" tag="div" class="_body flex flex-col mb-8" />

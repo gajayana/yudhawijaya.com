@@ -25,9 +25,11 @@ const SOCIAL_ACCOUNTS:SocialAccount[] = [
 ]
 
 const LOCALES = ['en', 'id']
+const DEFAULT_LOCALE = 'id'
 
 export {
   DATETIME_FORMAT_DEFAULT,
+  DEFAULT_LOCALE,
   IMAGE_OF_ME,
   LOCALES,
   SEO_TITLE_DEFAULT,

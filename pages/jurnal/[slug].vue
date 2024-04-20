@@ -1,9 +1,4 @@
 <script setup lang="ts">
-// eslint-disable-next-line import/no-duplicates
-import { format } from 'date-fns'
-// eslint-disable-next-line import/no-duplicates
-import { enGB as en, id } from 'date-fns/locale'
-
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
@@ -57,9 +52,8 @@ const title = computed<string | undefined>(() => {
   return story.value?.content.title
 })
 
-const publishDate = computed<string | undefined>(() => {
-  if (!story.value?.first_published_at) { return }
-  return format(new Date(story.value?.first_published_at || ''), DATETIME_FORMAT_DEFAULT, { locale: locale.value === 'en' ? en : id })
+const publishDate = computed<string>(() => {
+  return story.value?.first_published_at || ''
 })
 
 useHead(seo({
@@ -102,7 +96,7 @@ id:
         {{ title }}
       </HeadingPrimary>
       <div class="flex flex-col items-center gap-2 mb-8">
-        <span>{{ publishDate }}</span>
+        <DatetimeParser v-if="publishDate" :value="publishDate" :locale="locale" />
       </div>
 
       <MDC :value="excerpt" tag="div" class="flex italic mb-8 text-center" />
