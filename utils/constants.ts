@@ -1,5 +1,3 @@
-import { SocialAccount } from '~~/utils/types'
-
 const DATETIME_FORMAT_DEFAULT = 'dd MMMM yyyy'
 const IMAGE_OF_ME = 'https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg'
 const SEO_TITLE_DEFAULT = 'Yosef Yudha Wijaya'

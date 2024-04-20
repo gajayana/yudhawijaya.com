@@ -1,6 +1,3 @@
-import { defineStore } from 'pinia'
-import { ToastNotification } from 'utils/types'
-
 type State = {
   notifications: ToastNotification[]
 }
