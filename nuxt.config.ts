@@ -12,7 +12,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'author', content: 'Yosef Yudha Wijaya' },
-        { name: 'description', content: process.env.npm_package_description || '' },
+        { name: 'description', content: '' },
         { name: 'twitter:card', content: 'summary' },
         { name: 'twitter:creator', content: '@tuan_yudha' },
         { name: 'twitter:site', content: '@tuan_yudha' },
@@ -64,12 +64,8 @@ export default defineNuxtConfig({
     // https://nuxt.com/modules/icon
     'nuxt-icon',
 
-    [
-      '@storyblok/nuxt',
-      {
-        accessToken: process.env.STORYBLOK_TOKEN_PUBLIC || ''
-      }
-    ],
+    '@storyblok/nuxt',
+
     // https://nuxt.com/modules/pinia
     [
       '@pinia/nuxt',
@@ -78,18 +74,19 @@ export default defineNuxtConfig({
       }
     ],
     // https://nuxt.com/modules/simple-sitemap
-    [
-      'nuxt-simple-sitemap',
-      {
-        hostname: process.env.NUXT_BASE_URL
-      }
-    ],
+    'nuxt-simple-sitemap',
 
     // https://github.com/nuxt-modules/eslint
     ['@nuxtjs/eslint-module', { /* module options */ }],
 
     // https://github.com/ymmooot/nuxt-jsonld
-    'nuxt-jsonld'
+    'nuxt-jsonld',
+
+    // https://nuxt.com/modules/lodash
+    'nuxt-lodash',
+
+    // https://nuxt.com/modules/mdc
+    '@nuxtjs/mdc'
 
     // https://github.com/vite-pwa/nuxt
     // [
@@ -137,13 +134,23 @@ export default defineNuxtConfig({
     // ]
   ],
 
+  site: {
+    // @ts-expect-error no explanation in docs about how to get env values here
+    url: process.env.NUXT_BASE_URL
+  },
+  // https://nuxt.com/modules/storyblok
+  storyblok: {
+    // @ts-expect-error no explanation in docs about how to get env values here
+    accessToken: process.env.NUXT_STORYBLOK_ACCESS_TOKEN
+  },
+
   imports: {
     dirs: ['./stores']
   },
 
   runtimeConfig: {
     public: {
-      baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000'
+      baseUrl: 'http://localhost:3000'
     }
   },
 

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import sampleSize from 'lodash/sampleSize'
-import { StoryblokStory } from '~~/utils/types'
-
 const sb = useSb()
 const props = defineProps({
   path: {
@@ -54,7 +51,7 @@ if (error.value) {
   })
 }
 
-stories.value = sampleSize(data.value.data.stories as StoryblokStory[], 3)
+stories.value = useSampleSize(data?.value?.data?.stories as StoryblokStory[], 3)
 </script>
 
 <i18n lang="yaml">

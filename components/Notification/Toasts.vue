@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ToastNotification } from '~/utils/types'
-
 const notifications = useToastNotifications()
 const items = notifications.notifications
 

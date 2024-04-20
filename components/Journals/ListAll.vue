@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types'
-
 const props = defineProps({
   stories: {
     type: [Array, null, undefined] as PropType<StoryblokStory[] | null | undefined>,

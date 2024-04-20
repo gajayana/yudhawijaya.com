@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types'
-
 const localePath = useLocalePath()
 
 const props = defineProps({

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types'
+
 const { t, locale } = useI18n({
   useScope: 'local'
 })
@@ -30,7 +30,7 @@ if (error.value) {
   })
 }
 
-stories.value = data.value.data.stories as StoryblokStory[]
+stories.value = data?.value?.data?.stories as StoryblokStory[]
 
 </script>
 

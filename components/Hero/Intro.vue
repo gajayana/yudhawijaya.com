@@ -2,7 +2,6 @@
 const { t } = useI18n({
   useScope: 'local'
 })
-const { $mdit } = useNuxtApp()
 
 const scrollToWorks = () => {
   if (!window) { return }
@@ -38,12 +37,11 @@ id:
     <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4">
       <div class="max-w-xl mx-auto">
         <HeadingPrimary class="text-white">
-          <span v-html="$mdit.renderInline(t('greeting'))" />
+          <MDC :value="t('greeting')" tag="span" />
         </HeadingPrimary>
-        <p
-          class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white"
-          v-html="$mdit.renderInline(t('resume'))"
-        />
+
+        <MDC :value="t('resume')" tag="div" class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white" />
+
         <div class="flex items-center justify-center">
           <button
             class="border border-white flex px-8 py-2 mr-4 rounded-sm text-white uppercase"

@@ -3,10 +3,6 @@
 import { format, isFuture } from 'date-fns'
 // eslint-disable-next-line import/no-duplicates
 import { enGB as en, id } from 'date-fns/locale'
-import MarkdownIt from 'markdown-it'
-
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
-import { DATETIME_FORMAT_DEFAULT } from '~~/utils/constants'
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
@@ -16,7 +12,6 @@ const { t, locale } = useI18n({
 })
 
 const storyblokApi = useStoryblokApi()
-const { $mdit } = useNuxtApp()
 
 const story = ref<StoryblokStory | null | undefined>(null)
 
@@ -37,12 +32,12 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
 )
 story.value = data.story
 
-const body = computed<string | undefined>(() => {
-  return ($mdit as MarkdownIt).render(story.value?.content.body || '')
+const body = computed<string>(() => {
+  return story.value?.content.body || ''
 })
 
-const excerpt = computed<string | undefined>(() => {
-  return ($mdit as MarkdownIt).renderInline(story.value?.content.excerpt || '')
+const excerpt = computed<string>(() => {
+  return story.value?.content.excerpt || ''
 })
 
 const featuredImage = computed<string | undefined>(() => {
@@ -81,7 +76,7 @@ const title = computed<string | undefined>(() => {
 })
 
 const url = computed<string | undefined>(() => {
-  return urlIsInvalid.value ? story.value?.content.url : ($mdit as MarkdownIt).renderInline(story.value?.content.url || '')
+  return urlIsInvalid.value ? story.value?.content.url : story.value?.content.url || ''
 })
 
 const urlIsInvalid = computed<boolean>(() => {
@@ -127,12 +122,15 @@ id:
       <HeadingPrimary class="mb-8">
         {{ title }}
       </HeadingPrimary>
-      <p class="flex italic mb-8 text-center" v-html="excerpt" />
+
+      <MDC :value="excerpt" tag="div" class="flex italic mb-8 text-center" />
+
       <div class="flex flex-col items-center gap-2 mb-8">
         <p class="_external" v-html="url" />
         <span>{{ period }}</span>
       </div>
-      <div class="_body flex flex-col mb-8" v-html="body" />
+
+      <MDC :value="body" tag="div" class="_body flex flex-col mb-8" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>

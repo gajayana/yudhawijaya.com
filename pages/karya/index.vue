@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types'
+
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types'
 
 const props = defineProps({
   stories: {

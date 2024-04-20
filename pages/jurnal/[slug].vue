@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import MarkdownIt from 'markdown-it'
 // eslint-disable-next-line import/no-duplicates
 import { format } from 'date-fns'
 // eslint-disable-next-line import/no-duplicates
 import { enGB as en, id } from 'date-fns/locale'
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
@@ -14,7 +12,6 @@ const { t, locale } = useI18n({
 })
 
 const storyblokApi = useStoryblokApi()
-const { $mdit } = useNuxtApp()
 
 const story = ref<StoryblokStory | null | undefined>(null)
 
@@ -35,12 +32,12 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
 )
 story.value = data.story
 
-const body = computed<string | undefined>(() => {
-  return ($mdit as MarkdownIt).render(story.value?.content.body || '')
+const body = computed<string>(() => {
+  return story.value?.content.body || ''
 })
 
-const excerpt = computed<string | undefined>(() => {
-  return ($mdit as MarkdownIt).renderInline(story.value?.content.excerpt || '')
+const excerpt = computed<string>(() => {
+  return story.value?.content.excerpt || ''
 })
 
 const featuredImage = computed<string | undefined>(() => {
@@ -107,8 +104,9 @@ id:
       <div class="flex flex-col items-center gap-2 mb-8">
         <span>{{ publishDate }}</span>
       </div>
-      <p class="flex italic mb-8 text-center" v-html="excerpt" />
-      <div class="_body flex flex-col mb-8" v-html="body" />
+
+      <MDC :value="excerpt" tag="div" class="flex italic mb-8 text-center" />
+      <MDC :value="body" tag="div" class="_body flex flex-col mb-8" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
