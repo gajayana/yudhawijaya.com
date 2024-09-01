@@ -34,20 +34,17 @@ const title = computed(() => {
 
 <template>
   <NuxtLink
-    class="bg-white flex flex-col no-underline overflow-hidden rounded shadow shadow-black/30 w-full"
+    class="bg-white/50 backdrop-blur flex flex-col group no-underline overflow-hidden rounded shadow shadow-black/30 w-full"
     :to="localePath(`/${props.path}/${story.slug}`)"
   >
-    <div
-      class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette"
-      :style="{
-        backgroundImage: `url(${featuredImage})`
-      }"
-    />
+    <div class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette">
+      <NuxtImg v-if="featuredImage" :src="featuredImage" class="group-hover:scale-125 transition-transform duration-300" />
+    </div>
     <div class="flex flex-col p-3">
-      <h3 class="font-bold font-sans leading-tight mb-2 text-xl">
+      <h3 class="drop-shadow-sm font-bold font-sans leading-tight mb-2 text-xl">
         {{ title }}
       </h3>
-      <p class="font-serif text-gray-800">
+      <p class="drop-shadow-sm font-serif text-gray-800">
         {{ excerpt }}
       </p>
     </div>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-// eslint-disable-next-line import/no-duplicates
+
 import { format as formatter } from 'date-fns'
-// eslint-disable-next-line import/no-duplicates
+
 import { enGB as en, id } from 'date-fns/locale'
 
 const props = defineProps({

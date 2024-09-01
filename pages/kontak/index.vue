@@ -32,7 +32,7 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col w-full p-4">
+  <main class="flex flex-col w-full p-4 relative">
     <div
       class="flex flex-col w-full"
       :style="{
@@ -44,7 +44,7 @@ id:
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic text-center">
+        <p class="drop-shadow font-serif mb-8 italic text-center text-white">
           {{ t('intro') }}
         </p>
 
@@ -55,7 +55,7 @@ id:
               :title="url"
               rel="noreferrer"
               target="_blank"
-              class="text-gray-500 hover:text-gray-600 text-2xl"
+              class="text-white hover:white/90 text-2xl"
             >
               <Icon :name="icon" size="3rem" />
             </a>

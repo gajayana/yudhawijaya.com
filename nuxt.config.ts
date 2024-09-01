@@ -20,128 +20,67 @@ export default defineNuxtConfig({
       ]
     }
   },
-  modules: [
-    // See https://v8.i18n.nuxtjs.org/
-    [
-      '@nuxtjs/i18n',
-      {
-        locales: ['en', 'id'],
-        defaultLocale: 'id',
-        vueI18n: {
-          fallbackLocale: 'id',
-          messages: {
-            en: {
-              loading: 'Loading...'
-            },
-            id: {
-              loading: 'Memuat data...'
-            }
-          }
-        },
-        vueI18nLoader: true
-      }
-    ],
-    // https://github.com/nuxt-modules/tailwindcss
-    '@nuxtjs/tailwindcss',
-    // https://google-fonts.nuxtjs.org/
-    [
-      '@nuxtjs/google-fonts',
-      {
-        download: true,
-        families: {
-          Roboto: {
-            wght: [300, 400, 500, 700],
-            ital: []
-          },
-          'Open Sans': {
-            wght: [400, 700],
-            ital: [400]
-          }
-        }
-        // overwriting: false
-      }
-    ],
-    // https://nuxt.com/modules/icon
-    'nuxt-icon',
 
-    '@storyblok/nuxt',
-
-    // https://nuxt.com/modules/pinia
-    [
-      '@pinia/nuxt',
+  modules: ['@nuxtjs/i18n', // https://github.com/nuxt-modules/tailwindcss
+    '@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@storyblok/nuxt', [
+      '@pinia/nuxt', // https://nuxt.com/modules/pinia
       {
         autoImports: ['defineStore', 'acceptHMRUpdate']
       }
-    ],
-    // https://nuxt.com/modules/simple-sitemap
-    'nuxt-simple-sitemap',
-
-    // https://github.com/nuxt-modules/eslint
-    ['@nuxtjs/eslint-module', { /* module options */ }],
-
-    // https://github.com/ymmooot/nuxt-jsonld
-    'nuxt-jsonld',
-
-    // https://nuxt.com/modules/lodash
+    ], // https://github.com/nuxt-modules/eslint
+    '@nuxtjs/eslint-module', // https://github.com/ymmooot/nuxt-jsonld
+    'nuxt-jsonld', // https://nuxt.com/modules/lodash
     'nuxt-lodash',
+    '@nuxtjs/mdc', '@nuxtjs/sitemap', // https://nuxt.com/modules/icon
+    '@nuxt/icon', '@nuxt/image'],
+  googleFonts: { // https://google-fonts.nuxtjs.org/
+    download: true,
+    families: {
+      Roboto: {
+        wght: [300, 400, 500, 700],
+        ital: []
+      },
+      'Open Sans': {
+        wght: [400, 500, 700],
+        ital: [400]
+      }
+    }
+    // overwriting: false
+  },
+  i18n: {
+    // See https://i18n.nuxtjs.org/
+    vueI18n: './i18n.config.ts',
+    baseUrl: process.env.NUXT_BASE_URL,
+    defaultLocale: 'id',
+    locales: [{
+      code: 'en',
+      iso: 'en-GB'
+    }, {
+      code: 'id',
+      iso: 'id-ID'
+    }]
+  },
 
-    // https://nuxt.com/modules/mdc
-    '@nuxtjs/mdc'
-
-    // https://github.com/vite-pwa/nuxt
-    // [
-    //   '@vite-pwa/nuxt',
-    //   {
-    //     registerType: 'autoUpdate',
-    //     manifest: {
-    //       name: 'Yosef Yudha Wijaya',
-    //       short_name: 'yudhawijaya',
-    //       theme_color: '#ffffff',
-    //       icons: [
-    //         {
-    //           src: 'pwa-192x192.png',
-    //           sizes: '192x192',
-    //           type: 'image/png',
-    //         },
-    //         {
-    //           src: 'pwa-512x512.png',
-    //           sizes: '512x512',
-    //           type: 'image/png',
-    //         },
-    //         {
-    //           src: 'pwa-512x512.png',
-    //           sizes: '512x512',
-    //           type: 'image/png',
-    //           purpose: 'any maskable',
-    //         },
-    //       ],
-    //     },
-    //     workbox: {
-    //       navigateFallback: '/',
-    //       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
-    //     },
-    //     client: {
-    //       installPrompt: true,
-    //       // you don't need to include this: only for testing purposes
-    //       // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
-    //       // periodicSyncForUpdates: 20,
-    //     },
-    //     devOptions: {
-    //       enabled: true,
-    //       type: 'module',
-    //     },
+  mdc: { // https://nuxt.com/modules/mdc
+    // components: {
+    //   prose: false, // Disable predefined prose components
+    //   map: {
+    //     h1: 'HeadingPrimary'
     //   }
-    // ]
-  ],
+    // }
+  },
 
-  site: {
-    // @ts-expect-error no explanation in docs about how to get env values here
+  site: { // https://nuxtseo.com/sitemap/getting-started/installation
     url: process.env.NUXT_BASE_URL
   },
+
   // https://nuxt.com/modules/storyblok
   storyblok: {
-    // @ts-expect-error no explanation in docs about how to get env values here
     accessToken: process.env.NUXT_STORYBLOK_ACCESS_TOKEN
+  },
+
+  image: {
+    domains: ['a.storyblok.com']
   },
 
   imports: {
@@ -150,7 +89,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      baseUrl: 'http://localhost:3000'
+      baseUrl: process.env.NUXT_BASE_URL
     }
   },
 
@@ -184,5 +123,7 @@ export default defineNuxtConfig({
         'fsevents'
       ]
     }
-  }
+  },
+
+  compatibilityDate: '2024-08-31'
 })

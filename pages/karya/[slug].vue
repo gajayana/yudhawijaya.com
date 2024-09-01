@@ -45,24 +45,6 @@ const featuredImage = computed<string | undefined>(() => {
   })
 })
 
-// const period = computed<string | undefined>(() => {
-//   if (!story.value?.content.date_start) { return }
-//   const start = format(
-//     new Date(story.value?.content.date_start || ''),
-//     DATETIME_FORMAT_DEFAULT,
-//     { locale: locale.value === 'en' ? en : id }
-//   )
-//   const end = isFuture(new Date(story.value?.content.date_end || ''))
-//     ? t('ongoing')
-//     : format(
-//       new Date(story.value?.content.date_end || ''),
-//       DATETIME_FORMAT_DEFAULT,
-//       { locale: locale.value === 'en' ? en : id }
-//     )
-
-//   return `${start} - ${end}`
-// })
-
 const period = computed<{ startDate: string, endDate: string }>(() => {
   const endDate = isFuture(new Date(story.value?.content.date_end || '')) ? t('ongoing') : story.value?.content.date_end || ''
   return {
@@ -117,7 +99,7 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col p-4">
+  <main class="flex flex-col p-4 relative">
     <div
       class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       :style="{ backgroundImage: `url(${featuredImage})`}"
@@ -127,11 +109,11 @@ id:
         {{ title }}
       </HeadingPrimary>
 
-      <MDC :value="excerpt" tag="div" class="flex italic mb-8 text-center" />
+      <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
 
       <div class="flex flex-col items-center gap-2 mb-8">
-        <p class="_external" v-html="url" />
-        <span v-if="period.startDate" class="flex gap-1 items-center">
+        <MDC :value="url" tag="div" class="drop-shadow text-white" />
+        <span v-if="period.startDate" class="drop-shadow flex gap-1 items-center text-white">
           <DatetimeParser :value="period.startDate" :locale="locale" />
           <span>-</span>
           <span v-if="period.endDate === t('ongoing')">{{ t('ongoing') }}</span>
@@ -159,15 +141,15 @@ id:
 <style lang="postcss" scoped>
 :deep(._body) {
   a {
-    @apply text-blue-800;
+    @apply text-white;
 
     &:visited {
-      @apply text-blue-900;
+      @apply text-white/90;
     }
   }
 
   p {
-    @apply mb-4 mx-0;
+    @apply drop-shadow mb-4 mx-0 text-white;
 
     @screen md {
       @apply mx-20;
@@ -193,10 +175,10 @@ id:
 
 :deep(._external) {
   a {
-    @apply text-blue-800;
+    @apply text-white;
 
     &:visited {
-      @apply text-blue-900;
+      @apply text-white/90;
     }
   }
 }

@@ -43,21 +43,38 @@ id:
 </i18n>
 
 <template>
-  <div class="border-b border-solid border-indigo-100 md:border-transparent flex flex-col md:flex-row gap-1 md:items-center">
+  <!-- start: small screen menu -->
+  <div class="flex md:hidden flex-col gap-5 p-12">
     <NuxtLink
       v-for="({label, path}) in items"
-      :key="`menu-${label}`"
+      :key="`menu-small-screen-${label}`"
       :to="localePath({path})"
-      class="hover:bg-indigo-100 flex font-serif leading-none px-3 py-2 md:rounded no-underline"
+      class="flex font-serif leading-none text-sm text-white/50 no-underline"
       @click="emit('menuClicked')"
     >
       {{ t(label) }}
     </NuxtLink>
   </div>
+  <!-- end: small screen menu -->
+
+  <!-- start: large screen menu -->
+  <div class="backdrop-blur-sm bg-[#f4f4f5]/50 hidden md:flex flex-row gap-1 items-center p-1 rounded-full drop-shadow-md">
+    <NuxtLink
+      v-for="({label, path}) in items"
+      :key="`menu-large-screen-${label}`"
+      :to="localePath({path})"
+      class="hover:bg-white/50 flex font-serif leading-none px-4 py-2 rounded-full text-white md:text-black no-underline transition-all duration-300"
+      @click="emit('menuClicked')"
+    >
+      {{ t(label) }}
+    </NuxtLink>
+  </div>
+  <!-- end: large screen menu -->
 </template>
 
 <style lang="postcss" scoped>
 .router-link-active {
-  @apply bg-indigo-200;
+  @apply text-white underline underline-offset-2;
+  @apply md:bg-white md:font-medium md:no-underline md:shadow md:text-black;
 }
 </style>

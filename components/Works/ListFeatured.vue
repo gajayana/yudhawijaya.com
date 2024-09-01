@@ -43,16 +43,16 @@ id:
 
 <template>
   <div id="latest-works" class="flex flex-col w-full">
-    <div class="container flex flex-col items-center mx-auto p-4 w-full">
+    <div class="flex flex-col items-center mx-auto p-4 w-full">
       <HeadingSecondary>
-        {{ t('heading') }}
+        <span class="drop-shadow text-white">{{ t('heading') }}</span>
       </HeadingSecondary>
       <div class="flex w-full">
         <div v-if="pending" class="flex items-center justify-center w-full">
           <p>{{ $t('loading') }}</p>
         </div>
         <div v-else class="flex w-full">
-          <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
+          <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             <CardStory
               v-for="story in stories"
               :key="story.uuid"

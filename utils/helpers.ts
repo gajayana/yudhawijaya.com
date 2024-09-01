@@ -1,8 +1,10 @@
 interface StoryblokImageParams {
-  blur?: number;
-  grayscale?:boolean;
+  // blur?: number;
+  // grayscale?:boolean;
+  filters?: string[];
   url: string;
   height: number;
+  smart?:boolean;
   width: number;
 }
 
@@ -28,13 +30,13 @@ interface seoResult {
   }[]
 }
 
-const storyblokImage = ({ blur = 0, url, grayscale = false, height, width }:StoryblokImageParams):string => {
-  const filters:string[] = []
+const storyblokImage = ({ filters = [], url, height, smart, width }:StoryblokImageParams):string => {
+  const params = ['m', `${width}x${height}`]
 
-  if (blur > 0) { filters.push(`blur(${blur})`) }
-  if (grayscale) { filters.push('grayscale()') }
+  if (smart) { params.push('smart') }
+  if (filters && Array.isArray(filters) && filters.length) { params.push(`filters:${filters.join(':')}`) }
 
-  return `${url}/m/${width}x${height}${filters.length ? '/filters:' + filters.join(':') : ''}`
+  return `${url}/${params.join('/')}`
 }
 
 const seo = ({ canonical, description, image, keywords, title, type, url }: seoParams):seoResult => {

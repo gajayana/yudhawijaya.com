@@ -86,7 +86,7 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col p-4">
+  <main class="flex flex-col p-4 relative">
     <div
       class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       :style="{ backgroundImage: `url(${featuredImage})` }"
@@ -95,11 +95,11 @@ id:
       <HeadingPrimary class="mb-8">
         {{ title }}
       </HeadingPrimary>
-      <div class="flex flex-col items-center gap-2 mb-8">
+      <div class="drop-shadow flex flex-col items-center gap-2 mb-8 text-white">
         <DatetimeParser v-if="publishDate" :value="publishDate" :locale="locale" />
       </div>
 
-      <MDC :value="excerpt" tag="div" class="flex italic mb-8 text-center" />
+      <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
       <MDC :value="body" tag="div" class="_body flex flex-col mb-8" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
@@ -121,23 +121,27 @@ id:
 <style lang="postcss" scoped>
 :deep(._body) {
   a {
-    @apply text-blue-800;
+    @apply text-white;
 
     &:visited {
-      @apply text-blue-900;
+      @apply text-white/90;
     }
   }
 
   p {
-    @apply mb-4 mx-0;
+    @apply drop-shadow mb-4 mx-0 text-white;
 
     @screen md {
       @apply mx-20;
     }
+
+    img {
+      @apply mb-1 w-full;
+    }
   }
 
   pre {
-    @apply bg-black mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
+    @apply backdrop-blur bg-black/30 mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
 
     @screen md {
       @apply mx-20;

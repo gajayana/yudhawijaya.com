@@ -1,8 +1,36 @@
+<script setup>
+const route = useRoute()
+const { t } = useI18n()
+const head = useLocaleHead({
+  addDirAttribute: true,
+  identifierAttribute: 'id',
+  addSeoAttributes: true
+})
+const title = computed(() => t(route.meta.title ?? 'TBD', t('layouts.title'))
+)
+
+console.log({ head: head.value, route, title: title.value })
+</script>
+
 <template>
-  <div class="flex flex-col relative w-full">
-    <HeaderDefault />
-    <slot />
-    <FooterDefault />
-    <NotificationToasts />
-  </div>
+  <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
+    <Head>
+      <Title>{{ title }}</Title>
+      <template v-for="link in head.link" :key="link.id">
+        <Link :id="link.id" :rel="link.rel" :href="link.href" :hreflang="link.hreflang" />
+      </template>
+      <template v-for="meta in head.meta" :key="meta.id">
+        <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
+      </template>
+    </Head>
+    <Body>
+      <div class="flex flex-col relative w-full">
+        <BackgroundPage />
+        <HeaderDefault />
+        <slot />
+        <FooterDefault />
+        <NotificationToasts />
+      </div>
+    </Body>
+  </Html>
 </template>

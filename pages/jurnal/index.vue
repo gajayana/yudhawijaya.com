@@ -64,24 +64,25 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col w-full p-4">
-    <div id="latest-works" class="flex flex-col w-full">
-      <div class="container flex flex-col items-center mx-auto w-full">
+  <main class="flex flex-col gap-8 w-full p-4 relative">
+    <section class="flex flex-col w-full">
+      <div class="flex flex-col gap-4 items-center mx-auto px-4 w-full">
         <HeadingPrimary>
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic text-center">
+        <p class="drop-shadow font-serif italic text-center text-white">
           {{ t('intro') }}
         </p>
-
-        <div class="flex items-center justify-center w-full">
-          <p v-if="pending">
-            {{ $t('loading') }}
-          </p>
-          <JournalsListAll v-else :stories="stories" />
-        </div>
       </div>
-    </div>
+    </section>
+    <section class="flex flex-col w-full">
+      <div class="flex items-center justify-center w-full">
+        <p v-if="pending">
+          {{ $t('loading') }}
+        </p>
+        <JournalsListAll v-else :stories="stories" />
+      </div>
+    </section>
   </main>
 </template>

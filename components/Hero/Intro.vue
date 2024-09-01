@@ -34,17 +34,15 @@ id:
       height: 'calc(100vh - 4rem)'
     }"
   >
-    <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4">
+    <div class="bg-transparent from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4">
       <div class="max-w-xl mx-auto">
-        <HeadingPrimary class="text-white">
-          <MDC :value="t('greeting')" tag="span" />
-        </HeadingPrimary>
+        <MDC :value="t('greeting')" tag="h1" class="drop-shadow font-sans font-medium leading-tight mb-4 sm:mb-8 text-center text-3xl md:text-6xl lg:text-8xl text-white" />
 
-        <MDC :value="t('resume')" tag="div" class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white" />
+        <MDC :value="t('resume')" tag="div" class="drop-shadow font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white" />
 
         <div class="flex items-center justify-center">
           <button
-            class="border border-white flex px-8 py-2 mr-4 rounded-sm text-white uppercase"
+            class="border border-white drop-shadow flex px-8 py-2 mr-4 rounded-sm text-white uppercase"
             @click="scrollToWorks"
           >
             {{ t('buttonWorks') }}
