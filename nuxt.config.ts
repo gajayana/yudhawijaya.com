@@ -54,11 +54,12 @@ export default defineNuxtConfig({
     defaultLocale: 'id',
     locales: [{
       code: 'en',
-      iso: 'en-GB'
+      language: 'en-GB'
     }, {
       code: 'id',
-      iso: 'id-ID'
-    }]
+      language: 'id-ID'
+    }],
+    lazy: false
   },
 
   mdc: { // https://nuxt.com/modules/mdc
