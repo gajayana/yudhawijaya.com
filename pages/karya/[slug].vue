@@ -104,10 +104,9 @@ id:
 
 <template>
   <main class="flex flex-col p-4 relative">
-    <div
-      class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
-      :style="{ backgroundImage: `url(${featuredImage})`}"
-    />
+    <div class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl">
+      <NuxtImg :src="featuredImage" class="object-cover" />
+    </div>
     <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
       <HeadingPrimary class="mb-8">
         {{ title }}

@@ -12,7 +12,7 @@ const stories = computed(() => props.stories)
 
 <template>
   <div class="flex flex-col w-full">
-    <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
       <CardStory
         v-for="story in stories"
         :key="story.uuid"
