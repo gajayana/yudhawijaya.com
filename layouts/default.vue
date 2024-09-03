@@ -6,7 +6,7 @@ const head = useLocaleHead({
   identifierAttribute: 'id',
   addSeoAttributes: true
 })
-const title = computed(() => t(route.meta.title ?? 'TBD', t('layouts.title')))
+const title = computed(() => t(route.meta.title ?? 'layouts.title', t('layouts.title')))
 
 </script>
 

@@ -27,9 +27,13 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
 )
 story.value = data.story
 
-const body = computed<string>(() => {
-  return story.value?.content.body || ''
-})
+// const body = computed<string>(() => {
+//   return story.value?.content.body || ''
+// })
+
+const bodyRich = computed(() =>
+  renderRichText(story.value?.content.body_rich || '')
+)
 
 const excerpt = computed<string>(() => {
   return story.value?.content.excerpt || ''
@@ -100,7 +104,8 @@ id:
       </div>
 
       <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
-      <MDC :value="body" tag="div" class="_body flex flex-col mb-8" />
+      <!-- <MDC :value="body" tag="div" class="_body flex flex-col mb-8" /> -->
+      <div class="_body flex flex-col mb-8" v-html="bodyRich" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
@@ -108,12 +113,7 @@ id:
     </div>
 
     <div class="flex mx-auto w-full max-w-6xl">
-      <RecommenderStories
-        v-if="story"
-        :tags="tags"
-        path="jurnal"
-        :title="title || ''"
-      />
+      <RecommenderStories v-if="story" :tags="tags" path="jurnal" :title="title || ''" />
     </div>
   </main>
 </template>
