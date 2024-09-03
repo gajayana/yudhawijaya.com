@@ -19,9 +19,9 @@ const excerpt = computed(() => {
 const featuredImage = computed(() => {
   return props.story.content.featured_image?.filename
     ? storyblokImage({
-      height: (9 / 16) * 480,
+      height: (9 / 16) * 768,
       url: props.story.content.featured_image?.filename,
-      width: 480
+      width: 768
     })
     : null
 })
