@@ -5,10 +5,10 @@ const { t, locale } = useI18n({
 })
 const sb = useSb()
 const storyblokApi = useStoryblokApi()
-const stories = ref<StoryblokStory[] | null | undefined>(null)
+const stories = ref<any[] | null | undefined>(null)
 const notifications = useToastNotifications()
 
-const { data, pending, error } = await useAsyncData( //, refresh
+const { data, status, error } = await useAsyncData( //, refresh
   'works',
   async () => await storyblokApi.get(
     'cdn/stories',
@@ -17,7 +17,7 @@ const { data, pending, error } = await useAsyncData( //, refresh
       version: 'published',
       starts_with: 'works',
       per_page: 6,
-      sort_by: 'content.is_featured:asc',
+      sort_by: 'content.is_featured:desc',
       cv: sb.cv || Number(Date.now())
     }
   )
@@ -48,17 +48,12 @@ id:
         <span class="drop-shadow text-white">{{ t('heading') }}</span>
       </HeadingSecondary>
       <div class="flex w-full">
-        <div v-if="pending" class="flex items-center justify-center w-full">
+        <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex items-center justify-center w-full">
           <p>{{ $t('loading') }}</p>
         </div>
         <div v-else class="flex w-full">
           <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-            <CardStory
-              v-for="story in stories"
-              :key="story.uuid"
-              :story="story"
-              path="karya"
-            />
+            <CardStory v-for="story in stories" :key="story.uuid" :story="story" path="karya" />
           </div>
         </div>
       </div>
