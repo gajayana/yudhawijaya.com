@@ -9,7 +9,7 @@ const stories = ref<any[] | null | undefined>(null)
 const notifications = useToastNotifications()
 
 const { data, status, error } = await useAsyncData( //, refresh
-  'works',
+  `featured-works-${locale}`,
   async () => await storyblokApi.get(
     'cdn/stories',
     {

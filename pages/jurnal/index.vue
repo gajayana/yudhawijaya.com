@@ -26,8 +26,8 @@ useHead(seo({
   canonical: `${runtimeConfig.public.baseUrl}/jurnal`
 }))
 
-const { data, pending, error } = await useAsyncData( //, refresh
-  'posts',
+const { data, status, error } = await useAsyncData( //, refresh
+  `posts-${locale}`,
   async () => await storyblokApi.get(
     'cdn/stories',
     {
@@ -78,7 +78,7 @@ id:
     </section>
     <section class="flex flex-col w-full">
       <div class="flex items-center justify-center w-full">
-        <p v-if="pending">
+        <p v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow text-white">
           {{ $t('loading') }}
         </p>
         <JournalsListAll v-else :stories="stories" />
