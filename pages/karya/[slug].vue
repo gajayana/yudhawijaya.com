@@ -105,7 +105,7 @@ id:
 <template>
   <main class="flex flex-col p-4 relative">
     <div class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl">
-      <NuxtImg :src="featuredImage" class="object-cover" />
+      <NuxtImg :src="featuredImage" class="object-cover w-full" />
     </div>
     <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
       <HeadingPrimary class="mb-8">
