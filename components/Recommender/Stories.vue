@@ -23,8 +23,8 @@ const storyblokApi = useStoryblokApi()
 const stories = ref<StoryblokStory[] | null | undefined>(null)
 const notifications = useToastNotifications()
 
-const { data, pending, error } = await useAsyncData( //, refresh
-  'posts',
+const { data, status, error } = await useAsyncData( //, refresh
+  `related-posts-${props.path}`,
   async () => await storyblokApi.get(
     'cdn/stories',
     {
@@ -62,24 +62,24 @@ id:
 </i18n>
 
 <template>
-  <div class="flex justify-center">
-    <div v-if="pending" class="flex">
-      {{ $t('loading') }}
-    </div>
-    <div v-else class="flex flex-col items-center w-full">
-      <HeadingSecondary>
-        {{ t('heading') }}
-      </HeadingSecondary>
-      <div class="gap-8 grid grid-cols-1 md:grid-cols-3">
-        <ClientOnly>
+  <ClientOnly>
+    <div class="flex justify-center">
+      <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow flex text-white">
+        {{ $t('loading') }}
+      </div>
+      <div v-else class="flex flex-col items-center w-full">
+        <HeadingSecondary>
+          {{ t('heading') }}
+        </HeadingSecondary>
+        <div class="gap-8 grid grid-cols-1 md:grid-cols-3">
           <CardStory
             v-for="story in stories"
             :key="story.uuid"
             :path="props.path"
             :story="story"
           />
-        </ClientOnly>
+        </div>
       </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
