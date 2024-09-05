@@ -31,8 +31,8 @@ export default defineNuxtConfig({
     '@nuxtjs/eslint-module', // https://github.com/ymmooot/nuxt-jsonld
     'nuxt-jsonld', // https://nuxt.com/modules/lodash
     'nuxt-lodash',
-    '@nuxtjs/mdc', '@nuxtjs/sitemap', // https://nuxt.com/modules/icon
-    '@nuxt/icon', '@nuxt/image'],
+    '@nuxtjs/mdc', // https://nuxt.com/modules/icon
+    '@nuxt/icon', '@nuxt/image', '@nuxtjs/sitemap'],
   googleFonts: { // https://google-fonts.nuxtjs.org/
     download: true,
     families: {
