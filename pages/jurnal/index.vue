@@ -10,6 +10,7 @@ const { t, locale } = useI18n({
 const storyblokApi = useStoryblokApi()
 const notifications = useToastNotifications()
 
+const fetchStatus = ref<ASYNC_DATA_STATUS>(ASYNC_DATA_STATUS.PENDING)
 const stories = ref<StoryblokStory[] | null | undefined>(null)
 
 defineI18nRoute({
@@ -26,29 +27,40 @@ useHead(seo({
   canonical: `${runtimeConfig.public.baseUrl}/jurnal`
 }))
 
-const { data, status, error } = await useAsyncData( //, refresh
-  `posts-${locale}`,
-  async () => await storyblokApi.get(
-    'cdn/stories',
-    {
-      language: locale.value,
-      version: 'published',
-      starts_with: 'posts',
-      per_page: 12,
-      sort_by: 'first_published_at:desc',
-      cv: sb.cv || Number(Date.now())
-    }
+const fetchStories = async () => {
+  const { data, status, error } = await useAsyncData( //, refresh
+    `posts-${locale}`,
+    async () => await storyblokApi.get(
+      'cdn/stories',
+      {
+        language: locale.value,
+        version: 'published',
+        starts_with: 'posts',
+        per_page: 12,
+        sort_by: 'first_published_at:desc',
+        cv: sb.cv || Number(Date.now())
+      }
+    )
   )
-)
 
-if (error.value) {
-  notifications.add({
-    type: 'error',
-    message: 'Error fetching data'
-  })
+  if (error.value) {
+    notifications.add({
+      type: 'error',
+      message: 'Error fetching data'
+    })
+  }
+
+  fetchStatus.value = status.value as ASYNC_DATA_STATUS
+  stories.value = data.value ? data.value.data.stories as StoryblokStory[] : null
 }
 
-stories.value = data.value ? data.value.data.stories as StoryblokStory[] : null
+// Initial fetch
+await fetchStories()
+
+// Watch for locale changes and refetch data
+watch(locale, async () => {
+  await fetchStories()
+})
 
 </script>
 
@@ -78,7 +90,7 @@ id:
     </section>
     <section class="flex flex-col w-full">
       <div class="flex items-center justify-center w-full">
-        <p v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow text-white">
+        <p v-if="fetchStatus === ASYNC_DATA_STATUS.PENDING" class="drop-shadow text-white">
           {{ $t('loading') }}
         </p>
         <JournalsListAll v-else :stories="stories" />
