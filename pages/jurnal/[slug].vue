@@ -32,7 +32,7 @@ const { data, status, error } = await useAsyncData( //, refresh
 
 if (error.value) {
   notifications.add({
-    type: 'error',
+    type: NOTIFICATION_TYPE.ERROR,
     message: 'Error fetching data'
   })
 }

@@ -4,11 +4,11 @@ const items = notifications.notifications
 
 const icon = (notification: ToastNotification): string => {
   switch (notification.type) {
-    case 'error':
+    case NOTIFICATION_TYPE.ERROR:
       return 'mdi:alert-circle'
-    case 'warning':
+    case NOTIFICATION_TYPE.WARNING:
       return 'mdi:alert-circle-outline'
-    case 'success':
+    case NOTIFICATION_TYPE.SUCCESS:
       return 'mdi:checkbox-marked-circle'
     default:
       return 'mdi:alert-circle'
@@ -18,11 +18,11 @@ const icon = (notification: ToastNotification): string => {
 const wrapperClasses = (notification: ToastNotification): string => {
   const core = ['border', 'border-solid', 'flex', 'items-center', 'gap-2', 'mb-2', 'last:mb-0', 'p-2', 'rounded-md']
 
-  if (notification.type === 'error') { return [...core, 'bg-red-200', 'border-red-700', 'text-red-700'].join(' ') }
+  if (notification.type === NOTIFICATION_TYPE.ERROR) { return [...core, 'bg-red-200', 'border-red-700', 'text-red-700'].join(' ') }
 
-  if (notification.type === 'success') { return [...core, 'bg-lime-200', 'border-lime-700', 'text-lime-700'].join(' ') }
+  if (notification.type === NOTIFICATION_TYPE.SUCCESS) { return [...core, 'bg-lime-200', 'border-lime-700', 'text-lime-700'].join(' ') }
 
-  if (notification.type === 'warning') { return [...core, 'bg-yellow-200', 'border-yellow-700', 'text-yellow-700'].join(' ') }
+  if (notification.type === NOTIFICATION_TYPE.WARNING) { return [...core, 'bg-yellow-200', 'border-yellow-700', 'text-yellow-700'].join(' ') }
 
   return core.join(' ')
 }

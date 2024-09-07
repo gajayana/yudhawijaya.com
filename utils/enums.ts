@@ -4,3 +4,9 @@ export enum ASYNC_DATA_STATUS {
   PENDING = 'pending',
   SUCCESS = 'success',
 }
+
+export enum NOTIFICATION_TYPE {
+  ERROR = 'error',
+  WARNING = 'warning',
+  SUCCESS = 'success',
+}

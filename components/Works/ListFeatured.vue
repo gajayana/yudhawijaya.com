@@ -27,7 +27,7 @@ const { data, status, error } = await useLazyAsyncData( //, refresh
 
 if (error.value) {
   notifications.add({
-    type: 'error',
+    type: NOTIFICATION_TYPE.ERROR,
     message: 'Error fetching data'
   })
 }
