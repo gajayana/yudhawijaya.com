@@ -5,9 +5,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: SEO_TITLE_DEFAULT,
-      link: [
-        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
-      ],
+      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -16,13 +14,21 @@ export default defineNuxtConfig({
         { name: 'twitter:card', content: 'summary' },
         { name: 'twitter:creator', content: '@tuan_yudha' },
         { name: 'twitter:site', content: '@tuan_yudha' },
-        { name: 'og:site_name', content: 'Yosef Yudha Wijaya', property: 'og:site_name' }
+        {
+          name: 'og:site_name',
+          content: 'Yosef Yudha Wijaya',
+          property: 'og:site_name'
+        }
       ]
     }
   },
 
-  modules: ['@nuxtjs/i18n', // https://github.com/nuxt-modules/tailwindcss
-    '@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@storyblok/nuxt', [
+  modules: [
+    '@nuxtjs/i18n', // https://github.com/nuxt-modules/tailwindcss
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
+    '@storyblok/nuxt',
+    [
       '@pinia/nuxt', // https://nuxt.com/modules/pinia
       {
         autoImports: ['defineStore', 'acceptHMRUpdate']
@@ -32,8 +38,12 @@ export default defineNuxtConfig({
     'nuxt-jsonld', // https://nuxt.com/modules/lodash
     'nuxt-lodash',
     '@nuxtjs/mdc', // https://nuxt.com/modules/icon
-    '@nuxt/icon', '@nuxt/image', '@nuxtjs/sitemap'],
-  googleFonts: { // https://google-fonts.nuxtjs.org/
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxtjs/sitemap'
+  ],
+  googleFonts: {
+    // https://google-fonts.nuxtjs.org/
     download: true,
     families: {
       Roboto: {
@@ -52,17 +62,21 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts',
     baseUrl: process.env.NUXT_BASE_URL,
     defaultLocale: 'id',
-    locales: [{
-      code: 'en',
-      language: 'en-GB'
-    }, {
-      code: 'id',
-      language: 'id-ID'
-    }],
+    locales: [
+      {
+        code: 'en',
+        language: 'en-GB'
+      },
+      {
+        code: 'id',
+        language: 'id-ID'
+      }
+    ],
     lazy: false
   },
 
-  mdc: { // https://nuxt.com/modules/mdc
+  mdc: {
+    // https://nuxt.com/modules/mdc
     // components: {
     //   prose: false, // Disable predefined prose components
     //   map: {
@@ -71,8 +85,17 @@ export default defineNuxtConfig({
     // }
   },
 
-  site: { // https://nuxtseo.com/sitemap/getting-started/installation
-    url: process.env.NUXT_BASE_URL
+  site: {
+    // https://nuxtseo.com/sitemap/getting-started/installation
+    url: process.env.NUXT_BASE_URL,
+    name: 'Yosef Yudha Wijaya'
+  },
+
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: process.env.NUXT_BASE_URL,
+    gzip: true,
+    sources: ['/api/__sitemap__/urls']
   },
 
   // https://nuxt.com/modules/storyblok
@@ -102,27 +125,25 @@ export default defineNuxtConfig({
     }
   },
 
-  nitro: {
-    prerender: {
-      crawlLinks: true,
-      routes: [
-        '/',
-        '/karya',
-        '/jurnal',
-        '/kontak',
-        '/en',
-        '/en/works',
-        '/en/journals',
-        '/en/contact'
-      ]
-    }
-  },
+  // nitro: {
+  //   prerender: {
+  //     crawlLinks: true,
+  //     routes: [
+  //       '/',
+  //       '/karya',
+  //       '/jurnal',
+  //       '/kontak',
+  //       '/en',
+  //       '/en/works',
+  //       '/en/journals',
+  //       '/en/contact'
+  //     ]
+  //   }
+  // },
 
   vite: {
     optimizeDeps: {
-      exclude: [
-        'fsevents'
-      ]
+      exclude: ['fsevents']
     }
   },
 
