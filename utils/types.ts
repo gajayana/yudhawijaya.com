@@ -1,3 +1,5 @@
+// import { type ISbRichtext, RichTextSchema } from '@storyblok/js'
+
 type ToastNotification = {
   type: 'error' | 'success' | 'warning',
   message: string
@@ -39,6 +41,7 @@ interface StoryblokStory {
   content: {
     _uid: string;
     body?: string;
+    body_rich?: any;
     component?: string;
     date_end?: string;
     date_start?: string;

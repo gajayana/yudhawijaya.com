@@ -20,7 +20,7 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col w-full">
+  <main class="flex flex-col relative w-full">
     <HeroIntro />
     <WorksListFeatured />
   </main>

@@ -25,6 +25,12 @@ Start the development server on http://localhost:3000
 npm run dev
 ```
 
+Check if there are issues in production build
+
+```bash
+yarn build && node .output/server/index.mjs
+```
+
 ## Production
 
 Build the application for production:

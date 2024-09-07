@@ -8,6 +8,6 @@
   }
 
   a {
-    @apply underline;
+    @apply underline underline-offset-2;
   }
 }

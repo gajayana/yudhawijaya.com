@@ -1,5 +1,3 @@
-import { StoryblokSpace } from '~~/utils/types'
-
 export const useSb = defineStore(
   'storyblok',
   {

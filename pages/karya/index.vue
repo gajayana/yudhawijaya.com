@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StoryblokStory } from '~~/utils/types'
+
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
@@ -8,7 +8,6 @@ const { t, locale } = useI18n({
   useScope: 'local'
 })
 const notifications = useToastNotifications()
-const stories = ref<StoryblokStory[] | null | undefined>(null)
 
 defineI18nRoute({
   paths: {
@@ -24,9 +23,9 @@ useHead(seo({
   canonical: `${runtimeConfig.public.baseUrl}/karya`
 }))
 
-const { data, pending, error } = await useAsyncData( //, refresh
-  'works',
-  async () => await storyblokApi.get(
+const { data, status, error } = await useAsyncData( //, refresh
+  `works-${locale}`,
+  () => storyblokApi.get(
     'cdn/stories',
     {
       language: locale.value,
@@ -36,17 +35,27 @@ const { data, pending, error } = await useAsyncData( //, refresh
       sort_by: 'content.date_end:desc',
       cv: sb.cv || Number(Date.now())
     }
-  )
+  ),
+  {
+    watch: [locale]
+  }
 )
 
 if (error.value) {
   notifications.add({
-    type: 'error',
+    type: NOTIFICATION_TYPE.ERROR,
     message: 'Error fetching data'
   })
 }
 
-stories.value = data.value ? data.value.data.stories as StoryblokStory[] : null
+const stories = computed(() =>
+  data.value ? data.value.data.stories : null
+)
+
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData()
+})
 
 </script>
 
@@ -64,24 +73,28 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col w-full p-4">
-    <div class="flex flex-col w-full">
-      <div class="container flex flex-col items-center mx-auto w-full">
-        <HeadingPrimary>
+  <main class="flex flex-col gap-8 w-full p-4 relative">
+    <section class="flex flex-col w-full">
+      <div class="flex flex-col gap-4 items-center mx-auto px-4 w-full">
+        <HeadingPrimary class="!mb-0">
           {{ t('heading') }}
         </HeadingPrimary>
 
-        <p class="font-serif mb-8 italic text-center">
+        <p class="drop-shadow font-serif italic text-center text-white">
           {{ t('intro') }}
         </p>
-
-        <div class="flex items-center justify-center w-full">
-          <p v-if="pending">
-            {{ $t('loading') }}
-          </p>
-          <WorksListAll v-else :stories="stories" />
-        </div>
       </div>
-    </div>
+    </section>
+    <section class="flex flex-col w-full">
+      <div class="flex items-center justify-center w-full">
+        <div
+          v-if="status === ASYNC_DATA_STATUS.PENDING"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+        >
+          <CardStoryLoader v-for="i in 4" :key="`card-story-loader-${i}`" />
+        </div>
+        <WorksListAll v-else :stories="stories" />
+      </div>
+    </section>
   </main>
 </template>

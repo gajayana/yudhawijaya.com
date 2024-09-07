@@ -1,22 +1,12 @@
 <script setup lang="ts">
-import MarkdownIt from 'markdown-it'
-// eslint-disable-next-line import/no-duplicates
-import { format } from 'date-fns'
-// eslint-disable-next-line import/no-duplicates
-import { enGB as en, id } from 'date-fns/locale'
-import { StoryblokStoriesResponse, StoryblokStory } from '~~/utils/types'
-
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const sb = useSb()
 const { t, locale } = useI18n({
   useScope: 'local'
 })
-
+const notifications = useToastNotifications()
 const storyblokApi = useStoryblokApi()
-const { $mdit } = useNuxtApp()
-
-const story = ref<StoryblokStory | null | undefined>(null)
 
 defineI18nRoute({
   paths: {
@@ -25,22 +15,38 @@ defineI18nRoute({
   }
 })
 
-const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-  `cdn/stories/posts/${route.params.slug}`,
+const { data, status, error } = await useAsyncData( //, refresh
+  `post-${route.params.slug}-${locale}`,
+  () => storyblokApi.get(
+      `cdn/stories/posts/${route.params.slug}`,
+      {
+        language: locale.value,
+        version: 'published',
+        cv: sb.cv || Number(Date.now())
+      }
+  ),
   {
-    language: locale.value,
-    version: 'published',
-    cv: sb.cv || Number(Date.now())
+    watch: [locale]
   }
 )
-story.value = data.story
 
-const body = computed<string | undefined>(() => {
-  return ($mdit as MarkdownIt).render(story.value?.content.body || '')
-})
+if (error.value) {
+  notifications.add({
+    type: NOTIFICATION_TYPE.ERROR,
+    message: 'Error fetching data'
+  })
+}
 
-const excerpt = computed<string | undefined>(() => {
-  return ($mdit as MarkdownIt).renderInline(story.value?.content.excerpt || '')
+const story = computed(() =>
+  data.value ? data.value.data.story : null
+)
+
+const bodyRich = computed(() =>
+  renderRichText(story.value?.content.body_rich || '')
+)
+
+const excerpt = computed<string>(() => {
+  return story.value?.content.excerpt || ''
 })
 
 const featuredImage = computed<string | undefined>(() => {
@@ -60,9 +66,13 @@ const title = computed<string | undefined>(() => {
   return story.value?.content.title
 })
 
-const publishDate = computed<string | undefined>(() => {
-  if (!story.value?.first_published_at) { return }
-  return format(new Date(story.value?.first_published_at || ''), DATETIME_FORMAT_DEFAULT, { locale: locale.value === 'en' ? en : id })
+const publishDate = computed<string>(() => {
+  return story.value?.first_published_at || ''
+})
+
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData()
 })
 
 useHead(seo({
@@ -95,33 +105,47 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col p-4">
-    <div
-      class="aspect-video bg-center bg-cover bg-no-repeat mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
-      :style="{ backgroundImage: `url(${featuredImage})` }"
-    />
-    <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
-      <HeadingPrimary class="mb-8">
-        {{ title }}
-      </HeadingPrimary>
-      <div class="flex flex-col items-center gap-2 mb-8">
-        <span>{{ publishDate }}</span>
+  <main class="flex flex-col p-4 relative">
+    <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex flex-col">
+      <div
+        class="animate-pulse aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+      />
+      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+        <div class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl" />
+        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40" />
+        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl" />
+        <div class="flex flex-col gap-2 w-full">
+          <div v-for="i in 5" :key="`skeleton-paragraph-${i}`" class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full" />
+        </div>
       </div>
-      <p class="flex italic mb-8 text-center" v-html="excerpt" />
-      <div class="_body flex flex-col mb-8" v-html="body" />
+    </div>
+
+    <div v-else class="flex flex-col">
+      <div
+        class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+      >
+        <NuxtImg :src="featuredImage" class="object-cover w-full" />
+      </div>
+      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+        <HeadingPrimary class="mb-8">
+          {{ title }}
+        </HeadingPrimary>
+        <div class="drop-shadow flex flex-col items-center gap-2 mb-8 text-white">
+          <DatetimeParser v-if="publishDate" :value="publishDate" :locale="locale" />
+        </div>
+
+        <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
+        <!-- <MDC :value="body" tag="div" class="_body flex flex-col mb-8" /> -->
+        <div class="_body flex flex-col mb-8" v-html="bodyRich" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
-    </div>
+      </div>
 
-    <div class="flex mx-auto w-full max-w-6xl">
-      <RecommenderStories
-        v-if="story"
-        :tags="tags"
-        path="jurnal"
-        :title="title || ''"
-      />
+      <div class="flex mx-auto w-full max-w-6xl">
+        <RecommenderStories v-if="story" :tags="tags" path="jurnal" :slug="route.params.slug as string" :title="title || ''" />
+      </div>
     </div>
   </main>
 </template>
@@ -129,23 +153,27 @@ id:
 <style lang="postcss" scoped>
 :deep(._body) {
   a {
-    @apply text-blue-800;
+    @apply text-white;
 
     &:visited {
-      @apply text-blue-900;
+      @apply text-white/90;
     }
   }
 
   p {
-    @apply mb-4 mx-0;
+    @apply drop-shadow mb-4 mx-0 text-white;
 
     @screen md {
       @apply mx-20;
     }
+
+    img {
+      @apply mb-1 w-full;
+    }
   }
 
   pre {
-    @apply bg-black mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
+    @apply backdrop-blur bg-black/30 mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
 
     @screen md {
       @apply mx-20;
