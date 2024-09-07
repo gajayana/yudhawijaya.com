@@ -9,8 +9,6 @@ const { t, locale } = useI18n({
 
 const storyblokApi = useStoryblokApi()
 
-const story = ref<StoryblokStory | null | undefined>(null)
-
 defineI18nRoute({
   paths: {
     en: '/works/[slug]',
@@ -18,15 +16,41 @@ defineI18nRoute({
   }
 })
 
-const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-  `cdn/stories/works/${route.params.slug}`,
+const { data, status, error } = await useAsyncData(
+  `post-${route.params.slug}-${locale}`,
+  () => storyblokApi.get(
+      `cdn/stories/works/${route.params.slug}`,
+      {
+        language: locale.value,
+        version: 'published',
+        cv: sb.cv || Number(Date.now())
+      }
+  ),
   {
-    language: locale.value,
-    version: 'published',
-    cv: sb.cv || Number(Date.now())
+    watch: [locale]
   }
 )
-story.value = data.story
+
+if (error.value) {
+  notifications.add({
+    type: 'error',
+    message: 'Error fetching data'
+  })
+}
+
+const story = computed(() =>
+  data.value ? data.value.data.story : null
+)
+
+// const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
+//   `cdn/stories/works/${route.params.slug}`,
+//   {
+//     language: locale.value,
+//     version: 'published',
+//     cv: sb.cv || Number(Date.now())
+//   }
+// )
+// story.value = data.story
 
 // const body = computed<string>(() => {
 //   return story.value?.content.body || ''
@@ -73,6 +97,11 @@ const urlIsInvalid = computed<boolean>(() => {
   return story.value?.content.url_is_invalid || false
 })
 
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData()
+})
+
 useHead(seo({
   description: excerpt.value || '',
   image: featuredImage.value || undefined,
@@ -104,35 +133,50 @@ id:
 
 <template>
   <main class="flex flex-col p-4 relative">
-    <div class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl">
-      <NuxtImg :src="featuredImage" class="object-cover w-full" />
-    </div>
-    <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
-      <HeadingPrimary class="mb-8">
-        {{ title }}
-      </HeadingPrimary>
-
-      <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
-
-      <div class="flex flex-col items-center gap-2 mb-8">
-        <MDC :value="url" tag="div" class="drop-shadow text-white" />
-        <span v-if="period.startDate" class="drop-shadow flex gap-1 items-center text-white">
-          <DatetimeParser :value="period.startDate" :locale="locale" />
-          <span>-</span>
-          <span v-if="period.endDate === t('ongoing')">{{ t('ongoing') }}</span>
-          <DatetimeParser v-else :value="period.endDate" :locale="locale" />
-        </span>
+    <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex flex-col">
+      <div
+        class="animate-pulse aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+      />
+      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+        <div class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl" />
+        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40" />
+        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl" />
+        <div class="flex flex-col gap-2 w-full">
+          <div v-for="i in 5" :key="`skeleton-paragraph-${i}`" class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full" />
+        </div>
       </div>
+    </div>
 
-      <!-- <MDC :value="body" tag="div" class="_body flex flex-col mb-8" /> -->
-      <div class="_body flex flex-col mb-8" v-html="bodyRich" />
+    <div v-else class="flex flex-col">
+      <div class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl">
+        <NuxtImg :src="featuredImage" class="object-cover w-full" />
+      </div>
+      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+        <HeadingPrimary class="mb-8">
+          {{ title }}
+        </HeadingPrimary>
+
+        <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
+
+        <div class="flex flex-col items-center gap-2 mb-8">
+          <MDC :value="url" tag="div" class="drop-shadow text-white" />
+          <span v-if="period.startDate" class="drop-shadow flex gap-1 items-center text-white">
+            <DatetimeParser :value="period.startDate" :locale="locale" />
+            <span>-</span>
+            <span v-if="period.endDate === t('ongoing')">{{ t('ongoing') }}</span>
+            <DatetimeParser v-else :value="period.endDate" :locale="locale" />
+          </span>
+        </div>
+
+        <div class="_body flex flex-col mb-8" v-html="bodyRich" />
 
       <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
-    </div>
-    <div class="flex mx-auto w-full max-w-6xl">
-      <RecommenderStories v-if="story" :tags="tags" path="karya" :title="title || ''" />
+      </div>
+      <div class="flex mx-auto w-full max-w-6xl">
+        <RecommenderStories v-if="story" :tags="tags" path="karya" :slug="route.params.slug as string" :title="title || ''" />
+      </div>
     </div>
   </main>
 </template>

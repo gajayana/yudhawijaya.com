@@ -10,6 +10,10 @@ const props = defineProps({
     required: false,
     default: () => ([])
   },
+  slug: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -20,47 +24,24 @@ const { t, locale } = useI18n({
 })
 
 const storyblokApi = useStoryblokApi()
-const notifications = useToastNotifications()
 
-const { data, status, error } = await useAsyncData( //, refresh
-  `related-posts-${props.path}`,
-  () => storyblokApi.get(
-    'cdn/stories',
-    {
-      language: locale.value,
-      version: 'published',
-      starts_with: props.path === 'karya' ? 'works' : 'posts',
-      sort_by: 'content.date_end:desc',
-      cv: sb.cv || Number(Date.now()),
-      filter_query: {
-        title: {
-          not_in: props.title
-        }
-      },
-      with_tag: props?.tags?.join(','),
-      excluding_fields: ['body'].join(',')
-    }
-  ),
+const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
+  'cdn/stories',
   {
-    watch: [locale]
+    language: locale.value,
+    version: 'published',
+    starts_with: props.path === 'karya' ? 'works' : 'posts',
+    sort_by: 'content.date_end:desc',
+    cv: sb.cv || Number(Date.now()),
+    with_tag: props?.tags?.join(','),
+    excluding_fields: ['body'].join(','),
+    excluding_slugs: [`${props.path === 'karya' ? 'works' : 'posts'}/${props.slug}`].join(',')
   }
 )
 
-if (error.value) {
-  notifications.add({
-    type: 'error',
-    message: 'Error fetching data'
-  })
-}
-
 const stories = computed(() =>
-  data.value ? useSampleSize(data.value.data.stories, 3) : null
+  data.stories?.length ? useSampleSize(data.stories, 3) : null
 )
-
-// manually refresh data when locale changes
-watch(locale, async () => {
-  await refreshNuxtData()
-})
 
 </script>
 
@@ -74,10 +55,10 @@ id:
 <template>
   <ClientOnly>
     <div class="flex justify-center">
-      <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow flex text-white">
+      <!-- <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow flex text-white">
         {{ $t('loading') }}
-      </div>
-      <div v-else class="flex flex-col items-center w-full">
+      </div> -->
+      <div class="flex flex-col items-center w-full">
         <HeadingSecondary>
           {{ t('heading') }}
         </HeadingSecondary>
