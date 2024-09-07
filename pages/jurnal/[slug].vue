@@ -17,6 +17,23 @@ defineI18nRoute({
   }
 })
 
+const { data: datum, status: statum, error: errom } = await useAsyncData( //, refresh
+  `post-${route.params.slug}-${locale}`,
+  () => {
+    return Promise.all(storyblokApi.get(
+      `cdn/stories/posts/${route.params.slug}`,
+      {
+        language: locale.value,
+        version: 'published',
+        cv: sb.cv || Number(Date.now())
+      }
+    ))
+  },
+  {
+    watch: [locale]
+  }
+)
+
 const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
   `cdn/stories/posts/${route.params.slug}`,
   {
@@ -25,6 +42,7 @@ const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
     cv: sb.cv || Number(Date.now())
   }
 )
+
 story.value = data.story
 
 // const body = computed<string>(() => {

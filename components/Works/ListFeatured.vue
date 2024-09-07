@@ -5,12 +5,11 @@ const { t, locale } = useI18n({
 })
 const sb = useSb()
 const storyblokApi = useStoryblokApi()
-const stories = ref<any[] | null | undefined>(null)
 const notifications = useToastNotifications()
 
-const { data, status, error } = await useAsyncData( //, refresh
+const { data, status, error } = await useLazyAsyncData( //, refresh
   `featured-works-${locale}`,
-  async () => await storyblokApi.get(
+  () => storyblokApi.get(
     'cdn/stories',
     {
       language: locale.value,
@@ -20,7 +19,10 @@ const { data, status, error } = await useAsyncData( //, refresh
       sort_by: 'content.is_featured:desc',
       cv: sb.cv || Number(Date.now())
     }
-  )
+  ),
+  {
+    watch: [locale]
+  }
 )
 
 if (error.value) {
@@ -30,7 +32,14 @@ if (error.value) {
   })
 }
 
-stories.value = data?.value?.data?.stories as StoryblokStory[]
+const stories = computed(() =>
+  data.value ? data.value.data.stories : null
+)
+
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData()
+})
 
 </script>
 
@@ -48,8 +57,11 @@ id:
         <span class="drop-shadow text-white">{{ t('heading') }}</span>
       </HeadingSecondary>
       <div class="flex w-full">
-        <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex items-center justify-center w-full">
-          <p>{{ $t('loading') }}</p>
+        <div
+          v-if="status === ASYNC_DATA_STATUS.PENDING"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+        >
+          <CardStoryLoader v-for="i in 6" :key="`card-story-loader-${i}`" />
         </div>
         <div v-else class="flex w-full">
           <div v-if="stories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">

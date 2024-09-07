@@ -10,8 +10,6 @@ const { t, locale } = useI18n({
 const storyblokApi = useStoryblokApi()
 const notifications = useToastNotifications()
 
-// const stories = ref<StoryblokStory[] | null | undefined>(null)
-
 defineI18nRoute({
   paths: {
     en: '/journals',
@@ -28,7 +26,7 @@ useHead(seo({
 
 const { data, status, error } = await useAsyncData( //, refresh
   `posts-${locale}`,
-  async () => await storyblokApi.get(
+  () => storyblokApi.get(
     'cdn/stories',
     {
       language: locale.value,
@@ -51,7 +49,14 @@ if (error.value) {
   })
 }
 
-const stories = data.value ? data.value.data.stories as StoryblokStory[] : null
+const stories = computed(() =>
+  data.value ? data.value.data.stories : null
+)
+
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData()
+})
 
 </script>
 
@@ -81,9 +86,12 @@ id:
     </section>
     <section class="flex flex-col w-full">
       <div class="flex items-center justify-center w-full">
-        <p v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow text-white">
-          {{ $t('loading') }}
-        </p>
+        <div
+          v-if="status === ASYNC_DATA_STATUS.PENDING"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+        >
+          <CardStoryLoader v-for="i in 4" :key="`card-story-loader-${i}`" />
+        </div>
         <JournalsListAll v-else :stories="stories" />
       </div>
     </section>

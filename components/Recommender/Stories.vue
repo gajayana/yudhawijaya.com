@@ -20,12 +20,11 @@ const { t, locale } = useI18n({
 })
 
 const storyblokApi = useStoryblokApi()
-const stories = ref<StoryblokStory[] | null | undefined>(null)
 const notifications = useToastNotifications()
 
 const { data, status, error } = await useAsyncData( //, refresh
   `related-posts-${props.path}`,
-  async () => await storyblokApi.get(
+  () => storyblokApi.get(
     'cdn/stories',
     {
       language: locale.value,
@@ -41,7 +40,10 @@ const { data, status, error } = await useAsyncData( //, refresh
       with_tag: props?.tags?.join(','),
       excluding_fields: ['body'].join(',')
     }
-  )
+  ),
+  {
+    watch: [locale]
+  }
 )
 
 if (error.value) {
@@ -51,7 +53,15 @@ if (error.value) {
   })
 }
 
-stories.value = useSampleSize(data?.value?.data?.stories as StoryblokStory[], 3)
+const stories = computed(() =>
+  data.value ? useSampleSize(data.value.data.stories, 3) : null
+)
+
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData()
+})
+
 </script>
 
 <i18n lang="yaml">
