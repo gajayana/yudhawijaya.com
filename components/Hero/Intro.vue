@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import type { ISbRichtext, ISbStoryData } from 'storyblok-js-client'
+
+const props = defineProps({
+  story: {
+    type: Object as PropType<ISbStoryData>,
+    required: true
+  }
+})
+
 const { t } = useI18n({
   useScope: 'local'
 })
@@ -14,17 +23,22 @@ const scrollToWorks = () => {
     return window.scrollTo(0, el.offsetTop)
   }
 }
+
+const hero = computed(() => {
+  const datum = props.story.content.body.find((item:{component:string; headline:string; teaser:string; teaser_rich:ISbRichtext }) => item.component.toLowerCase() === 'hero')
+  return {
+    title: datum.headline || null,
+    text: datum.teaser_rich || null
+  }
+})
+
 </script>
 
 <i18n lang="yaml">
 en:
-  greeting: "Hi, I'm Yudha"
   buttonWorks: 'Works & Contributions'
-  resume: 'I am a professional fullstack developer who specializes in [Vue.js](https://vuejs.org/), [Nuxt.js](https://nuxtjs.org/), [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [Laravel](https://laravel.com/), [WordPress](https://wordpress.org/), and [Strapi](https://strapi.io/).'
 id:
-  greeting: 'Halo, saya Yudha'
   buttonWorks: 'Karya & Kontribusi'
-  resume: 'Saya pengembang aplikasi berbasis web profesional yang berpengalaman dengan [Vue.js](https://vuejs.org/), [Nuxt.js](https://nuxtjs.org/), [React](https://reactjs.org/), [Next.js](https://nextjs.org/), [Laravel](https://laravel.com/), [WordPress](https://wordpress.org/), dan [Strapi](https://strapi.io/).'
 </i18n>
 
 <template>
@@ -36,9 +50,11 @@ id:
   >
     <div class="bg-transparent from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4">
       <div class="max-w-xl mx-auto">
-        <MDC :value="t('greeting')" tag="h1" class="drop-shadow font-sans font-medium leading-tight mb-4 sm:mb-8 text-center text-3xl md:text-6xl lg:text-8xl text-white" />
+        <HeadingPrimary v-if="hero.title" class="drop-shadow font-sans font-medium leading-tight mb-4 sm:mb-8 text-center text-3xl md:text-6xl lg:text-8xl text-white">
+          {{ hero.title }}
+        </HeadingPrimary>
 
-        <MDC :value="t('resume')" tag="div" class="drop-shadow font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white" />
+        <div v-if="hero.text" class="drop-shadow font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl text-white" v-html="renderRichText(hero.text || '')" />
 
         <div class="flex items-center justify-center">
           <button
