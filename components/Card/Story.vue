@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { ISbStoryData } from 'storyblok-js-client'
+
 const localePath = useLocalePath()
 
 const props = defineProps({
   story: {
-    type: Object as PropType<StoryblokStory>,
+    type: Object as PropType<ISbStoryData>,
     required: true
   },
   path: {

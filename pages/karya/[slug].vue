@@ -207,11 +207,17 @@ id:
     }
   }
 
-  ul {
-    @apply list-disc list-outside mb-4 mx-0 pl-4;
+  ol, ul {
+    @apply list-disc list-outside mb-4 mx-8 pl-4 text-white;
 
     @screen md {
-      @apply mx-20;
+      @apply mx-32;
+    }
+
+    li {
+      p {
+        @apply mx-0;
+      }
     }
   }
 }

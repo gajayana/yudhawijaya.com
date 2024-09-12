@@ -92,9 +92,9 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    path: '/sitemap.xml',
-    hostname: process.env.NUXT_BASE_URL,
-    gzip: true,
+    // path: '/sitemap.xml',
+    // hostname: process.env.NUXT_BASE_URL,
+    // gzip: true,
     sources: ['/api/__sitemap__/urls']
   },
 
