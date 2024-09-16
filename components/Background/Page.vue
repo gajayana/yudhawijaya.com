@@ -9,10 +9,13 @@ const backgroundImage = storyblokImage({
 
 <template>
   <div class="fixed bg-black h-screen left-0 top-0 w-full z-0">
-    <NuxtImg :src="backgroundImage" :height="2560" :width="1440" class="flex h-full object-cover w-full" alt="background image" />
+    <NuxtImg
+      :src="backgroundImage"
+      :height="2560"
+      :width="1440"
+      class="flex h-full object-cover w-full"
+      alt="background image"
+      loading="lazy"
+    />
   </div>
 </template>
-
-<style scoped>
-
-</style>

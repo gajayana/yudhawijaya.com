@@ -19,7 +19,9 @@ useHead(seo({
   canonical: `${runtimeConfig.public.baseUrl}/kontak`
 }))
 
-const socialAccounts = SOCIAL_ACCOUNTS.filter(({ medium }) => ['linkedin', 'twitter'].includes(medium))
+const socialAccounts = computed(() =>
+  SOCIAL_ACCOUNTS.filter(({ medium }) => ['linkedin', 'twitter'].includes(medium))
+)
 </script>
 
 <i18n lang="yaml">
@@ -33,12 +35,7 @@ id:
 
 <template>
   <main class="flex flex-col w-full p-4 relative">
-    <div
-      class="flex flex-col w-full"
-      :style="{
-        height: 'calc(100vh - 4rem - 9.063rem - 2rem)'
-      }"
-    >
+    <div class="flex flex-col w-full contact-content-height">
       <div class="container flex flex-col items-center mx-auto w-full">
         <HeadingPrimary>
           {{ t('heading') }}
@@ -65,3 +62,9 @@ id:
     </div>
   </main>
 </template>
+
+<style scoped>
+.contact-content-height {
+  height: calc(100vh - 4rem - 9.063rem - 2rem);
+}
+</style>

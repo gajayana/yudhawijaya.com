@@ -6,7 +6,7 @@ const sb = useSb()
 const { t, locale } = useI18n({
   useScope: 'local'
 })
-
+const notifications = useToastNotifications()
 const storyblokApi = useStoryblokApi()
 
 defineI18nRoute({
@@ -38,64 +38,36 @@ if (error.value) {
   })
 }
 
-const story = computed(() =>
-  data.value ? data.value.data.story : null
-)
+const rawData = computed(() => {
+  const story = data.value ? data.value.data.story : null
+  const urlIsInvalid = story.value?.content.url_is_invalid || false
 
-// const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-//   `cdn/stories/works/${route.params.slug}`,
-//   {
-//     language: locale.value,
-//     version: 'published',
-//     cv: sb.cv || Number(Date.now())
-//   }
-// )
-// story.value = data.story
-
-// const body = computed<string>(() => {
-//   return story.value?.content.body || ''
-// })
-
-const bodyRich = computed(() =>
-  renderRichText(story.value?.content.body_rich || '')
-)
-
-const excerpt = computed<string>(() => {
-  return story.value?.content.excerpt || ''
-})
-
-const featuredImage = computed<string | undefined>(() => {
-  if (!story.value?.content.featured_image) { return }
-  return storyblokImage({
-    height: 0,
-    url: story.value?.content.featured_image?.filename,
-    width: 1200
-  })
-})
-
-const period = computed<{ startDate: string, endDate: string }>(() => {
-  const endDate = isFuture(new Date(story.value?.content.date_end || '')) ? t('ongoing') : story.value?.content.date_end || ''
   return {
-    startDate: story.value?.content.date_start || '',
-    endDate
+    story,
+    bodyRich: renderRichText(story.value?.content.body_rich || null),
+    dateModified: story.value?.published_at || null,
+    datePublished: story.value?.first_published_at || null,
+    excerpt: story.value?.content.excerpt || null,
+    featuredImage: story.value?.content.featured_image
+      ? storyblokImage({
+        height: 0,
+        url: story.value?.content.featured_image?.filename,
+        width: 1200
+      })
+      : undefined,
+    period: {
+      startDate: story.value?.content.date_start || '',
+      endDate: isFuture(new Date(story.value?.content.date_end || '')) ? t('ongoing') : story.value?.content.date_end || ''
+    },
+    tags: story.value?.tag_list || null,
+    title: story.value?.content.title || null,
+    url: urlIsInvalid ? story.value?.content.url : story.value?.content.url || ''
   }
 })
 
-const tags = computed<string[]|undefined>(() => {
-  return story.value?.tag_list
-})
-
-const title = computed<string | undefined>(() => {
-  return story.value?.content.title
-})
-
-const url = computed<string | undefined>(() => {
-  return urlIsInvalid.value ? story.value?.content.url : story.value?.content.url || ''
-})
-
-const urlIsInvalid = computed<boolean>(() => {
-  return story.value?.content.url_is_invalid || false
-})
+const {
+  story, bodyRich, excerpt, featuredImage, dateModified, datePublished, period, tags, title, url
+} = rawData.value || {}
 
 // manually refresh data when locale changes
 watch(locale, async () => {
@@ -104,7 +76,7 @@ watch(locale, async () => {
 
 useHead(seo({
   description: excerpt.value || '',
-  image: featuredImage.value || undefined,
+  image: featuredImage || undefined,
   title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`,
   url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
   canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`
@@ -114,8 +86,8 @@ useJsonld({
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title.value,
-  datePublished: story.value?.first_published_at,
-  dateModified: story.value?.published_at
+  datePublished,
+  dateModified
 })
 
 </script>

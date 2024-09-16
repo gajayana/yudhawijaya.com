@@ -10,7 +10,7 @@ const { locale } = useI18n({
 const storyblokApi = useStoryblokApi()
 const notifications = useToastNotifications()
 
-const { data, error } = await useAsyncData( //, refresh, status
+const { data, error, refresh } = await useAsyncData( //, status
   'page-home',
   () => {
     return Promise.all([
@@ -63,9 +63,7 @@ useHead(seo({
 }))
 
 // manually refresh data when locale changes
-watch(locale, async () => {
-  await refreshNuxtData()
-})
+watch(locale, () => refresh())
 </script>
 
 <template>

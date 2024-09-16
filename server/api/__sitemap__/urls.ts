@@ -29,5 +29,6 @@ export default defineSitemapEventHandler(async () => {
     ]
   } catch (error) {
     // console.error(error)
+    return [] // return an empty array in case of error
   }
 })

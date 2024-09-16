@@ -15,7 +15,7 @@ const imageOfMe = storyblokImage({
       <!-- start: picture of me -->
       <div class="flex rounded-full overflow-hidden relative z-[100]">
         <nuxt-link :to="localePath('/')">
-          <img class="h-9 w-9 md:h-12 md:w-12" :src="imageOfMe" alt="Yosef Yudha Wijaya">
+          <NuxtImg class="h-9 w-9 md:h-12 md:w-12" :src="imageOfMe" alt="Yosef Yudha Wijaya" loading="lazy" />
         </nuxt-link>
       </div>
       <!-- end: picture of me -->

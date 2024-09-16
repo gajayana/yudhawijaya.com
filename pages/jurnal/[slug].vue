@@ -37,48 +37,34 @@ if (error.value) {
   })
 }
 
-const story = computed(() =>
-  data.value ? data.value.data.story : null
-)
-
-const bodyRich = computed(() =>
-  renderRichText(story.value?.content.body_rich || '')
-)
-
-const excerpt = computed<string>(() => {
-  return story.value?.content.excerpt || ''
+const rawData = computed(() => {
+  const story = data.value ? data.value.data.story : null
+  return {
+    story,
+    bodyRich: renderRichText(story?.content.body_rich || null),
+    dateModified: story?.published_at || null,
+    datePublished: story?.first_published_at || null,
+    excerpt: story?.content.excerpt || null,
+    featuredImage: story?.content.featured_image
+      ? storyblokImage({
+        height: 0,
+        url: story?.content.featured_image?.filename,
+        width: 1200
+      })
+      : undefined,
+    tags: story?.tag_list || null,
+    title: story?.content.title || null
+  }
 })
 
-const featuredImage = computed<string | undefined>(() => {
-  if (!story.value?.content.featured_image) { return }
-  return storyblokImage({
-    height: 0,
-    url: story.value?.content.featured_image?.filename,
-    width: 1200
-  })
-})
-
-const tags = computed<string[] | undefined>(() => {
-  return story.value?.tag_list
-})
-
-const title = computed<string | undefined>(() => {
-  return story.value?.content.title
-})
-
-const publishDate = computed<string>(() => {
-  return story.value?.first_published_at || ''
-})
-
-// manually refresh data when locale changes
-watch(locale, async () => {
-  await refreshNuxtData()
-})
+const {
+  story, bodyRich, excerpt, featuredImage, dateModified, datePublished, tags, title
+} = rawData.value || {}
 
 useHead(seo({
-  description: excerpt.value || '',
-  image: featuredImage.value || undefined,
-  title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`,
+  description: excerpt || '',
+  image: featuredImage,
+  title: `${t('storyOf')} ${title} ${t('by')} ${SEO_TITLE_DEFAULT}`,
   url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
   canonical: `${runtimeConfig.public.baseUrl}/jurnal/${route.params.slug}`
 }))
@@ -86,9 +72,9 @@ useHead(seo({
 useJsonld({
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: title.value,
-  datePublished: story.value?.first_published_at,
-  dateModified: story.value?.published_at
+  headline: title,
+  datePublished,
+  dateModified
 })
 
 </script>
@@ -131,7 +117,7 @@ id:
           {{ title }}
         </HeadingPrimary>
         <div class="drop-shadow flex flex-col items-center gap-2 mb-8 text-white">
-          <DatetimeParser v-if="publishDate" :value="publishDate" :locale="locale" />
+          <DatetimeParser v-if="datePublished" :value="datePublished" :locale="locale" />
         </div>
 
         <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />

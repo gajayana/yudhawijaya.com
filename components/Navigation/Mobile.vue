@@ -1,12 +1,26 @@
 <script setup lang="ts">
+const { t } = useI18n({
+  useScope: 'local'
+})
 const open = ref<boolean>(false)
 
 </script>
 
+<i18n lang="yaml">
+en:
+  close: 'Close'
+  menu: 'Menu'
+id:
+  close: 'Tutup'
+  menu: 'Menu'
+</i18n>
+
 <template>
   <div class="flex md:hidden relative">
     <button
-      class="border-2 border-solid border-white/20 flex items-center justify-center leading-none px-4 rounded-full text-white text-xs uppercase h-9"
+      class="border-2 border-solid border-white/50 flex items-center justify-center leading-none px-4 rounded-full text-white text-xs uppercase h-9"
+      :title="t('menu')"
+      :aria-label="t('menu')"
       @click="open = !open"
     >
       Menu
@@ -20,7 +34,12 @@ const open = ref<boolean>(false)
       ]"
     >
       <div class="flex item-center justify-end w-full">
-        <button class="flex p-2" @click="open = !open">
+        <button
+          class="flex p-2"
+          :title="t('close')"
+          :aria-label="t('close')"
+          @click="open = !open"
+        >
           <icon name="mdi:close" size="2.5rem" class="text-white/50" />
         </button>
       </div>
