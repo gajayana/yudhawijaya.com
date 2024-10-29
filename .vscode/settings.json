@@ -1,6 +1,25 @@
 {
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "never",
-    "source.fixAll.eslint": "explicit"
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "vue"
+  ],
+  "typescript.preferences.importModuleSpecifier": "shortest",
+  "vue.complete.casing.tags": "pascal",
+  "files.associations": {
+    "*.vue": "vue"
   }
 }
