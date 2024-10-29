@@ -5,38 +5,26 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "lint": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
-    "lint:fix": "npm run lint -- --fix"
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@iconify-json/mdi": "^1.2.0",
-    "@nuxt/icon": "^1.5.1",
-    "@nuxt/image": "^1.8.0",
-    "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@nuxtjs/eslint-module": "^4.1.0",
+    "@iconify-json/mdi": "^1.2.1",
+    "@nuxt/icon": "^1.5.8",
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/google-fonts": "3.2.0",
-    "@nuxtjs/i18n": "^8.5.2",
-    "@nuxtjs/mdc": "^0.8.3",
-    "@nuxtjs/sitemap": "^6.0.1",
-    "@nuxtjs/tailwindcss": "^6.12.1",
-    "@types/lodash": "^4.17.7",
-    "@types/markdown-it": "^14.1.2",
-    "@types/node": "^22.5.4",
-    "@vite-pwa/nuxt": "^0.10.5",
-    "consola": "^3.2.3",
-    "date-fns": "^3.6.0",
-    "eslint": "^8.52.0",
-    "nuxt": "^3.13.1",
+    "@nuxtjs/i18n": "^8.5.5",
+    "@nuxtjs/mdc": "^0.9.2",
+    "@nuxtjs/seo": "^2.0.0-rc.23",
+    "@nuxtjs/tailwindcss": "^6.12.2",
+    "date-fns": "^4.1.0",
+    "nuxt": "^3.13.0",
     "nuxt-lodash": "^2.5.3",
     "sharp": "^0.33.5",
-    "typescript": "5.3.*"
+    "typescript": "5.6.*"
   },
   "dependencies": {
-    "@pinia/nuxt": "^0.5.4",
-    "@storyblok/nuxt": "^6.0.10",
-    "nuxt-jsonld": "^2.0.8",
-    "pinia": "^2.2.2"
-  },
-  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+    "@pinia/nuxt": "^0.5.5",
+    "@storyblok/nuxt": "^6.0.13",
+    "pinia": "^2.2.4"
+  }
 }
