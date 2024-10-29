@@ -80,8 +80,6 @@ const seoImage = featuredImage
     })
   : undefined;
 
-console.log({ featuredImage, seoImage });
-
 useHead(
   seo({
     description: excerpt || "",
