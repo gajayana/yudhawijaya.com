@@ -1,24 +1,23 @@
 <script setup lang="ts">
 const { t } = useI18n({
-  useScope: 'local'
-})
-const open = ref<boolean>(false)
-
+  useScope: "local",
+});
+const open = ref<boolean>(false);
 </script>
 
 <i18n lang="yaml">
 en:
-  close: 'Close'
-  menu: 'Menu'
+  close: "Close"
+  menu: "Menu"
 id:
-  close: 'Tutup'
-  menu: 'Menu'
+  close: "Tutup"
+  menu: "Menu"
 </i18n>
 
 <template>
   <div class="flex md:hidden relative">
     <button
-      class="border-2 border-solid border-white/50 flex items-center justify-center leading-none px-4 rounded-full text-white text-xs uppercase h-9"
+      class="border-2 border-solid border-black/50 flex items-center justify-center leading-none px-4 rounded-full text-xs uppercase h-9"
       :title="t('menu')"
       :aria-label="t('menu')"
       @click="open = !open"
@@ -28,9 +27,9 @@ id:
 
     <div
       :class="[
-        'bg-black fixed flex flex-col h-screen left-0 top-0 w-screen z-[99]',
+        'bg-white fixed flex flex-col h-screen left-0 top-0 w-screen z-[99]',
         'transition-transform duration-300',
-        open ? 'translate-x-0' : 'translate-x-full'
+        open ? 'translate-x-0' : 'translate-x-full',
       ]"
     >
       <div class="flex item-center justify-end w-full">
@@ -40,16 +39,12 @@ id:
           :aria-label="t('close')"
           @click="open = !open"
         >
-          <icon name="mdi:close" size="2.5rem" class="text-white/50" />
+          <icon name="mdi:close" size="2.5rem" />
         </button>
       </div>
       <div class="flex flex-col h-full w-full">
-        <NavigationMenuMain
-          @menu-clicked="open = false"
-        />
-        <div
-          class="flex items center justify-center p-4"
-        >
+        <NavigationMenuMain @menu-clicked="open = false" />
+        <div class="flex items center justify-center p-4">
           <ButtonLanguageSwitcher />
         </div>
       </div>

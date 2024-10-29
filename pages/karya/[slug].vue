@@ -174,20 +174,12 @@ id:
           v-if="excerpt"
           :value="excerpt"
           tag="div"
-          class="drop-shadow flex italic mb-8 text-center text-white"
+          class="flex italic mb-8 text-center"
         />
 
         <div class="flex flex-col items-center gap-2 mb-8">
-          <MDC
-            v-if="url"
-            :value="url"
-            tag="div"
-            class="drop-shadow text-white"
-          />
-          <span
-            v-if="period.startDate"
-            class="drop-shadow flex gap-1 items-center text-white"
-          >
+          <MDC v-if="url" :value="url" tag="div" />
+          <span v-if="period.startDate" class="flex gap-1 items-center">
             <DatetimeParser :value="period.startDate" :locale="locale" />
             <span>-</span>
             <span v-if="period.endDate === t('ongoing')">{{
@@ -219,15 +211,15 @@ id:
 <style lang="postcss" scoped>
 :deep(._body) {
   a {
-    @apply text-white;
+    @apply text-blue-700;
 
     &:visited {
-      @apply text-white/90;
+      @apply text-blue-700/90;
     }
   }
 
   p {
-    @apply drop-shadow mb-4 mx-0 text-white;
+    @apply mb-4 mx-0;
 
     @screen md {
       @apply mx-20;
@@ -244,7 +236,7 @@ id:
 
   ol,
   ul {
-    @apply list-disc list-outside mb-4 mx-8 pl-4 text-white;
+    @apply list-disc list-outside mb-4 mx-8 pl-4;
 
     @screen md {
       @apply mx-32;
@@ -260,10 +252,10 @@ id:
 
 :deep(._external) {
   a {
-    @apply text-white;
+    @apply text-blue-700;
 
     &:visited {
-      @apply text-white/90;
+      @apply text-blue-700/90;
     }
   }
 }

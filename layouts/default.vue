@@ -27,9 +27,9 @@ const title = computed(() =>
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
     </Head>
-    <Body>
+    <Body class="bg-white">
       <div class="flex flex-col relative w-full">
-        <BackgroundPage />
+        <!-- <BackgroundPage /> -->
         <HeaderDefault />
         <slot />
         <FooterDefault />

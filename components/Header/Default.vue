@@ -11,36 +11,39 @@ const imageOfMe = storyblokImage({
 <template>
   <header class="flex relative w-full">
     <div class="flex items-center justify-between mx-auto px-4 py-2 w-full">
-      <!-- start: picture of me -->
-      <div class="flex rounded-full overflow-hidden relative z-[100]">
-        <nuxt-link :to="localePath('/')">
-          <NuxtImg
-            alt="Yosef Yudha Wijaya"
-            class="h-9 w-9 md:h-12 md:w-12"
-            format="webp"
-            :height="48"
-            loading="lazy"
-            provider="storyblok"
-            quality="10"
-            :src="IMAGE_OF_ME"
-            :width="48"
-          />
-        </nuxt-link>
+      <div class="flex items-center gap-4">
+        <!-- start: picture of me -->
+        <div class="flex rounded-full overflow-hidden relative z-[100]">
+          <nuxt-link :to="localePath('/')">
+            <NuxtImg
+              alt="Yosef Yudha Wijaya"
+              class="h-9 w-9 md:h-12 md:w-12"
+              format="webp"
+              :height="48"
+              loading="lazy"
+              provider="storyblok"
+              quality="10"
+              :src="IMAGE_OF_ME"
+              :width="48"
+            />
+          </nuxt-link>
+        </div>
+        <!-- end: picture of me -->
+
+        <!-- start: desktop menu -->
+        <div class="hidden md:flex">
+          <NavigationMenuMain />
+        </div>
+        <!-- end: desktop menu -->
       </div>
-      <!-- end: picture of me -->
 
       <!-- start: mobile menu -->
       <NavigationMobile />
       <!-- end: mobile menu -->
 
-      <!-- start: desktop menu -->
-      <div class="hidden md:flex">
-        <NavigationMenuMain />
-      </div>
       <div class="hidden md:flex">
         <ButtonLanguageSwitcher />
       </div>
-      <!-- end: desktop menu -->
     </div>
   </header>
 </template>

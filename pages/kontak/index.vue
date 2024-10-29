@@ -1,36 +1,40 @@
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig()
-const route = useRoute()
+const runtimeConfig = useRuntimeConfig();
+const route = useRoute();
 const { t } = useI18n({
-  useScope: 'local'
-})
+  useScope: "local",
+});
 
 defineI18nRoute({
   paths: {
-    en: '/contact',
-    id: '/kontak'
-  }
-})
+    en: "/contact",
+    id: "/kontak",
+  },
+});
 
-useHead(seo({
-  description: t('intro'),
-  title: `${t('heading')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-  canonical: `${runtimeConfig.public.baseUrl}/kontak`
-}))
+useHead(
+  seo({
+    description: t("intro"),
+    title: `${t("heading")} ${SEO_TITLE_DEFAULT}`,
+    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    canonical: `${runtimeConfig.public.baseUrl}/kontak`,
+  })
+);
 
 const socialAccounts = computed(() =>
-  SOCIAL_ACCOUNTS.filter(({ medium }) => ['linkedin', 'twitter'].includes(medium))
-)
+  SOCIAL_ACCOUNTS.filter(({ medium }) =>
+    ["linkedin", "twitter"].includes(medium)
+  )
+);
 </script>
 
 <i18n lang="yaml">
 en:
-  heading: 'Contact'
-  intro: 'For enquiries, or just to say hello, please contact me at these following platforms:'
+  heading: "Contact"
+  intro: "For enquiries, or just to say hello, please contact me at these following platforms:"
 id:
-  heading: 'Kontak'
-  intro: 'Silakan menyapa saya melalui platform berikut:'
+  heading: "Kontak"
+  intro: "Silakan menyapa saya melalui platform berikut:"
 </i18n>
 
 <template>
@@ -38,21 +42,25 @@ id:
     <div class="flex flex-col w-full contact-content-height">
       <div class="container flex flex-col items-center mx-auto w-full">
         <HeadingPrimary>
-          {{ t('heading') }}
+          {{ t("heading") }}
         </HeadingPrimary>
 
-        <p class="drop-shadow font-serif mb-8 italic text-center text-white">
-          {{ t('intro') }}
+        <p class="font-serif mb-8 italic text-center">
+          {{ t("intro") }}
         </p>
 
         <ul class="flex gap-4">
-          <li v-for="{ icon, medium, url } in socialAccounts" :key="`footer-social-${medium}`" class="flex">
+          <li
+            v-for="{ icon, medium, url } in socialAccounts"
+            :key="`footer-social-${medium}`"
+            class="flex"
+          >
             <a
               :href="url"
               :title="url"
               rel="noreferrer"
               target="_blank"
-              class="text-white hover:white/90 text-2xl"
+              class="text-black/90 hover:text-black text-2xl"
             >
               <Icon :name="icon" size="3rem" />
             </a>

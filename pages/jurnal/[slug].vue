@@ -155,9 +155,7 @@ id:
         <HeadingPrimary class="mb-8">
           {{ title }}
         </HeadingPrimary>
-        <div
-          class="drop-shadow flex flex-col items-center gap-2 mb-8 text-white"
-        >
+        <div class="flex flex-col items-center gap-2 mb-8">
           <DatetimeParser
             v-if="datePublished"
             :value="datePublished"
@@ -169,7 +167,7 @@ id:
           v-if="excerpt"
           :value="excerpt || ''"
           tag="div"
-          class="drop-shadow flex italic mb-8 text-center text-white"
+          class="flex italic mb-8 text-center"
         />
 
         <div class="_body flex flex-col mb-8" v-html="bodyRich" />
@@ -195,15 +193,15 @@ id:
 <style lang="postcss" scoped>
 :deep(._body) {
   a {
-    @apply text-white;
+    @apply text-blue-700;
 
     &:visited {
-      @apply text-white/90;
+      @apply text-blue-700/90;
     }
   }
 
   p {
-    @apply drop-shadow mb-4 mx-0 text-white;
+    @apply mb-4 mx-0;
 
     @screen md {
       @apply mx-20;
@@ -215,7 +213,7 @@ id:
   }
 
   pre {
-    @apply backdrop-blur bg-black/30 mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
+    @apply backdrop-blur bg-black/70 mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
 
     @screen md {
       @apply mx-20;
@@ -236,7 +234,7 @@ id:
 
   ol,
   ul {
-    @apply list-disc list-outside mb-4 mx-8 pl-4 text-white;
+    @apply list-disc list-outside mb-4 mx-8 pl-4;
 
     @screen md {
       @apply mx-32;
