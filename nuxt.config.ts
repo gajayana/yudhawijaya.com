@@ -84,6 +84,10 @@ export default defineNuxtConfig({
     lazy: false,
   },
 
+  icon: {
+    serverBundle: false,
+  },
+
   mdc: {
     // https://nuxt.com/modules/mdc
     // components: {
