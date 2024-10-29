@@ -1,93 +1,100 @@
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig()
-const route = useRoute()
-const sb = useSb()
+const runtimeConfig = useRuntimeConfig();
+const route = useRoute();
+const sb = useSb();
 const { t, locale } = useI18n({
-  useScope: 'local'
-})
-const notifications = useToastNotifications()
-const storyblokApi = useStoryblokApi()
+  useScope: "local",
+});
+const notifications = useToastNotifications();
+const storyblokApi = useStoryblokApi();
 
 defineI18nRoute({
   paths: {
-    en: '/journals/[slug]',
-    id: '/jurnal/[slug]'
-  }
-})
+    en: "/journals/[slug]",
+    id: "/jurnal/[slug]",
+  },
+});
 
-const { data, status, error } = await useAsyncData( //, refresh
+const { data, status, error } = await useAsyncData(
+  //, refresh
   `post-${route.params.slug}-${locale}`,
-  () => storyblokApi.get(
-      `cdn/stories/posts/${route.params.slug}`,
-      {
-        language: locale.value,
-        version: 'published',
-        cv: sb.cv || Number(Date.now())
-      }
-  ),
+  () =>
+    storyblokApi.get(`cdn/stories/posts/${route.params.slug}`, {
+      language: locale.value,
+      version: "published",
+      cv: sb.cv || Number(Date.now()),
+    }),
   {
-    watch: [locale]
+    watch: [locale],
   }
-)
+);
 
 if (error.value) {
   notifications.add({
     type: NOTIFICATION_TYPE.ERROR,
-    message: 'Error fetching data'
-  })
+    message: "Error fetching data",
+  });
 }
 
 const rawData = computed(() => {
-  const story = data.value ? data.value.data.story : null
+  const story = data.value ? data.value.data.story : undefined;
   return {
     story,
-    bodyRich: renderRichText(story?.content.body_rich || null),
-    dateModified: story?.published_at || null,
-    datePublished: story?.first_published_at || null,
-    excerpt: story?.content.excerpt || null,
-    featuredImage: story?.content.featured_image
-      ? storyblokImage({
-        height: 0,
-        url: story?.content.featured_image?.filename,
-        width: 1200
-      })
-      : undefined,
-    tags: story?.tag_list || null,
-    title: story?.content.title || null
-  }
-})
+    bodyRich: renderRichText(story?.content.body_rich || undefined),
+    dateModified: story?.published_at || undefined,
+    datePublished: story?.first_published_at || undefined,
+    excerpt: story?.content.excerpt || undefined,
+    featuredImage: story?.content.featured_image.filename || undefined,
+    tags: story?.tag_list || undefined,
+    title: story?.content.title || undefined,
+  };
+});
 
 const {
-  story, bodyRich, excerpt, featuredImage, dateModified, datePublished, tags, title
-} = rawData.value || {}
-
-useHead(seo({
-  description: excerpt || '',
-  image: featuredImage,
-  title: `${t('storyOf')} ${title} ${t('by')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-  canonical: `${runtimeConfig.public.baseUrl}/jurnal/${route.params.slug}`
-}))
-
-useJsonld({
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: title,
+  story,
+  bodyRich,
+  excerpt,
+  featuredImage,
+  dateModified,
   datePublished,
-  dateModified
-})
+  tags,
+  title,
+} = rawData.value || {};
 
+useHead(
+  seo({
+    description: excerpt || "",
+    image: featuredImage
+      ? storyblokImage({
+          height: 0,
+          url: featuredImage,
+          width: 1200,
+        })
+      : undefined,
+    title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
+    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    canonical: `${runtimeConfig.public.baseUrl}/jurnal/${route.params.slug}`,
+  })
+);
+
+// useJsonld({
+//   '@context': 'https://schema.org',
+//   '@type': 'Article',
+//   headline: title,
+//   datePublished,
+//   dateModified
+// })
 </script>
 
 <i18n lang="yaml">
 en:
-  by: 'by'
-  ongoing: 'ongoing'
-  storyOf: 'Story of'
+  by: "by"
+  ongoing: "ongoing"
+  storyOf: "Story of"
 id:
-  by: 'oleh'
-  ongoing: 'berlangsung'
-  storyOf: 'Kisah'
+  by: "oleh"
+  ongoing: "berlangsung"
+  storyOf: "Kisah"
 </i18n>
 
 <template>
@@ -96,12 +103,24 @@ id:
       <div
         class="animate-pulse aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       />
-      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
-        <div class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl" />
-        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40" />
-        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl" />
+      <div
+        class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
+      >
+        <div
+          class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl"
+        />
+        <div
+          class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40"
+        />
+        <div
+          class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl"
+        />
         <div class="flex flex-col gap-2 w-full">
-          <div v-for="i in 5" :key="`skeleton-paragraph-${i}`" class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full" />
+          <div
+            v-for="i in 5"
+            :key="`skeleton-paragraph-${i}`"
+            class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full"
+          />
         </div>
       </div>
     </div>
@@ -110,27 +129,58 @@ id:
       <div
         class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       >
-        <NuxtImg :src="featuredImage" class="object-cover w-full" />
+        <NuxtImg
+          v-if="featuredImage"
+          alt="featured image"
+          :src="featuredImage"
+          class="object-cover w-full"
+          format="webp"
+          :height="0"
+          loading="lazy"
+          provider="storyblok"
+          :quality="60"
+          sizes="100vw lg:75vw"
+          :width="1200"
+        />
       </div>
-      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+      <div
+        class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
+      >
         <HeadingPrimary class="mb-8">
           {{ title }}
         </HeadingPrimary>
-        <div class="drop-shadow flex flex-col items-center gap-2 mb-8 text-white">
-          <DatetimeParser v-if="datePublished" :value="datePublished" :locale="locale" />
+        <div
+          class="drop-shadow flex flex-col items-center gap-2 mb-8 text-white"
+        >
+          <DatetimeParser
+            v-if="datePublished"
+            :value="datePublished"
+            :locale="locale"
+          />
         </div>
 
-        <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
-        <!-- <MDC :value="body" tag="div" class="_body flex flex-col mb-8" /> -->
+        <MDC
+          v-if="excerpt"
+          :value="excerpt || ''"
+          tag="div"
+          class="drop-shadow flex italic mb-8 text-center text-white"
+        />
+
         <div class="_body flex flex-col mb-8" v-html="bodyRich" />
 
-      <!-- <ul class="flex items-center justify-center w-full gap-2">
+        <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
       </div>
 
       <div class="flex mx-auto w-full max-w-6xl">
-        <RecommenderStories v-if="story" :tags="tags" path="jurnal" :slug="route.params.slug as string" :title="title || ''" />
+        <RecommenderStories
+          v-if="story"
+          :tags="tags"
+          path="jurnal"
+          :slug="route.params.slug as string"
+          :title="title || ''"
+        />
       </div>
     </div>
   </main>
@@ -178,7 +228,8 @@ id:
     }
   }
 
-  ol, ul {
+  ol,
+  ul {
     @apply list-disc list-outside mb-4 mx-8 pl-4 text-white;
 
     @screen md {

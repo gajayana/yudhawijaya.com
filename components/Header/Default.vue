@@ -1,12 +1,11 @@
 <script setup lang="ts">
-const localePath = useLocalePath()
+const localePath = useLocalePath();
 
 const imageOfMe = storyblokImage({
   height: 48,
   url: IMAGE_OF_ME,
-  width: 48
-})
-
+  width: 48,
+});
 </script>
 
 <template>
@@ -15,7 +14,17 @@ const imageOfMe = storyblokImage({
       <!-- start: picture of me -->
       <div class="flex rounded-full overflow-hidden relative z-[100]">
         <nuxt-link :to="localePath('/')">
-          <NuxtImg class="h-9 w-9 md:h-12 md:w-12" :src="imageOfMe" alt="Yosef Yudha Wijaya" loading="lazy" />
+          <NuxtImg
+            alt="Yosef Yudha Wijaya"
+            class="h-9 w-9 md:h-12 md:w-12"
+            format="webp"
+            :height="48"
+            loading="lazy"
+            provider="storyblok"
+            quality="10"
+            :src="IMAGE_OF_ME"
+            :width="48"
+          />
         </nuxt-link>
       </div>
       <!-- end: picture of me -->
@@ -36,6 +45,4 @@ const imageOfMe = storyblokImage({
   </header>
 </template>
 
-<style>
-
-</style>
+<style></style>
