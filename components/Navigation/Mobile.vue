@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { cn } = useHelpers();
 const { t } = useI18n({
   useScope: "local",
 });
@@ -26,11 +27,13 @@ id:
     </button>
 
     <div
-      :class="[
-        'bg-white fixed flex flex-col h-screen left-0 top-0 w-screen z-[99]',
-        'transition-transform duration-300',
-        open ? 'translate-x-0' : 'translate-x-full',
-      ]"
+      :class="
+        cn(
+          'bg-white fixed flex flex-col h-screen left-0 top-0 w-screen z-[99]',
+          'transition-transform duration-300',
+          { 'translate-x-0': open, 'translate-x-full': !open }
+        )
+      "
     >
       <div class="flex item-center justify-end w-full">
         <button
