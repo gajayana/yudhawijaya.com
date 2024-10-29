@@ -77,13 +77,19 @@ useHead(
   })
 );
 
-// useJsonld({
-//   '@context': 'https://schema.org',
-//   '@type': 'Article',
-//   headline: title,
-//   datePublished,
-//   dateModified
-// })
+defineArticle({
+  headline: title,
+  description: excerpt,
+  image: featuredImage
+    ? storyblokImage({
+        height: 0,
+        url: featuredImage,
+        width: 1200,
+      })
+    : undefined,
+  datePublished: new Date(datePublished),
+  dateModified: new Date(dateModified),
+});
 </script>
 
 <i18n lang="yaml">

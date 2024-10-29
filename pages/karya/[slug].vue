@@ -72,41 +72,38 @@ const {
   url,
 } = rawData.value || {};
 
-// manually refresh data when locale changes
-watch(locale, async () => {
-  await refreshNuxtData();
-});
+const seoImage = featuredImage
+  ? storyblokImage({
+      height: 0,
+      url: featuredImage,
+      width: 1200,
+    })
+  : undefined;
+
+console.log({ featuredImage, seoImage });
 
 useHead(
   seo({
     description: excerpt || "",
-    image: featuredImage
-      ? storyblokImage({
-          height: 0,
-          url: featuredImage,
-          width: 1200,
-        })
-      : undefined,
+    image: seoImage,
     title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
     url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`,
   })
 );
 
-console.log({
-  featuredImage,
-  data: data.value?.data.story,
-  story,
-  rawData: rawData.value,
+defineArticle({
+  headline: title,
+  description: excerpt,
+  image: seoImage,
+  datePublished: new Date(datePublished),
+  dateModified: new Date(dateModified),
 });
 
-// useJsonld({
-//   '@context': 'https://schema.org',
-//   '@type': 'Article',
-//   headline: title.value,
-//   datePublished,
-//   dateModified
-// })
+// manually refresh data when locale changes
+watch(locale, async () => {
+  await refreshNuxtData();
+});
 </script>
 
 <i18n lang="yaml">

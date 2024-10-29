@@ -1,4 +1,8 @@
-import { SEO_TITLE_DEFAULT } from "./utils/constants";
+import {
+  IMAGE_OF_ME,
+  SCHEMA_PERSON_SAME_AS,
+  SEO_TITLE_DEFAULT,
+} from "./utils/constants";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -88,6 +92,15 @@ export default defineNuxtConfig({
     //     h1: 'HeadingPrimary'
     //   }
     // }
+  },
+
+  schemaOrg: {
+    identity: {
+      type: "Person",
+      image: IMAGE_OF_ME,
+      name: process.env.NUXT_PUBLIC_APP_NAME ?? "",
+      sameAs: SCHEMA_PERSON_SAME_AS,
+    },
   },
 
   site: {
