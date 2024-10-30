@@ -1,13 +1,14 @@
 <script setup>
-const route = useRoute()
-const { t } = useI18n()
+const route = useRoute();
+const { t } = useI18n();
 const head = useLocaleHead({
   addDirAttribute: true,
-  identifierAttribute: 'id',
-  addSeoAttributes: true
-})
-const title = computed(() => t(route.meta.title ?? 'layouts.title', t('layouts.title')))
-
+  identifierAttribute: "id",
+  addSeoAttributes: true,
+});
+const title = computed(() =>
+  t(route.meta.title ?? "layouts.title", t("layouts.title"))
+);
 </script>
 
 <template>
@@ -15,15 +16,20 @@ const title = computed(() => t(route.meta.title ?? 'layouts.title', t('layouts.t
     <Head>
       <Title>{{ title }}</Title>
       <template v-for="link in head.link" :key="link.id">
-        <Link :id="link.id" :rel="link.rel" :href="link.href" :hreflang="link.hreflang" />
+        <Link
+          :id="link.id"
+          :rel="link.rel"
+          :href="link.href"
+          :hreflang="link.hreflang"
+        />
       </template>
       <template v-for="meta in head.meta" :key="meta.id">
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
     </Head>
-    <Body>
+    <Body class="bg-white">
       <div class="flex flex-col relative w-full">
-        <BackgroundPage />
+        <!-- <BackgroundPage /> -->
         <HeaderDefault />
         <slot />
         <FooterDefault />

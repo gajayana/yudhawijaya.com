@@ -1,55 +1,54 @@
 <script setup lang="ts">
 const { t } = useI18n({
-  useScope: 'local'
-})
-const localePath = useLocalePath()
-const emit = defineEmits(['menuClicked'])
+  useScope: "local",
+});
+const localePath = useLocalePath();
+const emit = defineEmits(["menuClicked"]);
 const items = [
   {
-    label: 'home',
-    path: '/',
-    name: 'index'
+    label: "home",
+    path: "/",
+    name: "index",
   },
   {
-    label: 'works',
-    path: '/karya',
-    name: 'karya'
+    label: "works",
+    path: "/karya",
+    name: "karya",
   },
   {
-    label: 'journals',
-    path: '/jurnal',
-    name: 'jurnal'
+    label: "journals",
+    path: "/jurnal",
+    name: "jurnal",
   },
   {
-    label: 'contact',
-    path: '/kontak',
-    name: 'kontak'
-  }
-]
-
+    label: "contact",
+    path: "/kontak",
+    name: "kontak",
+  },
+];
 </script>
 
 <i18n lang="yaml">
 en:
-  contact: 'Contact'
-  home: 'Home'
-  journals: 'Journals'
-  works: 'Works'
+  contact: "Contact"
+  home: "Home"
+  journals: "Journals"
+  works: "Works"
 id:
-  contact: 'Kontak'
-  home: 'Muka'
-  journals: 'Jurnal'
-  works: 'Karya'
+  contact: "Kontak"
+  home: "Muka"
+  journals: "Jurnal"
+  works: "Karya"
 </i18n>
 
 <template>
   <!-- start: small screen menu -->
   <div class="flex md:hidden flex-col gap-5 p-12">
     <NuxtLink
-      v-for="({label, path}) in items"
+      v-for="{ label, path } in items"
       :key="`menu-small-screen-${label}`"
-      :to="localePath({path})"
-      class="flex font-serif leading-none text-sm text-white/50 no-underline"
+      :to="localePath({ path })"
+      class="flex font-serif leading-none text-sm no-underline"
       @click="emit('menuClicked')"
     >
       {{ t(label) }}
@@ -58,12 +57,12 @@ id:
   <!-- end: small screen menu -->
 
   <!-- start: large screen menu -->
-  <div class="backdrop-blur-sm bg-[#f4f4f5]/50 hidden md:flex flex-row gap-1 items-center p-1 rounded-full drop-shadow-md">
+  <div class="hidden md:flex flex-row gap-1 items-center">
     <NuxtLink
-      v-for="({label, path}) in items"
+      v-for="{ label, path } in items"
       :key="`menu-large-screen-${label}`"
-      :to="localePath({path})"
-      class="hover:bg-white/50 flex font-serif leading-none px-4 py-2 rounded-full text-white md:text-black no-underline transition-all duration-300"
+      :to="localePath({ path })"
+      class="flex font-serif leading-none px-4 py-2 no-underline hover:underline underline-offset-2 transition-all duration-300"
       @click="emit('menuClicked')"
     >
       {{ t(label) }}
@@ -74,7 +73,7 @@ id:
 
 <style lang="postcss" scoped>
 .router-link-active {
-  @apply text-white underline underline-offset-2;
-  @apply md:bg-white md:font-medium md:no-underline md:shadow md:text-black;
+  @apply !underline;
+  @apply md:font-medium md:no-underline;
 }
 </style>

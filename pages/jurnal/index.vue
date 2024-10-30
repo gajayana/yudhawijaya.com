@@ -53,11 +53,6 @@ const stories = computed(() =>
   data.value ? data.value.data.stories : null
 )
 
-// manually refresh data when locale changes
-watch(locale, async () => {
-  await refreshNuxtData()
-})
-
 </script>
 
 <i18n lang="yaml">

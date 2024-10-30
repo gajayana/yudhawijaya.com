@@ -1,134 +1,118 @@
 <script setup lang="ts">
-import { isFuture } from 'date-fns'
-const runtimeConfig = useRuntimeConfig()
-const route = useRoute()
-const sb = useSb()
+import { isFuture } from "date-fns";
+const runtimeConfig = useRuntimeConfig();
+const route = useRoute();
+const sb = useSb();
 const { t, locale } = useI18n({
-  useScope: 'local'
-})
-
-const storyblokApi = useStoryblokApi()
+  useScope: "local",
+});
+const notifications = useToastNotifications();
+const storyblokApi = useStoryblokApi();
 
 defineI18nRoute({
   paths: {
-    en: '/works/[slug]',
-    id: '/karya/[slug]'
-  }
-})
+    en: "/works/[slug]",
+    id: "/karya/[slug]",
+  },
+});
 
 const { data, status, error } = await useAsyncData(
   `post-${route.params.slug}-${locale}`,
-  () => storyblokApi.get(
-      `cdn/stories/works/${route.params.slug}`,
-      {
-        language: locale.value,
-        version: 'published',
-        cv: sb.cv || Number(Date.now())
-      }
-  ),
+  () =>
+    storyblokApi.get(`cdn/stories/works/${route.params.slug}`, {
+      language: locale.value,
+      version: "published",
+      cv: sb.cv || Number(Date.now()),
+    }),
   {
-    watch: [locale]
+    watch: [locale],
   }
-)
+);
 
 if (error.value) {
   notifications.add({
     type: NOTIFICATION_TYPE.ERROR,
-    message: 'Error fetching data'
-  })
+    message: "Error fetching data",
+  });
 }
 
-const story = computed(() =>
-  data.value ? data.value.data.story : null
-)
+const rawData = computed(() => {
+  const story = data.value ? data.value.data.story : undefined;
+  const urlIsInvalid = story.value?.content.url_is_invalid || false;
 
-// const { data }: { data: StoryblokStoriesResponse } = await storyblokApi.get(
-//   `cdn/stories/works/${route.params.slug}`,
-//   {
-//     language: locale.value,
-//     version: 'published',
-//     cv: sb.cv || Number(Date.now())
-//   }
-// )
-// story.value = data.story
-
-// const body = computed<string>(() => {
-//   return story.value?.content.body || ''
-// })
-
-const bodyRich = computed(() =>
-  renderRichText(story.value?.content.body_rich || '')
-)
-
-const excerpt = computed<string>(() => {
-  return story.value?.content.excerpt || ''
-})
-
-const featuredImage = computed<string | undefined>(() => {
-  if (!story.value?.content.featured_image) { return }
-  return storyblokImage({
-    height: 0,
-    url: story.value?.content.featured_image?.filename,
-    width: 1200
-  })
-})
-
-const period = computed<{ startDate: string, endDate: string }>(() => {
-  const endDate = isFuture(new Date(story.value?.content.date_end || '')) ? t('ongoing') : story.value?.content.date_end || ''
   return {
-    startDate: story.value?.content.date_start || '',
-    endDate
-  }
-})
+    story,
+    bodyRich: renderRichText(story.content.body_rich || undefined),
+    dateModified: story.published_at || undefined,
+    datePublished: story.first_published_at || undefined,
+    excerpt: story.content.excerpt || undefined,
+    featuredImage: story.content.featured_image?.filename || undefined,
+    period: {
+      startDate: story.content.date_start || "",
+      endDate: isFuture(new Date(story.content.date_end || ""))
+        ? t("ongoing")
+        : story.content.date_end || "",
+    },
+    tags: story.tag_list || undefined,
+    title: story.content.title || undefined,
+    url: urlIsInvalid ? story.content.url : story.content.url || "",
+  };
+});
 
-const tags = computed<string[]|undefined>(() => {
-  return story.value?.tag_list
-})
+const {
+  story,
+  bodyRich,
+  excerpt,
+  featuredImage,
+  dateModified,
+  datePublished,
+  period,
+  tags,
+  title,
+  url,
+} = rawData.value || {};
 
-const title = computed<string | undefined>(() => {
-  return story.value?.content.title
-})
+const seoImage = featuredImage
+  ? storyblokImage({
+      height: 0,
+      url: featuredImage,
+      width: 1200,
+    })
+  : undefined;
 
-const url = computed<string | undefined>(() => {
-  return urlIsInvalid.value ? story.value?.content.url : story.value?.content.url || ''
-})
+useHead(
+  seo({
+    description: excerpt || "",
+    image: seoImage,
+    title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
+    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`,
+  })
+);
 
-const urlIsInvalid = computed<boolean>(() => {
-  return story.value?.content.url_is_invalid || false
-})
+defineArticle({
+  headline: title,
+  description: excerpt,
+  image: seoImage,
+  datePublished: new Date(datePublished),
+  dateModified: new Date(dateModified),
+});
 
 // manually refresh data when locale changes
 watch(locale, async () => {
-  await refreshNuxtData()
-})
-
-useHead(seo({
-  description: excerpt.value || '',
-  image: featuredImage.value || undefined,
-  title: `${t('storyOf')} ${title.value} ${t('by')} ${SEO_TITLE_DEFAULT}`,
-  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-  canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`
-}))
-
-useJsonld({
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: title.value,
-  datePublished: story.value?.first_published_at,
-  dateModified: story.value?.published_at
-})
-
+  await refreshNuxtData();
+});
 </script>
 
 <i18n lang="yaml">
 en:
-  by: 'by'
-  ongoing: 'ongoing'
-  storyOf: 'Story of'
+  by: "by"
+  ongoing: "ongoing"
+  storyOf: "Story of"
 id:
-  by: 'oleh'
-  ongoing: 'berlangsung'
-  storyOf: 'Kisah'
+  by: "oleh"
+  ongoing: "berlangsung"
+  storyOf: "Kisah"
 </i18n>
 
 <template>
@@ -137,45 +121,86 @@ id:
       <div
         class="animate-pulse aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       />
-      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
-        <div class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl" />
-        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40" />
-        <div class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl" />
+      <div
+        class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
+      >
+        <div
+          class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl"
+        />
+        <div
+          class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40"
+        />
+        <div
+          class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl"
+        />
         <div class="flex flex-col gap-2 w-full">
-          <div v-for="i in 5" :key="`skeleton-paragraph-${i}`" class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full" />
+          <div
+            v-for="i in 5"
+            :key="`skeleton-paragraph-${i}`"
+            class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full"
+          />
         </div>
       </div>
     </div>
 
     <div v-else class="flex flex-col">
-      <div class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl">
-        <NuxtImg :src="featuredImage" class="object-cover w-full" />
+      <div
+        class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+      >
+        <NuxtImg
+          v-if="featuredImage"
+          alt="featured image"
+          :src="featuredImage"
+          class="object-cover w-full"
+          format="webp"
+          :height="0"
+          loading="lazy"
+          provider="storyblok"
+          :quality="60"
+          sizes="100vw lg:75vw"
+          :width="1200"
+        />
       </div>
-      <div class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto">
+      <div
+        class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
+      >
         <HeadingPrimary class="mb-8">
           {{ title }}
         </HeadingPrimary>
 
-        <MDC :value="excerpt" tag="div" class="drop-shadow flex italic mb-8 text-center text-white" />
+        <MDC
+          v-if="excerpt"
+          :value="excerpt"
+          tag="div"
+          class="flex italic mb-8 text-center"
+        />
 
         <div class="flex flex-col items-center gap-2 mb-8">
-          <MDC :value="url" tag="div" class="drop-shadow text-white" />
-          <span v-if="period.startDate" class="drop-shadow flex gap-1 items-center text-white">
+          <MDC v-if="url" :value="url" tag="div" />
+          <span v-if="period.startDate" class="flex gap-1 items-center">
             <DatetimeParser :value="period.startDate" :locale="locale" />
             <span>-</span>
-            <span v-if="period.endDate === t('ongoing')">{{ t('ongoing') }}</span>
+            <span v-if="period.endDate === t('ongoing')">{{
+              t("ongoing")
+            }}</span>
             <DatetimeParser v-else :value="period.endDate" :locale="locale" />
           </span>
         </div>
 
         <div class="_body flex flex-col mb-8" v-html="bodyRich" />
 
-      <!-- <ul class="flex items-center justify-center w-full gap-2">
+        <!-- <ul class="flex items-center justify-center w-full gap-2">
         <li v-for="tag in tags" :key="tag">{{ tag }}</li>
       </ul> -->
       </div>
       <div class="flex mx-auto w-full max-w-6xl">
-        <RecommenderStories v-if="story" :tags="tags" path="karya" :slug="route.params.slug as string" :title="title || ''" />
+        <RecommenderStories
+          v-if="story"
+          :tags="tags"
+          path="karya"
+          :slug="route.params.slug as string"
+          :title="title || ''"
+        />
       </div>
     </div>
   </main>
@@ -184,15 +209,15 @@ id:
 <style lang="postcss" scoped>
 :deep(._body) {
   a {
-    @apply text-white;
+    @apply text-blue-700;
 
     &:visited {
-      @apply text-white/90;
+      @apply text-blue-700/90;
     }
   }
 
   p {
-    @apply drop-shadow mb-4 mx-0 text-white;
+    @apply mb-4 mx-0;
 
     @screen md {
       @apply mx-20;
@@ -207,8 +232,9 @@ id:
     }
   }
 
-  ol, ul {
-    @apply list-disc list-outside mb-4 mx-8 pl-4 text-white;
+  ol,
+  ul {
+    @apply list-disc list-outside mb-4 mx-8 pl-4;
 
     @screen md {
       @apply mx-32;
@@ -224,10 +250,10 @@ id:
 
 :deep(._external) {
   a {
-    @apply text-white;
+    @apply text-blue-700;
 
     &:visited {
-      @apply text-white/90;
+      @apply text-blue-700/90;
     }
   }
 }
