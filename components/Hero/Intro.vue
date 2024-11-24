@@ -77,7 +77,7 @@ id:
 
         <div class="flex items-center justify-center">
           <button
-            class="border border-white flex px-8 py-2 mr-4 rounded-sm uppercase"
+            class="border border-black flex px-8 py-2 mr-4 rounded-sm uppercase"
             @click="scrollToWorks"
           >
             {{ t("buttonWorks") }}
