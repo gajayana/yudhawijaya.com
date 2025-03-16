@@ -1,17 +1,20 @@
-// import { type ISbRichtext, RichTextSchema } from '@storyblok/js'
+// Notification types
+export type ToastNotificationType = "error" | "success" | "warning";
 
-type ToastNotification = {
-  type: 'error' | 'success' | 'warning',
-  message: string
-}
+export type ToastNotification = Readonly<{
+  type: ToastNotificationType;
+  message: string;
+}>;
 
-type SocialAccount = {
+// Social media types
+export type SocialAccount = Readonly<{
   icon: string;
   medium: string;
   url: string;
-}
+}>;
 
-interface StoryblokImage {
+// Storyblok types
+export type StoryblokImage = Readonly<{
   id: number;
   alt: string;
   name: string;
@@ -20,68 +23,62 @@ interface StoryblokImage {
   filename: string;
   copyright: string;
   fieldtype: string;
-}
+}>;
 
-interface StoryblokSpace {
+export type StoryblokSpace = Readonly<{
   space: {
     id: number;
     name: string;
     domain: string;
-    version: number,
-    language_codes: string[]
-  }
-}
+    version: number;
+    language_codes: readonly string[];
+  };
+}>;
 
-interface StoryblokStory {
+export type StoryblokContent = Readonly<{
+  _uid: string;
+  body?: string;
+  body_rich?: unknown;
+  component?: string;
+  date_end?: string;
+  date_start?: string;
+  excerpt?: string;
+  is_featured?: boolean;
+  featured_image?: StoryblokImage;
+  title?: string;
+  url?: string;
+  url_is_invalid?: boolean;
+}>;
+
+export type StoryblokStory = Readonly<{
   name: string;
   created_at: string;
   published_at: string;
   id: number;
   uuid: string;
-  content: {
-    _uid: string;
-    body?: string;
-    body_rich?: any;
-    component?: string;
-    date_end?: string;
-    date_start?: string;
-    excerpt?:string;
-    is_featured?:boolean;
-    featured_image?: StoryblokImage;
-    title?: string;
-    url?: string;
-    url_is_invalid?:boolean
-  },
+  content: StoryblokContent;
   slug: string;
   full_slug: string;
-  sort_by_date: any | null;
+  sort_by_date: unknown | null;
   position: number;
-  tag_list: string[];
+  tag_list: readonly string[];
   is_startpage: boolean;
   parent_id: number;
-  meta_data: any | null;
+  meta_data: unknown | null;
   group_id: string;
   first_published_at: string;
-  release_id: any | null;
+  release_id: unknown | null;
   lang: string;
-  path: any | null;
-  alternates: any;
-  default_full_slug: any | null;
-  translated_slugs: any | null;
-}
+  path: unknown | null;
+  alternates: unknown;
+  default_full_slug: unknown | null;
+  translated_slugs: unknown | null;
+}>;
 
-type StoryblokStoriesResponse = {
+export type StoryblokStoriesResponse = Readonly<{
   story?: StoryblokStory;
-  stories?: StoryblokStory[];
+  stories?: readonly StoryblokStory[];
   cv: number;
-  rels: any;
-  links: any;
-}
-
-export type {
-  ToastNotification,
-  SocialAccount,
-  StoryblokSpace,
-  StoryblokStory,
-  StoryblokStoriesResponse
-}
+  rels: unknown;
+  links: unknown;
+}>;

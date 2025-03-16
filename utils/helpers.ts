@@ -1,24 +1,22 @@
 interface StoryblokImageParams {
-  // blur?: number;
-  // grayscale?:boolean;
   filters?: string[];
   url: string;
   height: number;
-  smart?:boolean;
+  smart?: boolean;
   width: number;
 }
 
-interface seoParams {
-  canonical?:string;
+interface SeoParams {
+  canonical?: string;
   description: string;
   image?: string;
   keywords?: string;
-  title?:string;
-  type?:string;
-  url?:string;
+  title?: string;
+  type?: string;
+  url?: string;
 }
 
-interface seoResult {
+interface SeoResult {
   meta: {
     name: string;
     content: string;
@@ -27,44 +25,81 @@ interface seoResult {
   link: {
     rel: string;
     href: string;
-  }[]
+  }[];
 }
 
-const storyblokImage = ({ filters = [], url, height, smart, width }:StoryblokImageParams):string => {
-  const params = ['m', `${width}x${height}`]
+/**
+ * Generates a Storyblok image URL with specified parameters
+ * @param params - Image parameters including dimensions and filters
+ * @returns Formatted image URL string
+ */
+export const storyblokImage = ({
+  filters = [],
+  url,
+  height,
+  smart,
+  width,
+}: StoryblokImageParams): string => {
+  // Pre-allocate array size for better performance
+  const params = new Array(filters.length + 2);
+  params[0] = "m";
+  params[1] = `${width}x${height}`;
 
-  if (smart) { params.push('smart') }
-  if (filters && Array.isArray(filters) && filters.length) { params.push(`filters:${filters.join(':')}`) }
+  let paramIndex = 2;
 
-  return `${url}/${params.join('/')}`
-}
+  if (smart) {
+    params[paramIndex++] = "smart";
+  }
 
-const seo = ({ canonical, description, image, keywords, title, type, url }: seoParams):seoResult => {
-  const runtimeConfig = useRuntimeConfig()
+  if (filters.length) {
+    params[paramIndex] = `filters:${filters.join(":")}`;
+  }
 
+  // Use slice to only include used array elements
+  return `${url}/${params.slice(0, paramIndex + 1).join("/")}`;
+};
+
+/**
+ * Generates SEO metadata for a page
+ * @param params - SEO parameters including title, description etc
+ * @returns Object containing meta tags, title and canonical link
+ */
+export const seo = ({
+  canonical,
+  description,
+  image = "",
+  keywords = "",
+  title,
+  type,
+  url,
+}: SeoParams): SeoResult => {
+  const runtimeConfig = useRuntimeConfig();
+  const baseUrl = runtimeConfig.public.baseUrl as string;
+  const pageUrl = url || baseUrl;
+  const pageTitle = title || SEO_TITLE_DEFAULT;
+
+  // Pre-allocate meta array size
   const meta = [
-    { name: 'description', content: description },
-    { name: 'keywords', content: keywords || '' },
-    { name: 'og:description', content: description },
-    { name: 'og:image', content: image || '' },
-    { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
-    { name: 'og:url', content: url || runtimeConfig.public.baseUrl as string }
-  ]
+    { name: "description", content: description },
+    { name: "keywords", content: keywords },
+    { name: "og:description", content: description },
+    { name: "og:image", content: image },
+    { name: "og:title", content: pageTitle },
+    { name: "og:url", content: pageUrl },
+  ];
 
   if (type) {
-    meta.push({ name: 'og:type', content: type || '' })
+    meta.push({ name: "og:type", content: type });
   }
 
   return {
     meta,
-    title: title || SEO_TITLE_DEFAULT,
+    title: pageTitle,
     link: [
-      { rel: 'canonical', href: canonical || runtimeConfig.public.baseUrl as string }
-    ]
-  }
-}
-
-export {
-  seo,
-  storyblokImage
-}
+      {
+        rel: "canonical",
+        href: canonical || baseUrl,
+      },
+    ],
+  };
+};

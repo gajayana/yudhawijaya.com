@@ -1,7 +1,17 @@
-const DATETIME_FORMAT_DEFAULT = "dd MMMM yyyy";
-const IMAGE_OF_ME = "https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg";
-const SEO_TITLE_DEFAULT = "Yosef Yudha Wijaya";
-const SOCIAL_ACCOUNTS: SocialAccount[] = [
+/**
+ * Application-wide constants and configuration values
+ */
+
+// Date formatting
+export const DATETIME_FORMAT_DEFAULT = "dd MMMM yyyy" as const;
+
+// User profile
+export const IMAGE_OF_ME =
+  "https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg" as const;
+export const SEO_TITLE_DEFAULT = "Yosef Yudha Wijaya" as const;
+
+// Social media accounts configuration
+export const SOCIAL_ACCOUNTS = Object.freeze([
   {
     icon: "mdi:twitter",
     medium: "twitter",
@@ -22,20 +32,13 @@ const SOCIAL_ACCOUNTS: SocialAccount[] = [
     medium: "github",
     url: "https://github.com/gajayana",
   },
-];
-const SCHEMA_PERSON_SAME_AS: string[] = SOCIAL_ACCOUNTS.map(
-  (account) => account.url
-);
+] as const) satisfies readonly SocialAccount[];
 
-const LOCALES = ["en", "id"];
-const DEFAULT_LOCALE = "id";
+// Pre-compute schema URLs
+export const SCHEMA_PERSON_SAME_AS = Object.freeze(
+  SOCIAL_ACCOUNTS.map((account) => account.url)
+) as readonly string[];
 
-export {
-  DATETIME_FORMAT_DEFAULT,
-  DEFAULT_LOCALE,
-  IMAGE_OF_ME,
-  LOCALES,
-  SCHEMA_PERSON_SAME_AS,
-  SEO_TITLE_DEFAULT,
-  SOCIAL_ACCOUNTS,
-};
+// Localization
+export const LOCALES = Object.freeze(["en", "id"]) as readonly string[];
+export const DEFAULT_LOCALE = "id" as const;
