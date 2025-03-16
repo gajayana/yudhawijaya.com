@@ -1,69 +1,86 @@
 <script setup lang="ts">
-import type { ISbStories, ISbStory } from 'storyblok-js-client'
+import type {
+  ISbStories,
+  ISbStoriesParams,
+  ISbStory,
+} from "storyblok-js-client";
 
-const runtimeConfig = useRuntimeConfig()
-const route = useRoute()
-const sb = useSb()
-const { locale } = useI18n({
-  useScope: 'local'
-})
-const storyblokApi = useStoryblokApi()
-const notifications = useToastNotifications()
+// Composables
+const runtimeConfig = useRuntimeConfig();
+const route = useRoute();
+const sb = useSb();
+const { locale } = useI18n({ useScope: "local" });
+const storyblokApi = useStoryblokApi();
+const notifications = useToastNotifications();
 
-const { data, error, refresh } = await useAsyncData( //, status
-  'page-home',
-  () => {
-    return Promise.all([
-      storyblokApi.get(
-        'cdn/stories/home',
-        {
-          language: locale.value,
-          version: 'published',
-          cv: sb.cv || Number(Date.now())
-        }
-      ),
-      storyblokApi.get(
-        'cdn/stories',
-        {
-          language: locale.value,
-          version: 'published',
-          starts_with: 'works',
-          per_page: 6,
-          sort_by: 'content.is_featured:desc',
-          cv: sb.cv || Number(Date.now())
-        }
-      )
-    ])
-  },
-  {
-    watch: [locale]
-  }
-)
+// Memoize API params to avoid recreating objects
+const getBaseParams = computed<ISbStoriesParams>(() => ({
+  language: locale.value,
+  version: "published",
+  cv: sb.cv || Number(Date.now()),
+}));
 
-if (error.value) {
+// Split data fetching into separate composables for better caching
+const { data: heroData, error: heroError } = await useAsyncData(
+  "home-hero",
+  () => storyblokApi.get("cdn/stories/home", getBaseParams.value),
+  { watch: [locale] }
+);
+
+const { data: featuredData, error: featuredError } = await useAsyncData(
+  "home-featured",
+  () =>
+    storyblokApi.get("cdn/stories", {
+      ...getBaseParams.value,
+      starts_with: "works",
+      per_page: 6,
+      sort_by: "content.is_featured:desc",
+    }),
+  { watch: [locale] }
+);
+
+// Handle errors
+if (heroError.value || featuredError.value) {
   notifications.add({
     type: NOTIFICATION_TYPE.ERROR,
-    message: 'Error fetching data'
+    message: "Error fetching data",
+  });
+}
+
+if (!heroData.value || !featuredData.value) {
+  throw createError({
+    statusCode: 500,
+    message: "Error when processing data",
+  });
+}
+
+// Computed properties with type safety
+const heroStory = computed<ISbStory["data"]["story"]>(
+  () => heroData.value?.data.story
+);
+
+const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
+  () => featuredData.value?.data.stories
+);
+
+// SEO optimization
+useHead(
+  seo({
+    description: heroStory.value.content.meta_description,
+    image: storyblokImage({
+      url: heroStory.value.content.og_image.filename as string,
+      height: 480,
+      width: 480,
+      smart: true,
+    }),
+    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
   })
-}
+);
 
-if (!data.value) {
-  throw new Error('Error when processing data')
-}
-
-const [heroData, featuredStoriesData] = data.value as [ISbStory, ISbStories]
-
-const heroStory = computed(() => heroData.data.story)
-const featuredWorkStories = computed(() => featuredStoriesData.data.stories)
-
-useHead(seo({
-  description: heroStory.value.content.meta_description,
-  image: storyblokImage({ url: heroStory.value.content.og_image.filename as string, height: 480, width: 480, smart: true }),
-  url: `${runtimeConfig.public.baseUrl}${route.fullPath}`
-}))
-
-// manually refresh data when locale changes
-watch(locale, () => refresh())
+// Refresh data on locale change
+watch(locale, () => {
+  refreshNuxtData();
+});
 </script>
 
 <template>

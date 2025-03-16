@@ -16,7 +16,6 @@ defineI18nRoute({
 });
 
 const { data, status, error } = await useAsyncData(
-  //, refresh
   `post-${route.params.slug}-${locale}`,
   () =>
     storyblokApi.get(`cdn/stories/posts/${route.params.slug}`, {
@@ -26,69 +25,70 @@ const { data, status, error } = await useAsyncData(
     }),
   {
     watch: [locale],
+    server: true,
+    lazy: false,
+    immediate: true,
+    transform: (response) => ({
+      story: response.data.story,
+      bodyRich: renderRichText(response.data.story?.content.body_rich),
+      dateModified: response.data.story?.published_at,
+      datePublished: response.data.story?.first_published_at,
+      excerpt: response.data.story?.content.excerpt,
+      featuredImage: response.data.story?.content.featured_image.filename,
+      tags: response.data.story?.tag_list,
+      title: response.data.story?.content.title,
+    }),
   }
 );
 
-if (error.value) {
-  notifications.add({
-    type: NOTIFICATION_TYPE.ERROR,
-    message: "Error fetching data",
-  });
-}
+// Watch for errors and retry
+watchEffect(() => {
+  if (error.value) {
+    notifications.add({
+      type: NOTIFICATION_TYPE.ERROR,
+      message: "Error fetching data. Retrying...",
+    });
 
-const rawData = computed(() => {
-  const story = data.value ? data.value.data.story : undefined;
-  return {
-    story,
-    bodyRich: renderRichText(story?.content.body_rich || undefined),
-    dateModified: story?.published_at || undefined,
-    datePublished: story?.first_published_at || undefined,
-    excerpt: story?.content.excerpt || undefined,
-    featuredImage: story?.content.featured_image.filename || undefined,
-    tags: story?.tag_list || undefined,
-    title: story?.content.title || undefined,
-  };
+    setTimeout(() => {
+      refreshNuxtData(`post-${route.params.slug}-${locale}`);
+    }, 3000);
+  }
 });
 
-const {
-  story,
-  bodyRich,
-  excerpt,
-  featuredImage,
-  dateModified,
-  datePublished,
-  tags,
-  title,
-} = rawData.value || {};
+// Computed properties for better reactivity
+const seoImage = computed(() =>
+  data.value?.featuredImage
+    ? storyblokImage({
+        height: 0,
+        url: data.value.featuredImage,
+        width: 1200,
+      })
+    : undefined
+);
 
+// SEO optimization
 useHead(
   seo({
-    description: excerpt || "",
-    image: featuredImage
-      ? storyblokImage({
-          height: 0,
-          url: featuredImage,
-          width: 1200,
-        })
-      : undefined,
-    title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
+    description: data.value?.excerpt || "",
+    image: seoImage.value,
+    title: `${t("storyOf")} ${data.value?.title} ${t(
+      "by"
+    )} ${SEO_TITLE_DEFAULT}`,
     url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     canonical: `${runtimeConfig.public.baseUrl}/jurnal/${route.params.slug}`,
   })
 );
 
 defineArticle({
-  headline: title,
-  description: excerpt,
-  image: featuredImage
-    ? storyblokImage({
-        height: 0,
-        url: featuredImage,
-        width: 1200,
-      })
+  headline: data.value?.title,
+  description: data.value?.excerpt,
+  image: seoImage.value,
+  datePublished: data.value?.datePublished
+    ? new Date(data.value.datePublished)
     : undefined,
-  datePublished: new Date(datePublished),
-  dateModified: new Date(dateModified),
+  dateModified: data.value?.dateModified
+    ? new Date(data.value.dateModified)
+    : undefined,
 });
 </script>
 
@@ -131,60 +131,81 @@ id:
       </div>
     </div>
 
+    <div
+      v-else-if="error"
+      class="flex flex-col items-center justify-center min-h-[50vh]"
+    >
+      <p class="text-red-500">{{ error.message }}</p>
+    </div>
+
     <div v-else class="flex flex-col">
-      <div
-        class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
-      >
-        <NuxtImg
-          v-if="featuredImage"
-          alt="featured image"
-          :src="featuredImage"
-          class="object-cover w-full"
-          format="webp"
-          :height="0"
-          loading="lazy"
-          provider="storyblok"
-          :quality="60"
-          sizes="100vw lg:75vw"
-          :width="1200"
-        />
-      </div>
+      <ClientOnly>
+        <Suspense>
+          <div
+            class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+          >
+            <NuxtImg
+              v-if="data?.featuredImage"
+              :alt="data?.title"
+              :src="data.featuredImage"
+              class="object-cover w-full"
+              format="webp"
+              :height="0"
+              loading="lazy"
+              provider="storyblok"
+              :quality="60"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 1200px"
+              :width="1200"
+              :modifiers="{ smart: true }"
+            />
+          </div>
+          <template #fallback>
+            <div
+              class="animate-pulse aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+            />
+          </template>
+        </Suspense>
+      </ClientOnly>
+
       <div
         class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
       >
         <HeadingPrimary class="mb-8">
-          {{ title }}
+          {{ data?.title }}
         </HeadingPrimary>
         <div class="flex flex-col items-center gap-2 mb-8">
           <DatetimeParser
-            v-if="datePublished"
-            :value="datePublished"
+            v-if="data?.datePublished"
+            :value="data.datePublished"
             :locale="locale"
           />
         </div>
 
         <MDC
-          v-if="excerpt"
-          :value="excerpt || ''"
+          v-if="data?.excerpt"
+          :value="data.excerpt"
           tag="div"
           class="flex italic mb-8 text-center"
         />
 
-        <div class="_body flex flex-col mb-8" v-html="bodyRich" />
-
-        <!-- <ul class="flex items-center justify-center w-full gap-2">
-        <li v-for="tag in tags" :key="tag">{{ tag }}</li>
-      </ul> -->
+        <div class="_body flex flex-col mb-8" v-html="data?.bodyRich" />
       </div>
 
       <div class="flex mx-auto w-full max-w-6xl">
-        <RecommenderStories
-          v-if="story"
-          :tags="tags"
-          path="jurnal"
-          :slug="route.params.slug as string"
-          :title="title || ''"
-        />
+        <ClientOnly>
+          <Suspense>
+            <RecommenderStories
+              v-if="data?.story"
+              :tags="data.tags"
+              path="jurnal"
+              :slug="route.params.slug as string"
+              :title="data.title || ''"
+            />
+            <template #fallback>
+              <div class="animate-pulse h-48 w-full bg-white/50 rounded-md" />
+            </template>
+          </Suspense>
+        </ClientOnly>
       </div>
     </div>
   </main>

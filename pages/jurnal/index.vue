@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { ISbStoryData } from "@storyblok/vue";
+
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
@@ -26,7 +28,6 @@ useHead(
 );
 
 const { data, status, error } = await useAsyncData(
-  //, refresh
   `posts-${locale}`,
   () =>
     storyblokApi.get("cdn/stories", {
@@ -39,17 +40,45 @@ const { data, status, error } = await useAsyncData(
     }),
   {
     watch: [locale],
+    server: true,
+    lazy: false,
+    immediate: true,
+    transform: (response) => {
+      return {
+        stories: response.data.stories.map((story: ISbStoryData) => ({
+          uuid: story.uuid,
+          slug: story.slug,
+          content: {
+            title: story.content.title,
+            excerpt: story.content.excerpt,
+            featured_image: story.content.featured_image,
+          },
+          first_published_at: story.first_published_at,
+          tag_list: story.tag_list,
+        })),
+      };
+    },
   }
 );
 
-if (error.value) {
-  notifications.add({
-    type: NOTIFICATION_TYPE.ERROR,
-    message: "Error fetching data",
-  });
-}
+const stories = computed(() => data.value?.stories || null);
 
-const stories = computed(() => (data.value ? data.value.data.stories : null));
+watchEffect(() => {
+  if (error.value) {
+    notifications.add({
+      type: NOTIFICATION_TYPE.ERROR,
+      message: "Error fetching data. Retrying...",
+    });
+
+    setTimeout(() => {
+      refreshNuxtData(`posts-${locale}`);
+    }, 3000);
+  }
+});
+
+watch(locale, async () => {
+  await refreshNuxtData(`posts-${locale}`);
+});
 </script>
 
 <i18n lang="yaml">

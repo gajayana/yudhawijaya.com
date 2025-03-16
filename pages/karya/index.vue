@@ -25,7 +25,6 @@ useHead(
 );
 
 const { data, status, error } = await useAsyncData(
-  //, refresh
   `works-${locale}`,
   () =>
     storyblokApi.get("cdn/stories", {
@@ -38,6 +37,8 @@ const { data, status, error } = await useAsyncData(
     }),
   {
     watch: [locale],
+    server: true,
+    lazy: true,
   }
 );
 
@@ -48,7 +49,23 @@ if (error.value) {
   });
 }
 
-const stories = computed(() => (data.value ? data.value.data.stories : null));
+const stories = computed(() => {
+  if (!data.value) return null;
+  return data.value.data.stories;
+});
+
+watchEffect(() => {
+  if (error.value) {
+    notifications.add({
+      type: NOTIFICATION_TYPE.ERROR,
+      message: "Error fetching data. Retrying...",
+    });
+
+    setTimeout(() => {
+      refreshNuxtData(`works-${locale}`);
+    }, 3000);
+  }
+});
 </script>
 
 <i18n lang="yaml">
