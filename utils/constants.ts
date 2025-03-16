@@ -35,9 +35,9 @@ export const SOCIAL_ACCOUNTS = Object.freeze([
 ] as const) satisfies readonly SocialAccount[];
 
 // Pre-compute schema URLs
-export const SCHEMA_PERSON_SAME_AS = Object.freeze(
-  SOCIAL_ACCOUNTS.map((account) => account.url)
-) as readonly string[];
+export const SCHEMA_PERSON_SAME_AS = SOCIAL_ACCOUNTS.map(
+  (account) => account.url
+);
 
 // Localization
 export const LOCALES = Object.freeze(["en", "id"]) as readonly string[];

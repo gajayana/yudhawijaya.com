@@ -1,11 +1,5 @@
 <script setup lang="ts">
 const localePath = useLocalePath();
-
-const imageOfMe = storyblokImage({
-  height: 48,
-  url: IMAGE_OF_ME,
-  width: 48,
-});
 </script>
 
 <template>

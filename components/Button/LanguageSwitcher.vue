@@ -1,19 +1,31 @@
-<script setup language="ts">
-const { locales, locale } = useI18n();
-const switchLocalePath = useSwitchLocalePath();
+<script setup lang="ts">
+interface LocaleConfig {
+  locale: Locale;
+  iconName: string;
+}
 
-const nextLocale = computed(() => {
-  if (locale.value === "en")
-    return {
-      locale: "id",
-      iconName: "circle-flags:id",
-    };
-
-  return {
+// Define locale configurations as static constants to avoid recalculation
+const LOCALE_CONFIGS: Record<string, LocaleConfig> = {
+  en: {
+    locale: "id",
+    iconName: "circle-flags:id",
+  },
+  id: {
     locale: "en",
     iconName: "circle-flags:gb",
-  };
+  },
+} as const;
+
+const { locale } = useI18n();
+const switchLocalePath = useSwitchLocalePath();
+
+// Memoize the computed value to prevent unnecessary recalculations
+const nextLocale = computed(() => {
+  return LOCALE_CONFIGS[locale.value] || LOCALE_CONFIGS.en;
 });
+
+// Pre-compute the uppercase locale for template
+const upperLocale = computed(() => nextLocale.value.locale.toUpperCase());
 </script>
 
 <template>
@@ -25,9 +37,9 @@ const nextLocale = computed(() => {
       <span class="aspect-square flex h-6 w-6 rounded-full shadow">
         <Icon :name="nextLocale.iconName" class="h-full w-full" />
       </span>
-      <span class="aspect-square flex h-6 items-center justify-center w-6">{{
-        nextLocale.locale.toUpperCase()
-      }}</span>
+      <span class="aspect-square flex h-6 items-center justify-center w-6">
+        {{ upperLocale }}
+      </span>
     </NuxtLink>
   </ClientOnly>
 </template>

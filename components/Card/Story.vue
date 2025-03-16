@@ -14,21 +14,26 @@ const props = defineProps({
   },
 });
 
-const rawData = computed(() => {
-  return {
-    excerpt: props.story.content.excerpt || null,
-    featuredImage: props.story.content.featured_image?.filename,
-    title: props.story.content.title || null,
-  };
-});
+// Memoize computed values to avoid recalculation
+const { excerpt, featuredImage, title } = computed(() => ({
+  excerpt: props.story.content.excerpt || null,
+  featuredImage: props.story.content.featured_image?.filename,
+  title: props.story.content.title || null,
+})).value;
 
-const { excerpt, featuredImage, title } = rawData.value;
+// Pre-compute link path
+const linkPath = computed(() =>
+  localePath(`/${props.path}/${props.story.slug}`)
+);
+
+// Pre-compute image dimensions for better CLS
+const imageWidth = computed(() => Math.floor((16 / 9) * 600));
 </script>
 
 <template>
   <NuxtLink
     class="bg-white/50 backdrop-blur flex flex-col group no-underline overflow-hidden rounded shadow shadow-black/30 w-full"
-    :to="localePath(`/${props.path}/${story.slug}`)"
+    :to="linkPath"
   >
     <div
       class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette w-full"
@@ -39,12 +44,12 @@ const { excerpt, featuredImage, title } = rawData.value;
         class="group-hover:scale-125 transition-transform duration-300 w-full"
         :alt="title"
         :height="600"
-        :width="Math.floor((16 / 9) * 600)"
+        :width="imageWidth"
         :modifiers="{ smart: true }"
         loading="lazy"
         provider="storyblok"
         format="webp"
-        sizes="100vw sm:50vw lg:33vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
     </div>
     <div class="flex flex-col p-3">

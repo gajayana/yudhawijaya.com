@@ -1,3 +1,5 @@
+export type Locale = "en" | "id";
+
 // Notification types
 export type ToastNotificationType = "error" | "success" | "warning";
 
