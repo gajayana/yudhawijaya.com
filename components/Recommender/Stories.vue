@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { ISbStoryData } from "@storyblok/vue";
+import type { ISbStories, ISbStoryData } from "storyblok-js-client";
 import type { PropType } from "vue";
-import type { StoryblokStoriesResponse } from "~/utils/types";
 
 const sb = useSb();
 const props = defineProps({
@@ -30,7 +29,7 @@ const { t, locale } = useI18n({
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
 
-const { data, error } = await useAsyncData(
+const { data, error, status } = await useLazyAsyncData(
   `recommended-stories-${props.path}-${props.slug}`,
   () =>
     storyblokApi.get("cdn/stories", {
@@ -46,10 +45,8 @@ const { data, error } = await useAsyncData(
       ].join(","),
     }),
   {
-    server: true,
-    lazy: false,
     immediate: true,
-    transform: (response: { data: StoryblokStoriesResponse }) => ({
+    transform: (response: ISbStories) => ({
       stories: response.data.stories?.length
         ? (useSampleSize(response.data.stories, 3) as ISbStoryData[])
         : null,
@@ -77,17 +74,19 @@ const stories = computed(() => data.value?.stories || null);
 <i18n lang="yaml">
 en:
   heading: "Related Stories"
+  loading: "Loading..."
 id:
   heading: "Kisah-kisah Terkait"
+  loading: "Memuat..."
 </i18n>
 
 <template>
   <ClientOnly>
     <div class="flex justify-center">
-      <!-- <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="drop-shadow flex text-white">
-        {{ $t('loading') }}
-      </div> -->
-      <div class="flex flex-col items-center w-full">
+      <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex text-white">
+        {{ t("loading") }}
+      </div>
+      <div v-else class="flex flex-col items-center w-full">
         <HeadingSecondary>
           {{ t("heading") }}
         </HeadingSecondary>
