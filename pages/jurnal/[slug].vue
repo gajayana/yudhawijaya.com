@@ -30,7 +30,9 @@ const { data, status, error } = await useAsyncData(
     immediate: true,
     transform: (response) => ({
       story: response.data.story,
-      bodyRich: renderRichText(response.data.story?.content.body_rich),
+      bodyRich: renderRichText(response.data.story?.content.body_rich, {
+        schema: customStoryblokRichTextSchema,
+      }),
       dateModified: response.data.story?.published_at,
       datePublished: response.data.story?.first_published_at,
       excerpt: response.data.story?.content.excerpt,
@@ -193,7 +195,7 @@ id:
           class="flex italic mb-8 text-center"
         />
 
-        <div class="_body flex flex-col mb-8" v-html="data?.bodyRich" />
+        <div class="flex flex-col gap-4 mb-8" v-html="data?.bodyRich" />
       </div>
 
       <div class="flex mx-auto w-full max-w-6xl">
@@ -215,62 +217,3 @@ id:
     </div>
   </main>
 </template>
-
-<style lang="postcss" scoped>
-:deep(._body) {
-  a {
-    @apply text-blue-700;
-
-    &:visited {
-      @apply text-blue-700/90;
-    }
-  }
-
-  p {
-    @apply mb-4 mx-0;
-
-    @screen md {
-      @apply mx-20;
-    }
-
-    img {
-      @apply mb-1 w-full;
-    }
-  }
-
-  pre {
-    @apply backdrop-blur bg-black/70 mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
-
-    @screen md {
-      @apply mx-20;
-    }
-  }
-
-  table {
-    @apply border-collapse mb-4 table-auto text-sm w-full;
-
-    th {
-      @apply border-b dark:border-slate-600 font-bold p-2 text-left;
-    }
-
-    td {
-      @apply border-b border-slate-100 dark:border-slate-700 p-2;
-    }
-  }
-
-  ol,
-  ul {
-    @apply list-disc list-outside mb-4 mx-8 pl-4;
-
-    @screen md {
-      @apply mx-32;
-    }
-
-    li {
-      p {
-        @apply mx-0;
-      }
-    }
-  }
-}
-</style>

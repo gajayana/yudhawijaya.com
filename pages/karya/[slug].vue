@@ -35,7 +35,9 @@ const { data, status, error } = await useAsyncData(
 
       return {
         story,
-        bodyRich: renderRichText(story.content.body_rich || undefined),
+        bodyRich: renderRichText(story.content.body_rich || undefined, {
+          schema: customStoryblokRichTextSchema,
+        }),
         dateModified: story.published_at || undefined,
         datePublished: story.first_published_at || undefined,
         excerpt: story.content.excerpt || undefined,
@@ -225,7 +227,7 @@ id:
           </span>
         </div>
 
-        <div class="_body flex flex-col mb-8" v-html="bodyRich" />
+        <div class="flex flex-col gap-4 mb-8" v-html="bodyRich" />
       </div>
       <div class="flex mx-auto w-full max-w-6xl">
         <ClientOnly>
@@ -246,64 +248,3 @@ id:
     </div>
   </main>
 </template>
-
-<style lang="postcss" scoped>
-:deep(._body) {
-  a {
-    @apply text-blue-700 transition-colors duration-200;
-
-    &:hover {
-      @apply text-blue-800;
-    }
-
-    &:visited {
-      @apply text-blue-700/90;
-    }
-  }
-
-  p {
-    @apply mb-4 mx-0;
-
-    @screen md {
-      @apply mx-20;
-    }
-  }
-
-  pre {
-    @apply bg-black mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
-
-    @screen md {
-      @apply mx-20;
-    }
-  }
-
-  ol,
-  ul {
-    @apply list-disc list-outside mb-4 mx-8 pl-4;
-
-    @screen md {
-      @apply mx-32;
-    }
-
-    li {
-      p {
-        @apply mx-0;
-      }
-    }
-  }
-}
-
-:deep(._external) {
-  a {
-    @apply text-blue-700 transition-colors duration-200;
-
-    &:hover {
-      @apply text-blue-800;
-    }
-
-    &:visited {
-      @apply text-blue-700/90;
-    }
-  }
-}
-</style>
