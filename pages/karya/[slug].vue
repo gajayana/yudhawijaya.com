@@ -8,6 +8,9 @@ const { t, locale } = useI18n({
 });
 const notifications = useToastNotifications();
 const storyblokApi = useStoryblokApi();
+const i18nHead = useLocaleHead({
+  seo: {},
+});
 
 defineI18nRoute({
   paths: {
@@ -81,7 +84,7 @@ watch(locale, async () => {
 const {
   story,
   bodyRich,
-  excerpt,
+  excerpt = "",
   featuredImage,
   dateModified,
   datePublished,
@@ -101,22 +104,38 @@ const seoImage = computed(() =>
     : undefined
 );
 
-useHead(
-  seo({
-    description: excerpt || "",
-    image: seoImage.value || undefined,
+// SEO optimization
+useHead({
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs!.lang,
+  },
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])],
+});
+
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
     title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`,
-  })
-);
+    ogTitle: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
+    description: excerpt,
+    ogDescription: excerpt,
+    ogImage: seoImage.value,
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
+  });
+}
 
 defineArticle({
   headline: title,
   description: excerpt,
   image: seoImage.value,
-  datePublished: new Date(datePublished || ""),
-  dateModified: new Date(dateModified || ""),
+  datePublished: data.value?.datePublished
+    ? new Date(data.value.datePublished)
+    : undefined,
+  dateModified: data.value?.dateModified
+    ? new Date(data.value.dateModified)
+    : undefined,
 });
 </script>
 

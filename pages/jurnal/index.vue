@@ -7,9 +7,11 @@ const sb = useSb();
 const { t, locale } = useI18n({
   useScope: "local",
 });
-
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
+const i18nHead = useLocaleHead({
+  seo: {},
+});
 
 defineI18nRoute({
   paths: {
@@ -17,15 +19,6 @@ defineI18nRoute({
     id: "/jurnal",
   },
 });
-
-useHead(
-  seo({
-    description: t("intro"),
-    title: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    canonical: `${runtimeConfig.public.baseUrl}/jurnal`,
-  })
-);
 
 const { data, status, error } = await useAsyncData(
   `posts-${locale}`,
@@ -79,6 +72,27 @@ watchEffect(() => {
 watch(locale, async () => {
   await refreshNuxtData(`posts-${locale}`);
 });
+
+// SEO optimization
+useHead({
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs!.lang,
+  },
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])],
+});
+
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
+    title: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
+    ogTitle: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
+    description: t("intro"),
+    ogDescription: t("intro"),
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
+  });
+}
 </script>
 
 <i18n lang="yaml">

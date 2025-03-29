@@ -7,6 +7,9 @@ const { t, locale } = useI18n({
 });
 const notifications = useToastNotifications();
 const storyblokApi = useStoryblokApi();
+const i18nHead = useLocaleHead({
+  seo: {},
+});
 
 defineI18nRoute({
   paths: {
@@ -67,17 +70,30 @@ const seoImage = computed(() =>
 );
 
 // SEO optimization
-useHead(
-  seo({
-    description: data.value?.excerpt || "",
-    image: seoImage.value,
+useHead({
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs!.lang,
+  },
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])],
+});
+
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
     title: `${t("storyOf")} ${data.value?.title} ${t(
       "by"
     )} ${SEO_TITLE_DEFAULT}`,
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    canonical: `${runtimeConfig.public.baseUrl}/jurnal/${route.params.slug}`,
-  })
-);
+    ogTitle: `${t("storyOf")} ${data.value?.title} ${t(
+      "by"
+    )} ${SEO_TITLE_DEFAULT}`,
+    description: data.value?.excerpt || "",
+    ogDescription: data.value?.excerpt || "",
+    ogImage: seoImage.value,
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
+  });
+}
 
 defineArticle({
   headline: data.value?.title,

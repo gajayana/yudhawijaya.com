@@ -1,14 +1,10 @@
 <script setup>
-const route = useRoute();
-const { t } = useI18n();
 const head = useLocaleHead({
   addDirAttribute: true,
   identifierAttribute: "id",
   addSeoAttributes: true,
 });
-const title = computed(() =>
-  t(route.meta.title ?? "layouts.title", t("layouts.title"))
-);
+const title = computed(() => SEO_TITLE_DEFAULT);
 </script>
 
 <template>

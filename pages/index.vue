@@ -12,6 +12,9 @@ const sb = useSb();
 const { locale } = useI18n({ useScope: "local" });
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
+const i18nHead = useLocaleHead({
+  seo: {},
+});
 
 // Memoize API params to avoid recreating objects
 const getBaseParams = computed<ISbStoriesParams>(() => ({
@@ -64,18 +67,31 @@ const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
 );
 
 // SEO optimization
-useHead(
-  seo({
+useHead({
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs!.lang,
+  },
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])],
+});
+
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
+    title: SEO_TITLE_DEFAULT,
+    ogTitle: SEO_TITLE_DEFAULT,
     description: heroStory.value.content.meta_description,
-    image: storyblokImage({
+    ogDescription: heroStory.value.content.meta_description,
+    ogImage: storyblokImage({
       url: heroStory.value.content.og_image.filename as string,
       height: 480,
       width: 480,
       smart: true,
     }),
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-  })
-);
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
+  });
+}
 
 // Refresh data on locale change
 watch(locale, () => {
