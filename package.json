@@ -18,6 +18,7 @@
     "@nuxtjs/mdc": "^0.16.1",
     "@nuxtjs/seo": "^3.0.1",
     "@nuxtjs/tailwindcss": "^6.13.2",
+    "@types/clone-deep": "^4.0.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "nuxt": "^3.16.1",
@@ -29,6 +30,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.10.1",
     "@storyblok/nuxt": "^6.2.4",
+    "clone-deep": "^4.0.1",
     "pinia": "^3.0.1"
   }
 }
