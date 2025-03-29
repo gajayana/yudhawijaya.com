@@ -71,11 +71,19 @@ watch(locale, async () => {
 });
 
 // SEO optimization
+const pageTitle = computed(
+  () => `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`
+);
+
+useHead({
+  title: pageTitle.value,
+});
+
 if (import.meta.server) {
   useSeoMeta({
     robots: "index, follow",
-    title: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
-    ogTitle: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
     description: t("intro"),
     ogDescription: t("intro"),
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,

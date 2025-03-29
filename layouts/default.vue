@@ -9,8 +9,6 @@ const i18nHead = useLocaleHead({
   seo: {},
 });
 
-const title = computed(() => SEO_TITLE_DEFAULT);
-
 useHead({
   htmlAttrs: {
     lang: i18nHead.value.htmlAttrs?.lang,
@@ -23,7 +21,7 @@ useHead({
 <template>
   <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
     <Head>
-      <Title>{{ title }}</Title>
+      <!-- <Title>{{ title }}</Title> -->
       <template v-for="link in head.link" :key="link.id">
         <Link
           :id="link.id"

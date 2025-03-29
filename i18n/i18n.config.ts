@@ -1,19 +1,13 @@
 export default defineI18nConfig(() => ({
   legacy: false,
-  fallbackLocale: 'id',
-  locale: 'id',
+  fallbackLocale: "id",
+  locale: "id",
   messages: {
     en: {
-      layouts: {
-        title: SEO_TITLE_DEFAULT
-      },
-      loading: 'Loading...'
+      loading: "Loading...",
     },
     id: {
-      layouts: {
-        title: SEO_TITLE_DEFAULT
-      },
-      loading: 'Memuat data...'
-    }
-  }
-}))
+      loading: "Memuat data...",
+    },
+  },
+}));

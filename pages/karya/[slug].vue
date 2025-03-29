@@ -69,48 +69,32 @@ watchEffect(() => {
   }
 });
 
-watch(
-  () => route.params.slug,
-  async () => {
-    await refreshNuxtData(`post-${route.params.slug}-${locale}`);
-  }
-);
-
-watch(locale, async () => {
-  await refreshNuxtData(`post-${route.params.slug}-${locale}`);
-});
-
-const {
-  story,
-  bodyRich,
-  excerpt = "",
-  featuredImage,
-  dateModified,
-  datePublished,
-  period,
-  tags,
-  title,
-  url,
-} = data.value || {};
-
 const seoImage = computed(() =>
-  featuredImage
+  data.value?.featuredImage
     ? storyblokImage({
         height: 0,
-        url: featuredImage,
+        url: data.value.featuredImage,
         width: 1200,
       })
     : undefined
 );
 
 // SEO optimization
+const pageTitle = computed(
+  () => `${t("storyOf")} ${data.value?.title} ${t("by")} ${SEO_TITLE_DEFAULT}`
+);
+
+useHead({
+  title: pageTitle.value,
+});
+
 if (import.meta.server) {
   useSeoMeta({
     robots: "index, follow",
-    title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
-    ogTitle: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
-    description: excerpt,
-    ogDescription: excerpt,
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
+    description: data.value?.excerpt,
+    ogDescription: data.value?.excerpt,
     ogImage: seoImage.value,
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     twitterCard: "summary_large_image",
@@ -118,8 +102,8 @@ if (import.meta.server) {
 }
 
 defineArticle({
-  headline: title,
-  description: excerpt,
+  headline: data.value?.title,
+  description: data.value?.excerpt,
   image: seoImage.value,
   datePublished: data.value?.datePublished
     ? new Date(data.value.datePublished)
@@ -178,9 +162,9 @@ id:
         <ClientOnly>
           <Suspense>
             <NuxtImg
-              v-if="featuredImage"
+              v-if="data?.featuredImage"
               alt="featured image"
-              :src="featuredImage"
+              :src="data.featuredImage"
               class="object-cover w-full"
               format="webp"
               :height="0"
@@ -201,43 +185,43 @@ id:
         class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
       >
         <HeadingPrimary class="mb-8">
-          {{ title }}
+          {{ data?.title }}
         </HeadingPrimary>
 
         <MDC
-          v-if="excerpt"
-          :value="excerpt"
+          v-if="data?.excerpt"
+          :value="data.excerpt"
           tag="div"
           class="flex italic mb-8 text-center"
         />
 
         <div class="flex flex-col items-center gap-2 mb-8">
-          <MDC v-if="url" :value="url" tag="div" />
-          <span v-if="period?.startDate" class="flex gap-1 items-center">
-            <DatetimeParser :value="period.startDate" :locale="locale" />
+          <MDC v-if="data?.url" :value="data.url" tag="div" />
+          <span v-if="data?.period?.startDate" class="flex gap-1 items-center">
+            <DatetimeParser :value="data.period.startDate" :locale="locale" />
             <span>-</span>
-            <span v-if="period.endDate === t('ongoing')">{{
+            <span v-if="data?.period?.endDate === t('ongoing')">{{
               t("ongoing")
             }}</span>
             <DatetimeParser
-              v-else-if="period.endDate"
-              :value="period.endDate"
+              v-else-if="data?.period?.endDate"
+              :value="data?.period?.endDate"
               :locale="locale"
             />
           </span>
         </div>
 
-        <div class="flex flex-col gap-4 mb-8" v-html="bodyRich" />
+        <div class="flex flex-col gap-4 mb-8" v-html="data?.bodyRich" />
       </div>
       <div class="flex mx-auto w-full max-w-6xl">
         <ClientOnly>
           <Suspense>
             <RecommenderStories
-              v-if="story"
-              :tags="tags"
+              v-if="data?.story"
+              :tags="data?.tags"
               path="karya"
               :slug="route.params.slug as string"
-              :title="title || ''"
+              :title="data?.title || ''"
             />
             <template #fallback>
               <div class="animate-pulse h-48 w-full bg-white/50 rounded-md" />

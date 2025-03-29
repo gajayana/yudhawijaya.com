@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: SEO_TITLE_DEFAULT,
+      titleTemplate: "%s",
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       meta: [
         { charset: "utf-8" },

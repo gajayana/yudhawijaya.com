@@ -25,11 +25,17 @@ const socialAccounts = computed<SocialAccount[]>(() =>
   )
 );
 
+const pageTitle = computed(() => `${t("heading")} ${SEO_TITLE_DEFAULT}`);
+
+useHead({
+  title: pageTitle.value,
+});
+
 if (import.meta.server) {
   useSeoMeta({
     robots: "index, follow",
-    title: `${t("heading")} ${SEO_TITLE_DEFAULT}`,
-    ogTitle: `${t("heading")} ${SEO_TITLE_DEFAULT}`,
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
     description: t("intro"),
     ogDescription: t("intro"),
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
@@ -49,7 +55,7 @@ id:
 
 <template>
   <main class="flex flex-col w-full p-4 relative">
-    <div class="min-h-[calc(100vh-15.063rem)] flex flex-col w-full">
+    <div class="min-h-[calc(100dvh-15.063rem)] flex flex-col w-full">
       <div class="container flex flex-col items-center mx-auto w-full">
         <HeadingPrimary>
           {{ t("heading") }}
@@ -80,11 +86,3 @@ id:
     </div>
   </main>
 </template>
-
-<style>
-/* Remove scoped to allow style reuse and better CSS optimization */
-.min-h-[calc(100vh-15.063rem)] {
-  /* Pre-calculated height for better performance */
-  min-height: calc(100vh - 15.063rem);
-}
-</style>
