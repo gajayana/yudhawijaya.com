@@ -11,15 +11,16 @@
     "@iconify-json/circle-flags": "^1.2.6",
     "@iconify-json/mdi": "^1.2.3",
     "@nuxt/icon": "^1.11.0",
-    "@nuxt/image": "^1.9.0",
+    "@nuxt/image": "^1.10.0",
+    "@nuxt/kit": "npm:@nuxt/kit-nightly@latest",
     "@nuxtjs/google-fonts": "3.2.0",
-    "@nuxtjs/i18n": "^9.3.1",
-    "@nuxtjs/mdc": "^0.15.0",
+    "@nuxtjs/i18n": "^9.4.0",
+    "@nuxtjs/mdc": "^0.16.1",
     "@nuxtjs/seo": "^3.0.1",
     "@nuxtjs/tailwindcss": "^6.13.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "nuxt": "^3.16.0",
+    "nuxt": "^3.16.1",
     "nuxt-lodash": "^2.5.3",
     "sharp": "^0.33.5",
     "tailwind-merge": "^3.0.2",
@@ -27,7 +28,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.10.1",
-    "@storyblok/nuxt": "^6.2.3",
+    "@storyblok/nuxt": "^6.2.4",
     "pinia": "^3.0.1"
   }
 }
