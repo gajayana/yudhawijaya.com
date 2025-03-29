@@ -68,7 +68,7 @@ export default defineNuxtConfig({
   },
   i18n: {
     // See https://i18n.nuxtjs.org/
-    vueI18n: "./i18n.config.ts",
+    vueI18n: "i18n.config.ts",
     baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
     defaultLocale: "id",
     locales: [
@@ -82,6 +82,9 @@ export default defineNuxtConfig({
       },
     ],
     lazy: false,
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
   },
 
   icon: {
