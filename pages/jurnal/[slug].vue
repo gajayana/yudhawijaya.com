@@ -7,9 +7,6 @@ const { t, locale } = useI18n({
 });
 const notifications = useToastNotifications();
 const storyblokApi = useStoryblokApi();
-const i18nHead = useLocaleHead({
-  seo: {},
-});
 
 defineI18nRoute({
   paths: {
@@ -70,14 +67,6 @@ const seoImage = computed(() =>
 );
 
 // SEO optimization
-useHead({
-  htmlAttrs: {
-    lang: i18nHead.value.htmlAttrs!.lang,
-  },
-  link: [...(i18nHead.value.link || [])],
-  meta: [...(i18nHead.value.meta || [])],
-});
-
 if (import.meta.server) {
   useSeoMeta({
     robots: "index, follow",

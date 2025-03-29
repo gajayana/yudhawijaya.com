@@ -10,9 +10,6 @@ const route = useRoute();
 const { t } = useI18n({
   useScope: "local",
 });
-const i18nHead = useLocaleHead({
-  seo: {},
-});
 
 defineI18nRoute({
   paths: {
@@ -27,14 +24,6 @@ const socialAccounts = computed<SocialAccount[]>(() =>
     ["linkedin", "twitter"].includes(medium)
   )
 );
-
-useHead({
-  htmlAttrs: {
-    lang: i18nHead.value.htmlAttrs!.lang,
-  },
-  link: [...(i18nHead.value.link || [])],
-  meta: [...(i18nHead.value.meta || [])],
-});
 
 if (import.meta.server) {
   useSeoMeta({

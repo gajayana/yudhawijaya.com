@@ -12,9 +12,6 @@ const sb = useSb();
 const { locale } = useI18n({ useScope: "local" });
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
-const i18nHead = useLocaleHead({
-  seo: {},
-});
 
 // Memoize API params to avoid recreating objects
 const getBaseParams = computed<ISbStoriesParams>(() => ({
@@ -67,14 +64,6 @@ const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
 );
 
 // SEO optimization
-useHead({
-  htmlAttrs: {
-    lang: i18nHead.value.htmlAttrs!.lang,
-  },
-  link: [...(i18nHead.value.link || [])],
-  meta: [...(i18nHead.value.meta || [])],
-});
-
 if (import.meta.server) {
   useSeoMeta({
     robots: "index, follow",
