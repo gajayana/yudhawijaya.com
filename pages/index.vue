@@ -64,11 +64,17 @@ const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
 );
 
 // SEO optimization
+const pageTitle = computed(() => `${SEO_TITLE_DEFAULT}`);
+
+useHead({
+  title: pageTitle.value,
+});
+
 if (import.meta.server) {
   useSeoMeta({
     robots: "index, follow",
-    title: SEO_TITLE_DEFAULT,
-    ogTitle: SEO_TITLE_DEFAULT,
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
     description: heroStory.value.content.meta_description,
     ogDescription: heroStory.value.content.meta_description,
     ogImage: storyblokImage({
