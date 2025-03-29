@@ -15,17 +15,7 @@ defineI18nRoute({
   },
 });
 
-useHead(
-  seo({
-    description: t("intro"),
-    title: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    canonical: `${runtimeConfig.public.baseUrl}/karya`,
-  })
-);
-
 const { data, status, error } = await useAsyncData(
-  //, refresh
   `works-${locale}`,
   () =>
     storyblokApi.get("cdn/stories", {
@@ -38,6 +28,8 @@ const { data, status, error } = await useAsyncData(
     }),
   {
     watch: [locale],
+    server: true,
+    lazy: true,
   }
 );
 
@@ -48,7 +40,44 @@ if (error.value) {
   });
 }
 
-const stories = computed(() => (data.value ? data.value.data.stories : null));
+const stories = computed(() => {
+  if (!data.value) return null;
+  return data.value.data.stories;
+});
+
+watchEffect(() => {
+  if (error.value) {
+    notifications.add({
+      type: NOTIFICATION_TYPE.ERROR,
+      message: "Error fetching data. Retrying...",
+    });
+
+    setTimeout(() => {
+      refreshNuxtData(`works-${locale}`);
+    }, 3000);
+  }
+});
+
+const pageTitle = computed(
+  () => `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`
+);
+
+useHead({
+  title: pageTitle.value,
+});
+
+// SEO optimization
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
+    description: t("intro"),
+    ogDescription: t("intro"),
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
+  });
+}
 </script>
 
 <i18n lang="yaml">

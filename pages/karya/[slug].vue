@@ -26,81 +26,91 @@ const { data, status, error } = await useAsyncData(
     }),
   {
     watch: [locale],
+    server: true,
+    lazy: false,
+    immediate: true,
+    transform: (response) => {
+      const story = response.data.story;
+      const urlIsInvalid = story?.content.url_is_invalid || false;
+
+      return {
+        story,
+        bodyRich: renderRichText(story.content.body_rich || undefined, {
+          schema: customStoryblokRichTextSchema,
+        }),
+        dateModified: story.published_at || undefined,
+        datePublished: story.first_published_at || undefined,
+        excerpt: story.content.excerpt || undefined,
+        featuredImage: story.content.featured_image?.filename || undefined,
+        period: {
+          startDate: story.content.date_start || "",
+          endDate: isFuture(new Date(story.content.date_end || ""))
+            ? t("ongoing")
+            : story.content.date_end || "",
+        },
+        tags: story.tag_list || undefined,
+        title: story.content.title || undefined,
+        url: urlIsInvalid ? story.content.url : story.content.url || "",
+      };
+    },
   }
 );
 
-if (error.value) {
-  notifications.add({
-    type: NOTIFICATION_TYPE.ERROR,
-    message: "Error fetching data",
+watchEffect(() => {
+  if (error.value) {
+    notifications.add({
+      type: NOTIFICATION_TYPE.ERROR,
+      message: "Error fetching data. Retrying...",
+    });
+
+    setTimeout(() => {
+      refreshNuxtData(`post-${route.params.slug}-${locale}`);
+    }, 1000);
+  }
+});
+
+const seoImage = computed(() =>
+  data.value?.featuredImage
+    ? storyblokImage({
+        height: 0,
+        url: data.value.featuredImage,
+        width: 1200,
+      })
+    : undefined
+);
+
+// SEO optimization
+const pageTitle = computed(
+  () => `${t("storyOf")} ${data.value?.title} ${t("by")} ${SEO_TITLE_DEFAULT}`
+);
+
+useHead({
+  title: pageTitle.value,
+});
+
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
+    description: data.value?.excerpt,
+    ogDescription: data.value?.excerpt,
+    ogImage: seoImage.value,
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
   });
 }
 
-const rawData = computed(() => {
-  const story = data.value ? data.value.data.story : undefined;
-  const urlIsInvalid = story.value?.content.url_is_invalid || false;
-
-  return {
-    story,
-    bodyRich: renderRichText(story.content.body_rich || undefined),
-    dateModified: story.published_at || undefined,
-    datePublished: story.first_published_at || undefined,
-    excerpt: story.content.excerpt || undefined,
-    featuredImage: story.content.featured_image?.filename || undefined,
-    period: {
-      startDate: story.content.date_start || "",
-      endDate: isFuture(new Date(story.content.date_end || ""))
-        ? t("ongoing")
-        : story.content.date_end || "",
-    },
-    tags: story.tag_list || undefined,
-    title: story.content.title || undefined,
-    url: urlIsInvalid ? story.content.url : story.content.url || "",
-  };
-});
-
-const {
-  story,
-  bodyRich,
-  excerpt,
-  featuredImage,
-  dateModified,
-  datePublished,
-  period,
-  tags,
-  title,
-  url,
-} = rawData.value || {};
-
-const seoImage = featuredImage
-  ? storyblokImage({
-      height: 0,
-      url: featuredImage,
-      width: 1200,
-    })
-  : undefined;
-
-useHead(
-  seo({
-    description: excerpt || "",
-    image: seoImage,
-    title: `${t("storyOf")} ${title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    canonical: `${runtimeConfig.public.baseUrl}/karya/${route.params.slug}`,
-  })
-);
-
 defineArticle({
-  headline: title,
-  description: excerpt,
-  image: seoImage,
-  datePublished: new Date(datePublished),
-  dateModified: new Date(dateModified),
-});
-
-// manually refresh data when locale changes
-watch(locale, async () => {
-  await refreshNuxtData();
+  headline: data.value?.title,
+  description: data.value?.excerpt,
+  image: seoImage.value,
+  datePublished: data.value?.datePublished
+    ? new Date(data.value.datePublished)
+    : undefined,
+  dateModified: data.value?.dateModified
+    ? new Date(data.value.dateModified)
+    : undefined,
 });
 </script>
 
@@ -119,8 +129,10 @@ id:
   <main class="flex flex-col p-4 relative">
     <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex flex-col">
       <div
-        class="animate-pulse aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
-      />
+        class="aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
+      >
+        <div class="animate-pulse h-full w-full" />
+      </div>
       <div
         class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
       >
@@ -147,114 +159,76 @@ id:
       <div
         class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
       >
-        <NuxtImg
-          v-if="featuredImage"
-          alt="featured image"
-          :src="featuredImage"
-          class="object-cover w-full"
-          format="webp"
-          :height="0"
-          loading="lazy"
-          provider="storyblok"
-          :quality="60"
-          sizes="100vw lg:75vw"
-          :width="1200"
-        />
+        <ClientOnly>
+          <Suspense>
+            <NuxtImg
+              v-if="data?.featuredImage"
+              alt="featured image"
+              :src="data.featuredImage"
+              class="object-cover w-full"
+              format="webp"
+              :height="0"
+              loading="lazy"
+              provider="storyblok"
+              :quality="60"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 1200px"
+              :width="1200"
+              :modifiers="{ smart: true }"
+            />
+            <template #fallback>
+              <div class="animate-pulse h-full w-full bg-white/50" />
+            </template>
+          </Suspense>
+        </ClientOnly>
       </div>
       <div
         class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
       >
         <HeadingPrimary class="mb-8">
-          {{ title }}
+          {{ data?.title }}
         </HeadingPrimary>
 
         <MDC
-          v-if="excerpt"
-          :value="excerpt"
+          v-if="data?.excerpt"
+          :value="data.excerpt"
           tag="div"
           class="flex italic mb-8 text-center"
         />
 
         <div class="flex flex-col items-center gap-2 mb-8">
-          <MDC v-if="url" :value="url" tag="div" />
-          <span v-if="period.startDate" class="flex gap-1 items-center">
-            <DatetimeParser :value="period.startDate" :locale="locale" />
+          <MDC v-if="data?.url" :value="data.url" tag="div" />
+          <span v-if="data?.period?.startDate" class="flex gap-1 items-center">
+            <DatetimeParser :value="data.period.startDate" :locale="locale" />
             <span>-</span>
-            <span v-if="period.endDate === t('ongoing')">{{
+            <span v-if="data?.period?.endDate === t('ongoing')">{{
               t("ongoing")
             }}</span>
-            <DatetimeParser v-else :value="period.endDate" :locale="locale" />
+            <DatetimeParser
+              v-else-if="data?.period?.endDate"
+              :value="data?.period?.endDate"
+              :locale="locale"
+            />
           </span>
         </div>
 
-        <div class="_body flex flex-col mb-8" v-html="bodyRich" />
-
-        <!-- <ul class="flex items-center justify-center w-full gap-2">
-        <li v-for="tag in tags" :key="tag">{{ tag }}</li>
-      </ul> -->
+        <div class="flex flex-col gap-4 mb-8" v-html="data?.bodyRich" />
       </div>
       <div class="flex mx-auto w-full max-w-6xl">
-        <RecommenderStories
-          v-if="story"
-          :tags="tags"
-          path="karya"
-          :slug="route.params.slug as string"
-          :title="title || ''"
-        />
+        <ClientOnly>
+          <Suspense>
+            <RecommenderStories
+              v-if="data?.story"
+              :tags="data?.tags"
+              path="karya"
+              :slug="route.params.slug as string"
+              :title="data?.title || ''"
+            />
+            <template #fallback>
+              <div class="animate-pulse h-48 w-full bg-white/50 rounded-md" />
+            </template>
+          </Suspense>
+        </ClientOnly>
       </div>
     </div>
   </main>
 </template>
-
-<style lang="postcss" scoped>
-:deep(._body) {
-  a {
-    @apply text-blue-700;
-
-    &:visited {
-      @apply text-blue-700/90;
-    }
-  }
-
-  p {
-    @apply mb-4 mx-0;
-
-    @screen md {
-      @apply mx-20;
-    }
-  }
-
-  pre {
-    @apply bg-black mb-4 mx-0 overflow-x-auto rounded p-4 text-white text-sm font-mono;
-
-    @screen md {
-      @apply mx-20;
-    }
-  }
-
-  ol,
-  ul {
-    @apply list-disc list-outside mb-4 mx-8 pl-4;
-
-    @screen md {
-      @apply mx-32;
-    }
-
-    li {
-      p {
-        @apply mx-0;
-      }
-    }
-  }
-}
-
-:deep(._external) {
-  a {
-    @apply text-blue-700;
-
-    &:visited {
-      @apply text-blue-700/90;
-    }
-  }
-}
-</style>

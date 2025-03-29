@@ -12,36 +12,44 @@ const { t } = useI18n({
   useScope: "local",
 });
 
-const scrollToWorks = () => {
-  if (!window) {
-    return;
-  }
-  const el = document.getElementById("latest-works");
-  if (!el) {
-    return;
-  }
+// Memoize scroll target element lookup
+const worksElement = ref<HTMLElement | null>(null);
+onMounted(() => {
+  worksElement.value = document.getElementById("latest-works");
+});
 
-  if ("scrollBehavior" in document.documentElement.style) {
-    return window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
-  } else {
-    return window.scrollTo(0, el.offsetTop);
-  }
+const scrollToWorks = () => {
+  if (!window || !worksElement.value) return;
+
+  const supportsScrollBehavior =
+    "scrollBehavior" in document.documentElement.style;
+  window.scrollTo({
+    top: worksElement.value.offsetTop,
+    behavior: supportsScrollBehavior ? "smooth" : "auto",
+  });
 };
 
+// Memoize hero content to avoid recalculation
 const hero = computed(() => {
-  const datum = props.story.content.body.find(
+  const heroContent = props.story.content.body.find(
     (item: {
       component: string;
       headline: string;
       teaser: string;
       teaser_rich: ISbRichtext;
     }) => item.component.toLowerCase() === "hero"
-  );
+  ) || { headline: null, teaser_rich: null };
+
   return {
-    title: datum.headline || null,
-    text: datum.teaser_rich || null,
+    title: heroContent.headline,
+    text: heroContent.teaser_rich,
   };
 });
+
+// Pre-compute static styles
+const containerStyle = {
+  height: "calc(100vh - 4rem)",
+};
 </script>
 
 <i18n lang="yaml">
@@ -52,12 +60,7 @@ id:
 </i18n>
 
 <template>
-  <div
-    class="flex flex-col p-4 w-full"
-    :style="{
-      height: 'calc(100vh - 4rem)',
-    }"
-  >
+  <div class="flex flex-col p-4 w-full" :style="containerStyle">
     <div
       class="bg-transparent from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4"
     >

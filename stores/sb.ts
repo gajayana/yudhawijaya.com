@@ -1,23 +1,43 @@
-export const useSb = defineStore(
-  'storyblok',
-  {
-    state: () => ({
-      cv: 0
-    }),
+/**
+ * Store for managing Storyblok content version
+ * Used for cache invalidation and content updates
+ */
+export const useSb = defineStore("storyblok", {
+  state: () => ({
+    cv: 0, // Content version number
+  }),
 
-    actions: {
-      // runs only on server init
-      async serverInit () {
-        // fetch storyblok space latest version
-        const storyblokApi = useStoryblokApi()
-        const { data }: { data: StoryblokSpace } = await storyblokApi.get(
-          'cdn/spaces/me'
-        )
-        this.setCv(data.space.version)
-      },
-      setCv (version:number) {
-        this.cv = version
+  actions: {
+    /**
+     * Initialize content version from Storyblok API
+     * Only runs once on server startup
+     */
+    async serverInit() {
+      try {
+        const storyblokApi = useStoryblokApi();
+        const { data } = (await storyblokApi.get("cdn/spaces/me")) as {
+          data: {
+            space: { version: number };
+          };
+        };
+
+        if (data?.space?.version) {
+          this.cv = data.space.version;
+        }
+      } catch (error) {
+        console.error("Failed to fetch Storyblok space version:", error);
+        // Keep existing cv value on error
       }
-    }
-  }
-)
+    },
+
+    /**
+     * Update content version
+     * @param version - New content version number
+     */
+    setCv(version: number) {
+      if (version > 0) {
+        this.cv = version;
+      }
+    },
+  },
+});

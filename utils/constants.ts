@@ -1,7 +1,17 @@
-const DATETIME_FORMAT_DEFAULT = "dd MMMM yyyy";
-const IMAGE_OF_ME = "https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg";
-const SEO_TITLE_DEFAULT = "Yosef Yudha Wijaya";
-const SOCIAL_ACCOUNTS: SocialAccount[] = [
+/**
+ * Application-wide constants and configuration values
+ */
+
+// Date formatting
+export const DATETIME_FORMAT_DEFAULT = "dd MMMM yyyy" as const;
+
+// User profile
+export const IMAGE_OF_ME =
+  "https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg" as const;
+export const SEO_TITLE_DEFAULT = "Yosef Yudha Wijaya" as const;
+
+// Social media accounts configuration
+export const SOCIAL_ACCOUNTS = Object.freeze([
   {
     icon: "mdi:twitter",
     medium: "twitter",
@@ -22,20 +32,38 @@ const SOCIAL_ACCOUNTS: SocialAccount[] = [
     medium: "github",
     url: "https://github.com/gajayana",
   },
-];
-const SCHEMA_PERSON_SAME_AS: string[] = SOCIAL_ACCOUNTS.map(
+] as const) satisfies readonly SocialAccount[];
+
+// Pre-compute schema URLs
+export const SCHEMA_PERSON_SAME_AS = SOCIAL_ACCOUNTS.map(
   (account) => account.url
 );
 
-const LOCALES = ["en", "id"];
-const DEFAULT_LOCALE = "id";
+// Localization
+export const LOCALES = Object.freeze(["en", "id"]) as readonly string[];
+export const DEFAULT_LOCALE = "id" as const;
 
-export {
-  DATETIME_FORMAT_DEFAULT,
-  DEFAULT_LOCALE,
-  IMAGE_OF_ME,
-  LOCALES,
-  SCHEMA_PERSON_SAME_AS,
-  SEO_TITLE_DEFAULT,
-  SOCIAL_ACCOUNTS,
-};
+/**
+ * Constants representing possible states of asynchronous data operations
+ */
+export const ASYNC_DATA_STATUS = {
+  ERROR: "error",
+  IDLE: "idle",
+  PENDING: "pending",
+  SUCCESS: "success",
+} as const;
+
+/**
+ * Constants representing types of notification messages
+ */
+export const NOTIFICATION_TYPE = {
+  ERROR: "error",
+  WARNING: "warning",
+  SUCCESS: "success",
+} as const;
+
+// Type definitions for better TypeScript support
+export type AsyncDataStatus =
+  (typeof ASYNC_DATA_STATUS)[keyof typeof ASYNC_DATA_STATUS];
+export type NotificationType =
+  (typeof NOTIFICATION_TYPE)[keyof typeof NOTIFICATION_TYPE];

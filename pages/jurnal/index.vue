@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { ISbStoryData } from "@storyblok/vue";
+
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
 const { t, locale } = useI18n({
   useScope: "local",
 });
-
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
 
@@ -16,17 +17,7 @@ defineI18nRoute({
   },
 });
 
-useHead(
-  seo({
-    description: t("intro"),
-    title: `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`,
-    url: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    canonical: `${runtimeConfig.public.baseUrl}/jurnal`,
-  })
-);
-
 const { data, status, error } = await useAsyncData(
-  //, refresh
   `posts-${locale}`,
   () =>
     storyblokApi.get("cdn/stories", {
@@ -39,17 +30,66 @@ const { data, status, error } = await useAsyncData(
     }),
   {
     watch: [locale],
+    server: true,
+    lazy: false,
+    immediate: true,
+    transform: (response) => {
+      return {
+        stories: response.data.stories.map((story: ISbStoryData) => ({
+          uuid: story.uuid,
+          slug: story.slug,
+          content: {
+            title: story.content.title,
+            excerpt: story.content.excerpt,
+            featured_image: story.content.featured_image,
+          },
+          first_published_at: story.first_published_at,
+          tag_list: story.tag_list,
+        })),
+      };
+    },
   }
 );
 
-if (error.value) {
-  notifications.add({
-    type: NOTIFICATION_TYPE.ERROR,
-    message: "Error fetching data",
+const stories = computed(() => data.value?.stories || null);
+
+watchEffect(() => {
+  if (error.value) {
+    notifications.add({
+      type: NOTIFICATION_TYPE.ERROR,
+      message: "Error fetching data. Retrying...",
+    });
+
+    setTimeout(() => {
+      refreshNuxtData(`posts-${locale}`);
+    }, 3000);
+  }
+});
+
+watch(locale, async () => {
+  await refreshNuxtData(`posts-${locale}`);
+});
+
+// SEO optimization
+const pageTitle = computed(
+  () => `${t("heading")} ${t("of")} ${SEO_TITLE_DEFAULT}`
+);
+
+useHead({
+  title: pageTitle.value,
+});
+
+if (import.meta.server) {
+  useSeoMeta({
+    robots: "index, follow",
+    title: pageTitle.value,
+    ogTitle: pageTitle.value,
+    description: t("intro"),
+    ogDescription: t("intro"),
+    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    twitterCard: "summary_large_image",
   });
 }
-
-const stories = computed(() => (data.value ? data.value.data.stories : null));
 </script>
 
 <i18n lang="yaml">

@@ -1,20 +1,27 @@
 <script setup>
-const route = useRoute();
-const { t } = useI18n();
 const head = useLocaleHead({
   addDirAttribute: true,
   identifierAttribute: "id",
   addSeoAttributes: true,
 });
-const title = computed(() =>
-  t(route.meta.title ?? "layouts.title", t("layouts.title"))
-);
+
+const i18nHead = useLocaleHead({
+  seo: {},
+});
+
+useHead({
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs?.lang,
+  },
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])],
+});
 </script>
 
 <template>
   <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
     <Head>
-      <Title>{{ title }}</Title>
+      <!-- <Title>{{ title }}</Title> -->
       <template v-for="link in head.link" :key="link.id">
         <Link
           :id="link.id"

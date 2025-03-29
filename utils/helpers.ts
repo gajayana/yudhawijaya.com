@@ -1,70 +1,38 @@
 interface StoryblokImageParams {
-  // blur?: number;
-  // grayscale?:boolean;
   filters?: string[];
   url: string;
   height: number;
-  smart?:boolean;
+  smart?: boolean;
   width: number;
 }
 
-interface seoParams {
-  canonical?:string;
-  description: string;
-  image?: string;
-  keywords?: string;
-  title?:string;
-  type?:string;
-  url?:string;
-}
+/**
+ * Generates a Storyblok image URL with specified parameters
+ * @param params - Image parameters including dimensions and filters
+ * @returns Formatted image URL string
+ */
+export const storyblokImage = ({
+  filters = [],
+  url,
+  height,
+  smart,
+  width,
+}: StoryblokImageParams): string => {
+  // Pre-allocate array size for better performance
+  const params = new Array(filters.length + 2);
+  params[0] = "m";
+  params[1] = `${width}x${height}`;
 
-interface seoResult {
-  meta: {
-    name: string;
-    content: string;
-  }[];
-  title: string;
-  link: {
-    rel: string;
-    href: string;
-  }[]
-}
+  let paramIndex = 2;
 
-const storyblokImage = ({ filters = [], url, height, smart, width }:StoryblokImageParams):string => {
-  const params = ['m', `${width}x${height}`]
-
-  if (smart) { params.push('smart') }
-  if (filters && Array.isArray(filters) && filters.length) { params.push(`filters:${filters.join(':')}`) }
-
-  return `${url}/${params.join('/')}`
-}
-
-const seo = ({ canonical, description, image, keywords, title, type, url }: seoParams):seoResult => {
-  const runtimeConfig = useRuntimeConfig()
-
-  const meta = [
-    { name: 'description', content: description },
-    { name: 'keywords', content: keywords || '' },
-    { name: 'og:description', content: description },
-    { name: 'og:image', content: image || '' },
-    { name: 'og:title', content: title || SEO_TITLE_DEFAULT },
-    { name: 'og:url', content: url || runtimeConfig.public.baseUrl as string }
-  ]
-
-  if (type) {
-    meta.push({ name: 'og:type', content: type || '' })
+  if (smart) {
+    params[paramIndex++] = "smart";
   }
 
-  return {
-    meta,
-    title: title || SEO_TITLE_DEFAULT,
-    link: [
-      { rel: 'canonical', href: canonical || runtimeConfig.public.baseUrl as string }
-    ]
+  if (filters.length) {
+    params[paramIndex] = `filters:${filters.join(":")}`;
   }
-}
 
-export {
-  seo,
-  storyblokImage
-}
+  // Use slice to only include used array elements
+  return `${url}/${params.slice(0, paramIndex + 1).join("/")}`;
+};
