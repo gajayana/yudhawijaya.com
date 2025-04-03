@@ -62,8 +62,8 @@ customStoryblokRichTextSchema.nodes.paragraph = () => ({
       attrs: {
         class: [
           "mx-0 md:mx-20 text-base",
-          "has-[img]:gap-1 has-[img]:text-sm has-[img]:text-neutral-500",
-          "[&>img]:w-full",
+          "has-[img]:gap-1 has-[img]:text-sm has-[img]:text-neutral-500 md:has-[img]:mx-0",
+          "[&>img]:w-full [&>img]:rounded [&>img]:border [&>img]:border-neutral-200",
         ].join(" "),
       },
     },
