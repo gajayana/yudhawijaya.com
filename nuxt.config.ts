@@ -143,6 +143,11 @@ export default defineNuxtConfig({
     dirs: ["./stores"],
   },
 
+  robots: {
+    blockAiBots: true,
+    blockNonSeoBots: true,
+  },
+
   typescript: {
     tsConfig: {
       compilerOptions: {
