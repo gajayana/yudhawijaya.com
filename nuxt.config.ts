@@ -108,7 +108,7 @@ export default defineNuxtConfig({
       image: IMAGE_OF_ME,
       name: process.env.NUXT_PUBLIC_APP_NAME ?? "",
       sameAs: SCHEMA_PERSON_SAME_AS,
-      jobTitle: "Product Engineer",
+      jobTitle: "Professional Fullstack Developer",
     },
   },
 
