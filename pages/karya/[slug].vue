@@ -38,8 +38,8 @@ const { data, status, error } = await useAsyncData(
         bodyRich: renderRichText(story.content.body_rich || undefined, {
           schema: customStoryblokRichTextSchema,
         }),
-        dateModified: story.published_at || undefined,
-        datePublished: story.first_published_at || undefined,
+        dateModified: story.published_at ?? undefined,
+        datePublished: story.first_published_at ?? undefined,
         excerpt: story.content.excerpt || undefined,
         featuredImage: story.content.featured_image?.filename || undefined,
         period: {
@@ -98,20 +98,20 @@ if (import.meta.server) {
     ogImage: seoImage.value,
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     twitterCard: "summary_large_image",
+    articlePublishedTime: data.value?.datePublished,
+    articleModifiedTime: data.value?.dateModified,
   });
 }
 
-defineArticle({
-  headline: data.value?.title,
-  description: data.value?.excerpt,
-  image: seoImage.value,
-  datePublished: data.value?.datePublished
-    ? new Date(data.value.datePublished)
-    : undefined,
-  dateModified: data.value?.dateModified
-    ? new Date(data.value.dateModified)
-    : undefined,
-});
+useSchemaOrg(
+  defineArticle({
+    headline: data.value?.title,
+    description: data.value?.excerpt,
+    image: seoImage.value,
+    datePublished: data.value?.datePublished,
+    dateModified: data.value?.dateModified,
+  })
+);
 </script>
 
 <i18n lang="yaml">
