@@ -39,7 +39,7 @@ const { data, status, error } = await useAsyncData(
       dateModified: response.data.story?.published_at ?? undefined,
       datePublished: response.data.story?.first_published_at ?? undefined,
       excerpt: response.data.story?.content.excerpt,
-      featuredImage: response.data.story?.content.featured_image.filename,
+      featuredImage: response.data.story?.content.featured_image?.filename,
       tags: response.data.story?.tag_list,
       title: response.data.story?.content.title,
     }),
