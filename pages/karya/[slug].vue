@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { isFuture } from "date-fns";
+import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
@@ -35,9 +36,10 @@ const { data, status, error } = await useAsyncData(
 
       return {
         story,
-        bodyRich: renderRichText(story.content.body_rich || undefined, {
-          schema: customStoryblokRichTextSchema,
-        }),
+        bodyRich: renderRichText(
+          story.content.body_rich || undefined,
+          customStoryblokRichTextOptions
+        ),
         dateModified: story.published_at ?? undefined,
         datePublished: story.first_published_at ?? undefined,
         excerpt: story.content.excerpt || undefined,

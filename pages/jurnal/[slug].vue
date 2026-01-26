@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
+
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
@@ -30,9 +32,10 @@ const { data, status, error } = await useAsyncData(
     immediate: true,
     transform: (response) => ({
       story: response.data.story,
-      bodyRich: renderRichText(response.data.story?.content.body_rich, {
-        schema: customStoryblokRichTextSchema,
-      }),
+      bodyRich: renderRichText(
+        response.data.story?.content.body_rich,
+        customStoryblokRichTextOptions
+      ),
       dateModified: response.data.story?.published_at ?? undefined,
       datePublished: response.data.story?.first_published_at ?? undefined,
       excerpt: response.data.story?.content.excerpt,

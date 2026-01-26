@@ -1,120 +1,132 @@
-import cloneDeep from "clone-deep";
-import type { ISbNode } from "storyblok-js-client";
+import type {
+  StoryblokRichTextContext,
+  StoryblokRichTextNode,
+  StoryblokRichTextOptions,
+} from "@storyblok/richtext";
+import { BlockTypes, MarkTypes } from "@storyblok/richtext";
 
 /**
- * Custom schema for Storyblok rich text rendering that extends the default RichTextSchema
- * with custom styling and formatting rules.
+ * Custom resolvers for Storyblok rich text rendering.
+ * Uses the new @storyblok/richtext resolver API.
  *
- * This schema customizes the appearance of links, headings, and paragraphs to match
- * the application's design system using Tailwind CSS classes.
- * See https://github.com/storyblok/storyblok-js-client/blob/main/src/schema.ts
+ * These resolvers customize the appearance of links, headings, paragraphs,
+ * and other elements to match the application's design system using Tailwind CSS.
  */
-const customStoryblokRichTextSchema = cloneDeep(RichTextSchema);
+export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolvers"] =
+  {
+    /**
+     * Custom link resolver with styled appearance
+     */
+    [MarkTypes.LINK]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      return context.render(
+        "a",
+        {
+          href: node.attrs?.href || "",
+          target: node.attrs?.target || "_self",
+          class:
+            "text-blue-700 visited:text-blue-700/90 hover:text-blue-800 transition-colors duration-200",
+        },
+        node.text || node.children,
+      );
+    },
+
+    /**
+     * Custom code block with dark theme styling
+     */
+    [BlockTypes.CODE_BLOCK]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      return context.render(
+        "pre",
+        {
+          class:
+            "backdrop-blur bg-black/70 mx-0 md:mx-20 overflow-x-auto rounded p-4 text-white text-sm font-mono",
+        },
+        context.render("code", {}, node.children),
+      );
+    },
+
+    /**
+     * Custom heading with bold styling
+     */
+    [BlockTypes.HEADING]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      const level = node.attrs?.level || 1;
+      return context.render(`h${level}`, { class: "font-bold" }, node.children);
+    },
+
+    /**
+     * Custom paragraph with responsive margins and image handling
+     */
+    [BlockTypes.PARAGRAPH]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      return context.render(
+        "p",
+        {
+          class: [
+            "mx-0 md:mx-20 text-base",
+            "has-[img]:gap-1 has-[img]:text-sm has-[img]:text-neutral-500 md:has-[img]:mx-0",
+            "[&>img]:w-full [&>img]:rounded [&>img]:border [&>img]:border-neutral-200",
+          ].join(" "),
+        },
+        node.children,
+      );
+    },
+
+    /**
+     * Custom bullet list styling
+     */
+    [BlockTypes.UL_LIST]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      return context.render(
+        "ul",
+        { class: "list-disc list-outside mx-8 md:mx-32 pl-4" },
+        node.children,
+      );
+    },
+
+    /**
+     * Custom ordered list styling
+     */
+    [BlockTypes.OL_LIST]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      return context.render(
+        "ol",
+        { class: "list-decimal list-outside mx-8 md:mx-32 pl-4" },
+        node.children,
+      );
+    },
+
+    /**
+     * Custom list item styling
+     */
+    [BlockTypes.LIST_ITEM]: (
+      node: StoryblokRichTextNode<string>,
+      context: StoryblokRichTextContext<string>,
+    ) => {
+      return context.render("li", { class: "[&>p]:mx-0" }, node.children);
+    },
+  };
 
 /**
- * Custom link mark renderer that adds styling for links
- * @param node - The Storyblok node containing link information
- * @returns Rendered link with custom styling
+ * Pre-configured options object for use with renderRichText
+ * @example
+ * renderRichText(content, customStoryblokRichTextOptions)
  */
-customStoryblokRichTextSchema.marks.link = (node: ISbNode) => {
-  node.attrs.class =
-    "text-blue-700 visited:text-blue-700/90 hover:text-blue-800 transition-colors duration-200";
-  return RichTextSchema.marks.link(node);
+const customStoryblokRichTextOptions: StoryblokRichTextOptions<string> = {
+  resolvers: customRichTextResolvers,
 };
 
-customStoryblokRichTextSchema.nodes.code_block = () => ({
-  tag: [
-    {
-      tag: "pre",
-      attrs: {
-        class:
-          "backdrop-blur bg-black/70 mx-0 md:mx-20 overflow-x-auto rounded p-4 text-white text-sm font-mono",
-      },
-    },
-  ],
-});
-
-/**
- * Custom heading node renderer that applies appropriate heading styles based on level
- * @param node - The Storyblok node containing heading information
- * @returns Rendered heading with level-appropriate styling
- */
-customStoryblokRichTextSchema.nodes.heading = (node: ISbNode) => ({
-  tag: [
-    {
-      tag: `h${node.attrs.level}`,
-      attrs: {
-        class: "font-bold",
-      },
-    },
-  ],
-});
-
-/**
- * Custom paragraph node renderer that adds consistent spacing between paragraphs
- * @param node - The Storyblok node containing paragraph information
- * @returns Rendered paragraph with margin styling
- */
-customStoryblokRichTextSchema.nodes.paragraph = () => ({
-  tag: [
-    {
-      tag: "p",
-      attrs: {
-        class: [
-          "mx-0 md:mx-20 text-base",
-          "has-[img]:gap-1 has-[img]:text-sm has-[img]:text-neutral-500 md:has-[img]:mx-0",
-          "[&>img]:w-full [&>img]:rounded [&>img]:border [&>img]:border-neutral-200",
-        ].join(" "),
-      },
-    },
-  ],
-});
-
-customStoryblokRichTextSchema.nodes.bullet_list = () => ({
-  tag: [
-    {
-      tag: "ul",
-      attrs: {
-        class: "list-disc list-outside mx-8 md:mx-32 pl-4",
-      },
-    },
-  ],
-});
-
-customStoryblokRichTextSchema.nodes.ordered_list = () => ({
-  tag: [
-    {
-      tag: "ol",
-      attrs: {
-        class: "list-decimal list-outside mx-8 md:mx-32 pl-4",
-      },
-    },
-  ],
-});
-
-customStoryblokRichTextSchema.nodes.list_item = () => ({
-  tag: [
-    {
-      tag: "li",
-      attrs: {
-        class: "[&>p]:mx-0",
-      },
-    },
-  ],
-});
-
-export default customStoryblokRichTextSchema;
-
-// :deep(._body) {
-
-//   table {
-//     @apply border-collapse mb-4 table-auto text-sm w-full;
-
-//     th {
-//       @apply border-b dark:border-slate-600 font-bold p-2 text-left;
-//     }
-
-//     td {
-//       @apply border-b border-slate-100 dark:border-slate-700 p-2;
-//     }
-//   }
+export default customStoryblokRichTextOptions;
