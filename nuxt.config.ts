@@ -37,8 +37,8 @@ export default defineNuxtConfig({
 
   modules: [
     "@nuxtjs/i18n",
-    "@nuxtjs/tailwindcss",
     "@nuxtjs/google-fonts",
+    "@nuxt/ui",
     "@storyblok/nuxt",
     [
       "@pinia/nuxt",
@@ -67,6 +67,9 @@ export default defineNuxtConfig({
     },
     // overwriting: false
   },
+
+  css: ["~/assets/css/main.css"],
+
   i18n: {
     // See https://i18n.nuxtjs.org/
     vueI18n: "i18n.config.ts",
