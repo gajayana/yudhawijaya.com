@@ -34,7 +34,7 @@ useHead({
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
     </Head>
-    <Body class="bg-white">
+    <Body>
       <div class="flex flex-col relative w-full">
         <!-- <BackgroundPage /> -->
         <HeaderDefault />

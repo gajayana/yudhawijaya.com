@@ -43,7 +43,8 @@ id:
   </footer>
 </template>
 
-<style lang="postcss">
+<style scoped>
+@reference "tailwindcss/theme";
 .footer {
   a {
     @apply no-underline;

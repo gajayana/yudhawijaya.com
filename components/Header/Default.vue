@@ -3,7 +3,9 @@ const localePath = useLocalePath();
 </script>
 
 <template>
-  <header class="flex relative w-full">
+  <header
+    className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 z-50"
+  >
     <div class="flex items-center justify-between mx-auto px-4 py-2 w-full">
       <div class="flex items-center gap-4">
         <!-- start: picture of me -->

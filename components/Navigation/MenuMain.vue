@@ -71,7 +71,8 @@ id:
   <!-- end: large screen menu -->
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference "tailwindcss/theme";
 .router-link-active {
   @apply !underline;
   @apply md:font-medium md:no-underline;

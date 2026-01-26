@@ -65,7 +65,7 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
   </NuxtLink>
 </template>
 
-<style lang="postcss">
+<style scoped>
 .vignette {
   box-shadow: 0 0 4rem rgba(0, 0, 0, 0.3) inset;
 }
