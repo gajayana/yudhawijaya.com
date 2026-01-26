@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ISbStories, ISbStoryData } from "storyblok-js-client";
 import type { PropType } from "vue";
+import { sampleSize } from "lodash-es";
 
 const sb = useSb();
 const props = defineProps({
@@ -38,17 +39,15 @@ const { data, error, status } = await useLazyAsyncData(
       starts_with: props.path === "karya" ? "works" : "posts",
       sort_by: "content.date_end:desc",
       cv: sb.cv || Number(Date.now()),
-      with_tag: props?.tags?.join(","),
-      excluding_fields: ["body"].join(","),
-      excluding_slugs: [
-        `${props.path === "karya" ? "works" : "posts"}/${props.slug}`,
-      ].join(","),
+      ...(props.tags?.length ? { with_tag: props.tags.join(",") } : {}),
+      excluding_fields: "body",
+      excluding_slugs: `${props.path === "karya" ? "works" : "posts"}/${props.slug}`,
     }),
   {
     immediate: true,
     transform: (response: ISbStories) => ({
       stories: response.data.stories?.length
-        ? (useSampleSize(response.data.stories, 3) as ISbStoryData[])
+        ? (sampleSize(response.data.stories, 3) as ISbStoryData[])
         : null,
     }),
   }
