@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ISbRichtext, ISbStoryData } from "storyblok-js-client";
+import type { ISbStoryData } from "storyblok-js-client";
 
 const props = defineProps({
   story: {
@@ -31,21 +31,13 @@ const scrollToWorks = () => {
   });
 };
 
-// Memoize hero content from Storyblok (fallback for rich description)
-const hero = computed(() => {
+// Get hero headline from Storyblok
+const heroTitle = computed(() => {
   const heroContent = props.story.content.body.find(
-    (item: {
-      component: string;
-      headline: string;
-      teaser: string;
-      teaser_rich: ISbRichtext;
-    }) => item.component.toLowerCase() === "hero",
-  ) || { headline: null, teaser_rich: null };
-
-  return {
-    title: heroContent.headline,
-    text: heroContent.teaser_rich,
-  };
+    (item: { component: string; headline: string }) =>
+      item.component.toLowerCase() === "hero",
+  );
+  return heroContent?.headline ?? null;
 });
 
 // Pre-compute static styles
@@ -97,12 +89,12 @@ id:
           {{ t("tagline") }}
         </p>
 
-        <!-- Main Headline (from Storyblok or fallback) -->
+        <!-- Main Headline (from Storyblok) -->
         <HeadingPrimary
-          v-if="hero.title"
+          v-if="heroTitle"
           class="font-sans font-medium leading-tight mb-4 sm:mb-6 text-center text-3xl md:text-5xl lg:text-6xl"
         >
-          {{ hero.title }}
+          {{ heroTitle }}
         </HeadingPrimary>
 
         <!-- Value Proposition -->
