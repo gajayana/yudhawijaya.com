@@ -12,6 +12,8 @@ const { t } = useI18n({
   useScope: "local",
 });
 
+const localePath = useLocalePath();
+
 // Memoize scroll target element lookup
 const worksElement = ref<HTMLElement | null>(null);
 onMounted(() => {
@@ -29,7 +31,7 @@ const scrollToWorks = () => {
   });
 };
 
-// Memoize hero content to avoid recalculation
+// Memoize hero content from Storyblok (fallback for rich description)
 const hero = computed(() => {
   const heroContent = props.story.content.body.find(
     (item: {
@@ -37,7 +39,7 @@ const hero = computed(() => {
       headline: string;
       teaser: string;
       teaser_rich: ISbRichtext;
-    }) => item.component.toLowerCase() === "hero"
+    }) => item.component.toLowerCase() === "hero",
   ) || { headline: null, teaser_rich: null };
 
   return {
@@ -50,41 +52,102 @@ const hero = computed(() => {
 const containerStyle = {
   height: "calc(100vh - 4rem)",
 };
+
+// Credentials data
+const credentials = computed(() => [
+  { value: "12+", label: t("credentialYears") },
+  { value: "Media", label: t("credentialMedia") },
+  { value: "Web3", label: t("credentialWeb3") },
+]);
 </script>
 
 <i18n lang="yaml">
 en:
-  buttonWorks: "Works & Contributions"
+  tagline: "Code, written with an editor’s eye"
+  subtitle1: "From language editor to frontend architect, I've spent 12+ years obsessing over structure — first in sentences, now in systems."
+  subtitle2: "I build frontends where state, performance, and APIs don't fight each other, and lately that means Web3 interfaces that fail gracefully instead of loudly."
+  subtitle3: "The habit stuck: I still revise code the way I once revised prose — line by line, with intent."
+  credentialYears: "Years as Developer"
+  credentialMedia: "Enterprise Scale"
+  credentialWeb3: "Current Focus"
+  buttonWorks: "See My Work"
+  buttonContact: "Get in Touch"
 id:
-  buttonWorks: "Karya & Kontribusi"
+  tagline: "Kode, ditulis dengan ketelitian editor"
+  subtitle1: "Dari penyelaras bahasa menjadi arsitek frontend, saya sudah 12+ tahun terobsesi dengan struktur — dulu di kalimat, sekarang di sistem."
+  subtitle2: "Saya membangun frontend di mana state, performa, dan API tidak saling bertabrakan. Belakangan ini artinya antarmuka Web3 yang gagal dengan anggun, bukan berisik."
+  subtitle3: "Kebiasaan itu melekat: saya masih merevisi kode seperti dulu merevisi tulisan — baris demi baris, dengan intensi."
+  credentialYears: "Tahun Pengalaman"
+  credentialMedia: "Skala Enterprise"
+  credentialWeb3: "Fokus Saat Ini"
+  buttonWorks: "Lihat Karya"
+  buttonContact: "Hubungi Saya"
 </i18n>
 
 <template>
   <div class="flex flex-col p-4 w-full" :style="containerStyle">
     <div
-      class="bg-transparent from-indigo-600 to-indigo-800 flex h-full items-center justify-center rounded-md w-full p-4"
+      class="bg-transparent flex h-full items-center justify-center rounded-md w-full p-4"
     >
-      <div class="max-w-xl mx-auto">
+      <div class="max-w-2xl mx-auto">
+        <!-- Tagline -->
+        <p
+          class="font-sans font-medium mb-2 sm:mb-4 text-center text-sm sm:text-base tracking-widest uppercase text-neutral-600"
+        >
+          {{ t("tagline") }}
+        </p>
+
+        <!-- Main Headline (from Storyblok or fallback) -->
         <HeadingPrimary
           v-if="hero.title"
-          class="font-sans font-medium leading-tight mb-4 sm:mb-8 text-center text-3xl md:text-6xl lg:text-8xl"
+          class="font-sans font-medium leading-tight mb-4 sm:mb-6 text-center text-3xl md:text-5xl lg:text-6xl"
         >
           {{ hero.title }}
         </HeadingPrimary>
 
+        <!-- Value Proposition -->
         <div
-          v-if="hero.text"
-          class="font-serif leading-snug sm:leading-tight mb-4 sm:mb-8 text-center text-md sm:text-2xl"
-          v-html="renderRichText(hero.text || '')"
-        />
+          class="font-serif leading-relaxed mb-6 sm:mb-8 text-center text-base sm:text-lg md:text-xl text-neutral-700 space-y-4"
+        >
+          <p>{{ t("subtitle1") }}</p>
+          <p>{{ t("subtitle2") }}</p>
+          <p>{{ t("subtitle3") }}</p>
+        </div>
 
-        <div class="flex items-center justify-center">
+        <!-- Credential Highlights -->
+        <div
+          class="flex flex-wrap gap-4 sm:gap-8 items-center justify-center mb-8 sm:mb-10"
+        >
+          <div
+            v-for="cred in credentials"
+            :key="cred.label"
+            class="flex flex-col items-center"
+          >
+            <span class="font-sans font-bold text-2xl sm:text-3xl">{{
+              cred.value
+            }}</span>
+            <span class="text-xs sm:text-sm text-neutral-500 uppercase">{{
+              cred.label
+            }}</span>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div
+          class="flex flex-col sm:flex-row gap-3 items-center justify-center"
+        >
           <button
-            class="border border-black flex px-8 py-2 mr-4 rounded-sm uppercase"
+            class="bg-neutral-900 text-white px-8 py-3 rounded-sm font-medium hover:bg-neutral-800 transition-colors w-full sm:w-auto"
             @click="scrollToWorks"
           >
             {{ t("buttonWorks") }}
           </button>
+          <NuxtLink
+            :to="localePath('/kontak')"
+            class="border border-neutral-900 px-8 py-3 rounded-sm font-medium hover:bg-neutral-100 transition-colors text-center w-full sm:w-auto"
+          >
+            {{ t("buttonContact") }}
+          </NuxtLink>
         </div>
       </div>
     </div>
