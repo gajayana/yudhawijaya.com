@@ -48,8 +48,8 @@ const containerStyle = {
 // Credentials data
 const credentials = computed(() => [
   { value: "12+", label: t("credentialYears") },
-  { value: "Media", label: t("credentialMedia") },
-  { value: "Web3", label: t("credentialWeb3") },
+  { value: "Media & Enterprise", label: t("credentialMedia") },
+  { value: "Web3 Interfaces", label: t("credentialWeb3") },
 ]);
 </script>
 
@@ -59,8 +59,8 @@ en:
   subtitle1: "From language editor to frontend architect, I've spent 12+ years obsessing over structure — first in sentences, now in systems."
   subtitle2: "I build frontends where state, performance, and APIs don't fight each other, and lately that means Web3 interfaces that fail gracefully instead of loudly."
   subtitle3: "The habit stuck: I still revise code the way I once revised prose — line by line, with intent."
-  credentialYears: "Years as Developer"
-  credentialMedia: "Enterprise Scale"
+  credentialYears: "Years Building Web Systems"
+  credentialMedia: "At Scale"
   credentialWeb3: "Current Focus"
   buttonWorks: "See My Work"
   buttonContact: "Get in Touch"
@@ -69,8 +69,8 @@ id:
   subtitle1: "Dari penyelaras bahasa menjadi arsitek frontend, saya sudah 12+ tahun terobsesi dengan struktur — dulu di kalimat, sekarang di sistem."
   subtitle2: "Saya membangun frontend di mana state, performa, dan API tidak saling bertabrakan. Belakangan ini artinya antarmuka Web3 yang gagal dengan anggun, bukan berisik."
   subtitle3: "Kebiasaan itu melekat: saya masih merevisi kode seperti dulu merevisi tulisan — baris demi baris, dengan intensi."
-  credentialYears: "Tahun Pengalaman"
-  credentialMedia: "Skala Enterprise"
+  credentialYears: "Tahun Membangun Sistem Web"
+  credentialMedia: "Skala Produksi"
   credentialWeb3: "Fokus Saat Ini"
   buttonWorks: "Lihat Karya"
   buttonContact: "Hubungi Saya"
