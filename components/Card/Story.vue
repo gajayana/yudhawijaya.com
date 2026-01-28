@@ -31,23 +31,23 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
 </script>
 
 <template>
-  <article
-    class="group overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 active:shadow focus-within:ring-2 focus-within:ring-primary bg-white/50 backdrop-blur rounded-lg shadow-md"
+  <NuxtLink
+    :to="linkPath"
+    class="no-underline focus:outline-none group"
+    :aria-label="`Read more about ${title}`"
   >
-    <NuxtLink
-      :to="linkPath"
-      class="flex flex-col no-underline focus:outline-none"
-      :aria-label="`Read more about ${title}`"
+    <UCard
+      class="h-full transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 overflow-hidden"
     >
       <!-- Featured Image Container -->
       <div
-        class="aspect-video bg-black/5 flex overflow-hidden relative w-full"
+        class="aspect-video bg-neutral-50 flex overflow-hidden relative w-full -m-6 mb-4"
         :class="{ 'vignette': featuredImage }"
       >
         <NuxtImg
           v-if="featuredImage"
           :src="featuredImage"
-          class="object-cover w-full group-hover:scale-110 transition-transform duration-500 ease-out"
+          class="object-cover w-full group-hover:scale-105 transition-transform duration-700 ease-out"
           :alt="title"
           :height="600"
           :width="imageWidth"
@@ -60,28 +60,30 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
         <!-- Fallback for missing image -->
         <div
           v-else
-          class="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400"
+          class="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-300"
         >
-          <Icon name="lucide:image" size="48" />
+          <Icon name="lucide:image" size="64" />
         </div>
       </div>
 
       <!-- Content Container -->
-      <div class="flex flex-col p-4 sm:p-5 gap-2">
-        <h3
-          class="font-sans font-bold text-xl leading-tight text-neutral-900 group-hover:text-primary transition-colors"
-        >
-          {{ title }}
-        </h3>
-        <p
-          v-if="excerpt"
-          class="font-serif text-neutral-600 text-base line-clamp-2"
-        >
-          {{ excerpt }}
-        </p>
-      </div>
-    </NuxtLink>
-  </article>
+      <template #footer>
+        <div class="flex flex-col gap-3 px-1 pb-1">
+          <h3
+            class="font-sans font-bold text-lg sm:text-xl leading-tight text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2"
+          >
+            {{ title }}
+          </h3>
+          <p
+            v-if="excerpt"
+            class="font-serif text-neutral-600 text-sm sm:text-base line-clamp-2 leading-relaxed"
+          >
+            {{ excerpt }}
+          </p>
+        </div>
+      </template>
+    </UCard>
+  </NuxtLink>
 </template>
 
 <style scoped>
@@ -89,7 +91,7 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
   content: '';
   position: absolute;
   inset: 0;
-  box-shadow: 0 0 4rem rgba(0, 0, 0, 0.3) inset;
+  box-shadow: 0 0 3rem rgba(0, 0, 0, 0.2) inset;
   pointer-events: none;
 }
 </style>

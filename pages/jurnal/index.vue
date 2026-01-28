@@ -104,26 +104,39 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col gap-8 w-full p-4 relative">
-    <section class="flex flex-col w-full">
-      <div class="flex flex-col gap-4 items-center mx-auto px-4 w-full">
-        <HeadingPrimary>
+  <main class="flex flex-col gap-8 sm:gap-12 w-full p-4 sm:p-6 lg:p-8 relative">
+    <!-- Page Header -->
+    <section class="flex flex-col w-full max-w-4xl mx-auto">
+      <div class="flex flex-col gap-4 sm:gap-6 items-center px-4 w-full">
+        <HeadingPrimary class="!mb-0">
           {{ t("heading") }}
         </HeadingPrimary>
 
-        <p class="font-serif italic text-center">
+        <p class="font-serif italic text-center text-base sm:text-lg text-neutral-600 max-w-2xl">
           {{ t("intro") }}
         </p>
+
+        <!-- Decorative divider -->
+        <div class="flex items-center gap-2 mt-2">
+          <div class="h-px w-12 sm:w-16 bg-neutral-300" />
+          <Icon name="lucide:book-open" class="text-neutral-400" size="20" />
+          <div class="h-px w-12 sm:w-16 bg-neutral-300" />
+        </div>
       </div>
     </section>
-    <section class="flex flex-col w-full">
+
+    <!-- Journals Grid Section -->
+    <section class="flex flex-col w-full max-w-7xl mx-auto">
       <div class="flex items-center justify-center w-full">
+        <!-- Loading State -->
         <div
           v-if="status === ASYNC_DATA_STATUS.PENDING"
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 w-full"
         >
-          <CardStoryLoader v-for="i in 4" :key="`card-story-loader-${i}`" />
+          <CardStoryLoader v-for="i in 8" :key="`card-story-loader-${i}`" />
         </div>
+
+        <!-- Journals List -->
         <JournalsListAll v-else :stories="stories" />
       </div>
     </section>

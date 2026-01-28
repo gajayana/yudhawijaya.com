@@ -30,9 +30,10 @@ const chunkedStories = computed(() => {
 
 <template>
   <div class="flex flex-col w-full">
+    <!-- Works Grid -->
     <div
-      v-if="stories"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+      v-if="stories && stories.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 w-full"
     >
       <template
         v-for="(chunk, chunkIndex) in chunkedStories"
@@ -56,5 +57,22 @@ const chunkedStories = computed(() => {
         </ClientOnly>
       </template>
     </div>
+
+    <!-- Empty State -->
+    <UCard v-else class="w-full max-w-md mx-auto">
+      <div class="flex flex-col items-center justify-center py-12 text-center gap-4">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100">
+          <Icon name="lucide:folder-open" size="32" class="text-neutral-400" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <h3 class="font-sans font-medium text-lg text-neutral-900">
+            No works yet
+          </h3>
+          <p class="font-serif text-neutral-600 text-sm">
+            Check back soon for new projects and contributions
+          </p>
+        </div>
+      </div>
+    </UCard>
   </div>
 </template>
