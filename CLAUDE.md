@@ -31,6 +31,7 @@ This is a **Nuxt 3** personal website with **Storyblok CMS** integration, featur
 - **Content Management**: Storyblok headless CMS for dynamic content (journals, works/projects)
 - **Internationalization**: English (`en`) and Indonesian (`id`) locales with `id` as default
 - **State Management**: Pinia stores for Storyblok content versioning and toast notifications
+- **UI Components**: Nuxt UI v4 (`@nuxt/ui`) for buttons, inputs, and interactive elements
 - **Styling**: Tailwind CSS with custom main.css, Google Fonts (Roboto, Open Sans)
 - **SEO**: Comprehensive meta tags, structured data (Person schema), sitemap generation
 - **Image Optimization**: Nuxt Image with Storyblok integration
@@ -91,7 +92,7 @@ This is a **Nuxt 3** personal website with **Storyblok CMS** integration, featur
 - **Code Style**: Use TypeScript throughout, Composition API with `<script setup>`, avoid Options API
 - **Naming**: PascalCase for components, camelCase for composables, lowercase-with-dashes for directories
 - **Architecture**: Prefer types over interfaces, avoid enums (use const objects), leverage auto-imports
-- **UI**: Mobile-first Tailwind CSS approach, optimize for Web Vitals
+- **UI**: Nuxt UI v4 (`@nuxt/ui`) for interactive components (buttons, inputs, etc.). Use `UButton` instead of hand-styled `<button>`/`<a>`/`<NuxtLink>` for actions. Use `color="neutral"` for primary buttons, `variant="outline"` for secondary. Mobile-first Tailwind CSS for layout and custom styling. Optimize for Web Vitals
 - **Data Fetching**: Use `useFetch`/`useAsyncData` for server-side data, Storyblok API for CMS content
 
 ## Robots Configuration

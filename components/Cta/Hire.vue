@@ -27,11 +27,12 @@ id:
     <p class="font-serif text-neutral-600 text-sm sm:text-base mb-5">
       {{ t("text") }}
     </p>
-    <NuxtLink
+    <UButton
       :to="localePath('/kontak')"
-      class="bg-neutral-900 text-white px-6 py-2.5 rounded-sm text-sm font-medium hover:bg-neutral-800 transition-colors"
+      color="neutral"
+      size="lg"
     >
       {{ t("button") }}
-    </NuxtLink>
+    </UButton>
   </div>
 </template>

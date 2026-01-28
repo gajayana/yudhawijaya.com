@@ -74,15 +74,15 @@ id:
 
         <!-- Primary CTA: LinkedIn -->
         <div class="flex flex-col items-center mb-10">
-          <a
-            :href="linkedInUrl"
-            rel="noreferrer noopener"
+          <UButton
+            :to="linkedInUrl"
             target="_blank"
-            class="bg-neutral-900 text-white px-8 py-3 rounded-sm font-medium hover:bg-neutral-800 transition-colors flex items-center gap-2"
+            color="neutral"
+            size="lg"
+            icon="i-mdi-linkedin"
           >
-            <Icon name="mdi:linkedin" size="1.25rem" />
             {{ t("linkedinButton") }}
-          </a>
+          </UButton>
           <span class="text-xs text-neutral-400 mt-3">
             {{ t("responseTime") }}
           </span>

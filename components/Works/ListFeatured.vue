@@ -71,12 +71,13 @@ id:
         <p class="font-serif text-neutral-600 mb-6">
           {{ t("ctaText") }}
         </p>
-        <NuxtLink
+        <UButton
           :to="localePath('/kontak')"
-          class="bg-neutral-900 text-white px-8 py-3 rounded-sm font-medium hover:bg-neutral-800 transition-colors"
+          color="neutral"
+          size="lg"
         >
           {{ t("ctaButton") }}
-        </NuxtLink>
+        </UButton>
       </div>
     </div>
   </div>

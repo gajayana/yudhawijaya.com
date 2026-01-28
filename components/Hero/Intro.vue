@@ -126,18 +126,23 @@ id:
 
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row gap-3">
-          <button
-            class="bg-neutral-900 text-white px-8 py-3 rounded-sm font-medium hover:bg-neutral-800 transition-colors w-full sm:w-auto"
+          <UButton
+            color="neutral"
+            size="lg"
+            class="w-full sm:w-auto"
             @click="scrollToWorks"
           >
             {{ t("buttonWorks") }}
-          </button>
-          <NuxtLink
+          </UButton>
+          <UButton
             :to="localePath('/kontak')"
-            class="border border-neutral-900 px-8 py-3 rounded-sm font-medium hover:bg-neutral-100 transition-colors text-center w-full sm:w-auto"
+            variant="outline"
+            color="neutral"
+            size="lg"
+            class="w-full sm:w-auto"
           >
             {{ t("buttonContact") }}
-          </NuxtLink>
+          </UButton>
         </div>
       </div>
     </div>
