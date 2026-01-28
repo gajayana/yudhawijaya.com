@@ -35,7 +35,7 @@ useHead({
       </template>
     </Head>
     <Body>
-      <div class="flex flex-col relative w-full">
+      <div class="flex flex-col relative pt-14 md:pt-20 w-full">
         <!-- <BackgroundPage /> -->
         <HeaderDefault />
         <slot />
