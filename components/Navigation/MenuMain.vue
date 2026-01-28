@@ -21,6 +21,11 @@ const items = [
     name: "jurnal",
   },
   {
+    label: "about",
+    path: "/tentang",
+    name: "tentang",
+  },
+  {
     label: "contact",
     path: "/kontak",
     name: "kontak",
@@ -30,11 +35,13 @@ const items = [
 
 <i18n lang="yaml">
 en:
+  about: "About"
   contact: "Contact"
   home: "Home"
   journals: "Journals"
   works: "Works"
 id:
+  about: "Tentang"
   contact: "Kontak"
   home: "Muka"
   journals: "Jurnal"
