@@ -47,7 +47,6 @@ export default defineNuxtConfig({
         autoImports: ["defineStore", "acceptHMRUpdate"],
       },
     ],
-    "nuxt-lodash",
     "@nuxtjs/mdc",
     "@nuxt/icon",
     "@nuxt/image",

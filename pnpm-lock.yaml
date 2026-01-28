@@ -20,6 +20,9 @@ importers:
       clone-deep:
         specifier: ^4.0.1
         version: 4.0.1
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.23
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.2)(vue@3.5.27(typescript@5.9.2))
@@ -54,6 +57,9 @@ importers:
       '@types/clone-deep':
         specifier: ^4.0.4
         version: 4.0.4
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -63,9 +69,6 @@ importers:
       nuxt:
         specifier: ^4.3.0
         version: 4.3.0(@parcel/watcher@2.4.1)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(eslint@9.22.0(jiti@2.6.1))(ioredis@5.9.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rollup@4.56.0)(terser@5.36.0)(typescript@5.9.2)(vite@7.3.1(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.36.0)(yaml@2.8.2))(yaml@2.8.2)
-      nuxt-lodash:
-        specifier: ^2.5.3
-        version: 2.5.3(magicast@0.5.1)
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -2745,8 +2748,8 @@ packages:
   '@types/lodash-es@4.17.12':
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
 
-  '@types/lodash@4.17.13':
-    resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
+  '@types/lodash@4.17.23':
+    resolution: {integrity: sha512-RDvF6wTulMPjrNdCoYRC8gNR880JNGT8uB+REUpC2Ns4pRqQJhGz90wh7rgdXDPpCczF3VGktDuFGVnz8zP7HA==}
 
   '@types/markdown-it@14.1.2':
     resolution: {integrity: sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog==}
@@ -4615,8 +4618,8 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
-  lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+  lodash-es@4.17.23:
+    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
 
   lodash.defaults@4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
@@ -5011,9 +5014,6 @@ packages:
 
   nuxt-link-checker@4.3.9:
     resolution: {integrity: sha512-iYJU+A/xUhk62v4tol9cdjJS1+ZOSl0+tdUObgifdeSts6IqAUByUAiX4H6yOY2tdQYKjahMFbQr1GJ+/4LYnQ==}
-
-  nuxt-lodash@2.5.3:
-    resolution: {integrity: sha512-LCJ40tGQTHkfk8rQoGqtb0mFgRVt8U+pc3S352DsI39yF3olqgxlsm28wdJMIcWHuxLgf5X+DwxmZhrAHXNS5g==}
 
   nuxt-og-image@5.1.13:
     resolution: {integrity: sha512-H9kqGlmcEb9agWURwT5iFQjbr7Ec7tcQHZZaYSpC/JXKq2/dFyRyAoo6oXTk6ob20dK9aNjkJDcX2XmgZy67+w==}
@@ -9537,9 +9537,9 @@ snapshots:
 
   '@types/lodash-es@4.17.12':
     dependencies:
-      '@types/lodash': 4.17.13
+      '@types/lodash': 4.17.23
 
-  '@types/lodash@4.17.13': {}
+  '@types/lodash@4.17.23': {}
 
   '@types/markdown-it@14.1.2':
     dependencies:
@@ -11669,7 +11669,7 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
-  lodash-es@4.17.21: {}
+  lodash-es@4.17.23: {}
 
   lodash.defaults@4.2.0: {}
 
@@ -12356,14 +12356,6 @@ snapshots:
       - uploadthing
       - vite
       - vue
-
-  nuxt-lodash@2.5.3(magicast@0.5.1):
-    dependencies:
-      '@nuxt/kit': 3.16.1(magicast@0.5.1)
-      '@types/lodash-es': 4.17.12
-      lodash-es: 4.17.21
-    transitivePeerDependencies:
-      - magicast
 
   nuxt-og-image@5.1.13(@unhead/vue@2.1.2(vue@3.5.27(typescript@5.9.2)))(h3@1.15.5)(magicast@0.5.1)(unstorage@1.17.4(db0@0.3.4)(ioredis@5.9.2))(vite@7.3.1(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.36.0)(yaml@2.8.2))(vue@3.5.27(typescript@5.9.2)):
     dependencies:
