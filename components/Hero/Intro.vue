@@ -42,7 +42,7 @@ const heroTitle = computed(() => {
 
 // Pre-compute static styles
 const containerStyle = {
-  height: "calc(100vh - 4rem)",
+  minHeight: "calc(100vh - 4rem)",
 };
 
 // Credentials data
@@ -77,14 +77,14 @@ id:
 </i18n>
 
 <template>
-  <div class="flex flex-col p-4 w-full" :style="containerStyle">
+  <div class="flex flex-col px-4 py-8 sm:py-4 w-full" :style="containerStyle">
     <div
-      class="bg-transparent flex h-full items-center justify-center rounded-md w-full p-4"
+      class="flex flex-1 items-center justify-center w-full"
     >
       <div class="max-w-2xl mx-auto">
         <!-- Tagline -->
         <p
-          class="font-sans font-medium mb-2 sm:mb-4 text-center text-sm sm:text-base tracking-widest uppercase text-neutral-600"
+          class="font-sans font-medium mb-3 sm:mb-4 text-sm tracking-widest uppercase text-neutral-500"
         >
           {{ t("tagline") }}
         </p>
@@ -92,14 +92,14 @@ id:
         <!-- Main Headline (from Storyblok) -->
         <HeadingPrimary
           v-if="heroTitle"
-          class="font-sans font-medium leading-tight mb-4 sm:mb-6 text-center text-3xl md:text-5xl lg:text-6xl"
+          class="font-sans font-medium leading-tight mb-6 sm:mb-8 text-3xl md:text-5xl lg:text-6xl"
         >
           {{ heroTitle }}
         </HeadingPrimary>
 
         <!-- Value Proposition -->
         <div
-          class="font-serif leading-relaxed mb-6 sm:mb-8 text-center text-base sm:text-lg md:text-xl text-neutral-700 space-y-4"
+          class="font-serif leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl text-neutral-700 space-y-4"
         >
           <p>{{ t("subtitle1") }}</p>
           <p>{{ t("subtitle2") }}</p>
@@ -108,26 +108,24 @@ id:
 
         <!-- Credential Highlights -->
         <div
-          class="flex flex-wrap gap-4 sm:gap-8 items-center justify-center mb-8 sm:mb-10"
+          class="flex flex-wrap gap-6 sm:gap-10 mb-8 sm:mb-10"
         >
           <div
             v-for="cred in credentials"
             :key="cred.label"
-            class="flex flex-col items-center"
+            class="flex flex-col"
           >
-            <span class="font-sans font-bold text-2xl sm:text-3xl">{{
+            <span class="font-sans font-bold text-xl sm:text-2xl">{{
               cred.value
             }}</span>
-            <span class="text-xs sm:text-sm text-neutral-500 uppercase">{{
+            <span class="text-xs text-neutral-500">{{
               cred.label
             }}</span>
           </div>
         </div>
 
         <!-- CTA Buttons -->
-        <div
-          class="flex flex-col sm:flex-row gap-3 items-center justify-center"
-        >
+        <div class="flex flex-col sm:flex-row gap-3">
           <button
             class="bg-neutral-900 text-white px-8 py-3 rounded-sm font-medium hover:bg-neutral-800 transition-colors w-full sm:w-auto"
             @click="scrollToWorks"

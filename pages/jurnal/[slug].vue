@@ -203,6 +203,8 @@ id:
         />
 
         <div class="flex flex-col gap-4 mb-8" v-html="data?.bodyRich" />
+
+        <CtaHire />
       </div>
 
       <div class="flex mx-auto w-full max-w-6xl">

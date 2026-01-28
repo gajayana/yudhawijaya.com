@@ -1,6 +1,7 @@
 import {
   IMAGE_OF_ME,
   SCHEMA_PERSON_SAME_AS,
+  SEO_DESCRIPTION_DEFAULT,
   SEO_TITLE_DEFAULT,
 } from "./utils/constants";
 
@@ -15,7 +16,7 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         { name: "author", content: "Yosef Yudha Wijaya" },
-        { name: "description", content: "" },
+        { name: "description", content: SEO_DESCRIPTION_DEFAULT },
         { name: "twitter:card", content: "summary" },
         { name: "twitter:creator", content: "@tuan_yudha" },
         { name: "twitter:site", content: "@tuan_yudha" },
@@ -111,7 +112,7 @@ export default defineNuxtConfig({
       image: IMAGE_OF_ME,
       name: process.env.NUXT_PUBLIC_APP_NAME ?? "",
       sameAs: SCHEMA_PERSON_SAME_AS,
-      jobTitle: "Professional Fullstack Developer",
+      jobTitle: "Frontend Architect",
     },
   },
 
