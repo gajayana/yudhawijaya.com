@@ -104,10 +104,38 @@ export default defineNuxtConfig({
   schemaOrg: {
     identity: {
       type: "Person",
+      name: "Yosef Yudha Wijaya",
+      description: SEO_DESCRIPTION_DEFAULT,
+      url: process.env.NUXT_PUBLIC_BASE_URL,
       image: IMAGE_OF_ME,
-      name: process.env.NUXT_PUBLIC_APP_NAME ?? "",
       sameAs: SCHEMA_PERSON_SAME_AS,
       jobTitle: "Frontend Architect",
+      knowsAbout: [
+        "Vue.js",
+        "Nuxt.js",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "JavaScript",
+        "Web3",
+        "Laravel",
+        "WordPress",
+        "Tailwind CSS",
+        "Frontend Architecture",
+        "Web Development",
+      ],
+      worksFor: [
+        {
+          type: "Organization",
+          name: "Undercurrent Capital Pte Ltd",
+          url: "https://undercurrentcapital.com",
+        },
+        {
+          type: "Organization",
+          name: "PT Kompas Media Nusantara",
+          url: "https://kompas.id",
+        },
+      ],
     },
   },
 
