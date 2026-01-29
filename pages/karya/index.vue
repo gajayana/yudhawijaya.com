@@ -72,8 +72,11 @@ if (import.meta.server) {
     robots: "index, follow",
     title: pageTitle.value,
     ogTitle: pageTitle.value,
-    description: t("intro"),
-    ogDescription: t("intro"),
+    description: t("seoDescription"),
+    ogDescription: t("seoDescription"),
+    ogImage: IMAGE_OF_ME,
+    twitterImage: IMAGE_OF_ME,
+    ogType: "website",
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     twitterCard: "summary_large_image",
   });
@@ -84,11 +87,13 @@ if (import.meta.server) {
 en:
   heading: "Works & Contributions"
   intro: "My contributions in clients and personal digital applications developments"
+  seoDescription: "Portfolio of web development projects by Yosef Yudha Wijaya. Vue.js, Nuxt.js, React, and Laravel applications for media, enterprise, and Web3 clients."
   of: "of"
   ongoing: "ongoing"
 id:
   heading: "Karya & Kontribusi"
   intro: "Kontribusi saya terhadap pengembangan produk-produk digital klien dan personal"
+  seoDescription: "Portofolio proyek pengembangan web oleh Yosef Yudha Wijaya. Aplikasi Vue.js, Nuxt.js, React, dan Laravel untuk klien media, enterprise, dan Web3."
   of: "oleh"
   ongoing: "berlangsung"
 </i18n>

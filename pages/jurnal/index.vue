@@ -84,8 +84,11 @@ if (import.meta.server) {
     robots: "index, follow",
     title: pageTitle.value,
     ogTitle: pageTitle.value,
-    description: t("intro"),
-    ogDescription: t("intro"),
+    description: t("seoDescription"),
+    ogDescription: t("seoDescription"),
+    ogImage: IMAGE_OF_ME,
+    twitterImage: IMAGE_OF_ME,
+    ogType: "website",
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     twitterCard: "summary_large_image",
   });
@@ -96,10 +99,12 @@ if (import.meta.server) {
 en:
   heading: "Journals"
   intro: "Journals on things that I am interested in."
+  seoDescription: "Personal journal and blog posts by Yosef Yudha Wijaya. Writing about web development, JavaScript, photography, trains, and life in Indonesia."
   of: "of"
 id:
   heading: "Jurnal"
   intro: "Catatan bebas mengenai apa saja yang saya minati."
+  seoDescription: "Jurnal dan tulisan personal oleh Yosef Yudha Wijaya. Tulisan tentang pengembangan web, JavaScript, fotografi, kereta api, dan kehidupan di Indonesia."
   of: "oleh"
 </i18n>
 

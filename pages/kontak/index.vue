@@ -35,6 +35,9 @@ if (import.meta.server) {
     ogTitle: pageTitle.value,
     description: t("seoDescription"),
     ogDescription: t("seoDescription"),
+    ogImage: IMAGE_OF_ME,
+    twitterImage: IMAGE_OF_ME,
+    ogType: "website",
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     twitterCard: "summary_large_image",
   });
