@@ -105,15 +105,38 @@ if (import.meta.server) {
   });
 }
 
-useSchemaOrg(
-  defineArticle({
-    headline: data.value?.title,
+// Schema.org structured data - using WebPage with CreativeWork for portfolio items
+useSchemaOrg([
+  defineWebPage({
+    "@type": "ItemPage",
+    name: data.value?.title,
     description: data.value?.excerpt,
-    image: seoImage.value,
     datePublished: data.value?.datePublished,
     dateModified: data.value?.dateModified,
-  })
-);
+    mainEntity: {
+      "@type": "CreativeWork",
+      name: data.value?.title,
+      description: data.value?.excerpt,
+      image: seoImage.value,
+      dateCreated: data.value?.period?.startDate,
+      datePublished: data.value?.datePublished,
+      dateModified: data.value?.dateModified,
+      keywords: data.value?.tags?.join(", "),
+      creator: {
+        "@type": "Person",
+        name: "Yosef Yudha Wijaya",
+        url: runtimeConfig.public.baseUrl,
+      },
+    },
+  }),
+  defineBreadcrumb({
+    itemListElement: [
+      { name: t("breadcrumb.home"), item: "/" },
+      { name: t("breadcrumb.works"), item: locale.value === "en" ? "/en/works" : "/karya" },
+      { name: data.value?.title || "" },
+    ],
+  }),
+]);
 </script>
 
 <i18n lang="yaml">
@@ -121,10 +144,18 @@ en:
   by: "by"
   ongoing: "ongoing"
   storyOf: "Story of"
+  breadcrumb:
+    home: "Home"
+    works: "Works"
+  featuredImageAlt: "Screenshot of {title} project interface"
 id:
   by: "oleh"
   ongoing: "berlangsung"
   storyOf: "Kisah"
+  breadcrumb:
+    home: "Beranda"
+    works: "Karya"
+  featuredImageAlt: "Tangkapan layar antarmuka proyek {title}"
 </i18n>
 
 <template>
@@ -158,7 +189,7 @@ id:
             <Suspense>
               <NuxtImg
                 v-if="data?.featuredImage"
-                alt="featured image"
+                :alt="t('featuredImageAlt', { title: data?.title })"
                 :src="data.featuredImage"
                 class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                 format="webp"

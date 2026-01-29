@@ -95,15 +95,31 @@ if (import.meta.server) {
   });
 }
 
-useSchemaOrg(
+// Schema.org structured data
+useSchemaOrg([
   defineArticle({
     headline: data.value?.title,
     description: data.value?.excerpt,
     image: seoImage.value,
     datePublished: data.value?.datePublished,
     dateModified: data.value?.dateModified,
-  })
-);
+    author: {
+      name: "Yosef Yudha Wijaya",
+      url: runtimeConfig.public.baseUrl,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+    },
+  }),
+  defineBreadcrumb({
+    itemListElement: [
+      { name: t("breadcrumb.home"), item: "/" },
+      { name: t("breadcrumb.journals"), item: locale.value === "en" ? "/en/journals" : "/jurnal" },
+      { name: data.value?.title || "" },
+    ],
+  }),
+]);
 </script>
 
 <i18n lang="yaml">
@@ -111,10 +127,16 @@ en:
   by: "by"
   ongoing: "ongoing"
   storyOf: "Story of"
+  breadcrumb:
+    home: "Home"
+    journals: "Journals"
 id:
   by: "oleh"
   ongoing: "berlangsung"
   storyOf: "Kisah"
+  breadcrumb:
+    home: "Beranda"
+    journals: "Jurnal"
 </i18n>
 
 <template>
