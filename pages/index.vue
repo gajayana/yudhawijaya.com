@@ -24,7 +24,7 @@ const getBaseParams = computed<ISbStoriesParams>(() => ({
 const { data: heroData, error: heroError } = await useAsyncData(
   "home-hero",
   () => storyblokApi.get("cdn/stories/home", getBaseParams.value),
-  { watch: [locale] }
+  { watch: [locale] },
 );
 
 const { data: featuredData, error: featuredError } = await useAsyncData(
@@ -36,7 +36,7 @@ const { data: featuredData, error: featuredError } = await useAsyncData(
       per_page: 6,
       sort_by: "content.is_featured:desc",
     }),
-  { watch: [locale] }
+  { watch: [locale] },
 );
 
 // Handle errors
@@ -56,11 +56,11 @@ if (!heroData.value || !featuredData.value) {
 
 // Computed properties with type safety
 const heroStory = computed<ISbStory["data"]["story"]>(
-  () => heroData.value?.data.story
+  () => heroData.value?.data.story,
 );
 
 const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
-  () => featuredData.value?.data.stories
+  () => featuredData.value?.data.stories,
 );
 
 // SEO optimization
@@ -75,8 +75,8 @@ if (import.meta.server) {
     robots: "index, follow",
     title: pageTitle.value,
     ogTitle: pageTitle.value,
-    description: heroStory.value.content.meta_description,
-    ogDescription: heroStory.value.content.meta_description,
+    // description: heroStory.value.content.meta_description,
+    // ogDescription: heroStory.value.content.meta_description,
     ogImage: storyblokImage({
       url: heroStory.value.content.og_image.filename as string,
       height: 480,
