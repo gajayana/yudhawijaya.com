@@ -85,10 +85,6 @@ export default defineNuxtConfig({
         language: "id-ID",
       },
     ],
-    lazy: false,
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
   },
 
   icon: {
@@ -148,7 +144,7 @@ export default defineNuxtConfig({
   },
 
   robots: {
-    blockAiBots: true,
+    blockAiBots: false,
     blockNonSeoBots: true,
   },
 
