@@ -78,9 +78,7 @@ id:
 
 <template>
   <div class="flex flex-col px-4 py-8 sm:py-4 w-full" :style="containerStyle">
-    <div
-      class="flex flex-1 items-center justify-center w-full"
-    >
+    <div class="flex flex-1 items-center justify-center w-full">
       <div class="max-w-2xl mx-auto">
         <!-- Tagline -->
         <p
@@ -92,14 +90,14 @@ id:
         <!-- Main Headline (from Storyblok) -->
         <HeadingPrimary
           v-if="heroTitle"
-          class="font-sans font-medium leading-tight mb-6 sm:mb-8 text-3xl md:text-5xl lg:text-6xl"
+          class="font-sans font-medium leading-tight mb-6 sm:mb-8 text-left text-3xl md:text-5xl lg:text-6xl"
         >
           {{ heroTitle }}
         </HeadingPrimary>
 
         <!-- Value Proposition -->
         <div
-          class="font-serif leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl text-neutral-700 space-y-4"
+          class="flex flex-col font-serif leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl text-neutral-700 space-y-4 w-full"
         >
           <p>{{ t("subtitle1") }}</p>
           <p>{{ t("subtitle2") }}</p>
@@ -107,9 +105,7 @@ id:
         </div>
 
         <!-- Credential Highlights -->
-        <div
-          class="flex flex-wrap gap-6 sm:gap-10 mb-8 sm:mb-10"
-        >
+        <div class="flex flex-wrap gap-6 sm:gap-10 mb-8 sm:mb-10">
           <div
             v-for="cred in credentials"
             :key="cred.label"
@@ -118,9 +114,7 @@ id:
             <span class="font-sans font-bold text-xl sm:text-2xl">{{
               cred.value
             }}</span>
-            <span class="text-xs text-neutral-500">{{
-              cred.label
-            }}</span>
+            <span class="text-xs text-neutral-500">{{ cred.label }}</span>
           </div>
         </div>
 
