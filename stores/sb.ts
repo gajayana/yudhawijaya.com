@@ -15,11 +15,6 @@ export const useSb = defineStore("storyblok", {
     async serverInit() {
       try {
         const storyblokApi = useStoryblokApi();
-        // Debug log to check token
-        console.log(
-          "Storyblok API Token:",
-          process.env.NUXT_STORYBLOK_ACCESS_TOKEN ? "Present" : "Missing"
-        );
 
         const { data } = (await storyblokApi.get("cdn/spaces/me")) as {
           data: {
@@ -30,9 +25,8 @@ export const useSb = defineStore("storyblok", {
         if (data?.space?.version) {
           this.cv = data.space.version;
         }
-      } catch (error) {
-        console.error("Failed to fetch Storyblok space version:\n", error);
-        // Keep existing cv value on error
+      } catch {
+        // Silently fail - keep existing cv value on error
       }
     },
 
