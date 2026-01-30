@@ -93,6 +93,15 @@ if (import.meta.server) {
     twitterCard: "summary_large_image",
   });
 }
+
+// Schema.org CollectionPage
+useSchemaOrg([
+  defineWebPage({
+    "@type": "CollectionPage",
+    name: pageTitle.value,
+    description: t("seoDescription"),
+  }),
+]);
 </script>
 
 <i18n lang="yaml">
@@ -109,23 +118,23 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col gap-8 sm:gap-12 w-full p-4 sm:p-6 lg:p-8 relative">
+  <main class="flex flex-col gap-10 sm:gap-14 lg:gap-16 w-full p-4 sm:p-6 lg:p-8 relative">
     <!-- Page Header -->
     <section class="flex flex-col w-full max-w-4xl mx-auto">
-      <div class="flex flex-col gap-4 sm:gap-6 items-center px-4 w-full">
+      <div class="flex flex-col gap-5 sm:gap-7 items-center px-4 w-full">
         <HeadingPrimary class="!mb-0">
           {{ t("heading") }}
         </HeadingPrimary>
 
-        <p class="font-serif italic text-center text-base sm:text-lg text-neutral-600 max-w-2xl">
+        <p class="font-serif italic text-center text-base sm:text-lg lg:text-xl text-neutral-600 max-w-2xl leading-relaxed">
           {{ t("intro") }}
         </p>
 
         <!-- Decorative divider -->
-        <div class="flex items-center gap-2 mt-2">
-          <div class="h-px w-12 sm:w-16 bg-neutral-300" />
-          <Icon name="lucide:book-open" class="text-neutral-400" size="20" />
-          <div class="h-px w-12 sm:w-16 bg-neutral-300" />
+        <div class="flex items-center gap-3 mt-3 sm:mt-4">
+          <div class="h-px w-16 sm:w-20 bg-neutral-300" />
+          <Icon name="lucide:book-open" class="text-neutral-400" size="22" />
+          <div class="h-px w-16 sm:w-20 bg-neutral-300" />
         </div>
       </div>
     </section>
@@ -136,7 +145,7 @@ id:
         <!-- Loading State -->
         <div
           v-if="status === ASYNC_DATA_STATUS.PENDING"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 w-full"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7 lg:gap-8 w-full"
         >
           <CardStoryLoader v-for="i in 8" :key="`card-story-loader-${i}`" />
         </div>

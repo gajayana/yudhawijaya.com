@@ -207,20 +207,20 @@ id:
       <!-- Article Content -->
       <article class="flex flex-col items-center w-full max-w-3xl mx-auto px-4 sm:px-6">
         <!-- Title -->
-        <HeadingPrimary class="mb-6 sm:mb-8">
+        <HeadingPrimary class="mb-8 sm:mb-10">
           {{ data?.title }}
         </HeadingPrimary>
 
         <!-- Published Date -->
-        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8">
+        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-5 mb-10 sm:mb-12">
           <UBadge
             v-if="data?.datePublished"
             color="neutral"
             variant="subtle"
             size="lg"
-            class="font-sans"
+            class="font-sans text-base sm:text-lg py-2.5 sm:py-3"
           >
-            <Icon name="lucide:calendar" size="16" class="mr-1.5" />
+            <Icon name="lucide:calendar" size="18" class="mr-2" />
             <DatetimeParser
               :value="data.datePublished"
               :locale="locale"
@@ -233,23 +233,28 @@ id:
           v-if="data?.excerpt"
           :value="data.excerpt"
           tag="div"
-          class="font-serif italic text-center text-lg sm:text-xl text-neutral-600 mb-8 leading-relaxed"
+          class="font-serif italic text-center text-lg sm:text-xl lg:text-2xl text-neutral-600 mb-12 sm:mb-16 leading-relaxed max-w-2xl"
         />
 
         <!-- Divider -->
-        <div class="flex items-center gap-3 mb-10 sm:mb-12 w-full max-w-md">
+        <div class="flex items-center gap-4 mb-12 sm:mb-16 w-full max-w-md">
           <div class="h-px flex-1 bg-neutral-200" />
-          <Icon name="lucide:feather" class="text-neutral-300" size="18" />
+          <Icon name="lucide:feather" class="text-neutral-300" size="20" />
           <div class="h-px flex-1 bg-neutral-200" />
         </div>
 
         <!-- Rich Text Body -->
         <div
-          class="prose prose-neutral max-w-none w-full mb-10 sm:mb-12
-                 prose-headings:font-sans prose-headings:font-bold
-                 prose-p:font-serif prose-p:text-base prose-p:leading-relaxed
-                 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-2
-                 prose-img:rounded-lg prose-img:shadow-lg"
+          class="prose prose-neutral prose-lg max-w-none w-full mb-12 sm:mb-16
+                 prose-headings:font-sans prose-headings:font-bold prose-headings:mt-10 prose-headings:mb-6
+                 prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:leading-snug
+                 prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:leading-snug
+                 prose-p:font-serif prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed prose-p:mb-6
+                 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2
+                 prose-a:inline-block prose-a:min-h-[44px] prose-a:flex prose-a:items-center
+                 prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3
+                 prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2
+                 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
           v-html="data?.bodyRich"
         />
 

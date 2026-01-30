@@ -1,6 +1,8 @@
 <template>
   <h1
-    class="font-sans font-medium leading-tight mb-4 sm:mb-8 text-center text-3xl md:text-6xl lg:text-8xl"
+    class="font-sans font-medium leading-tight mb-6 sm:mb-10 md:mb-12 text-center
+           text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
+           tracking-tight px-4"
   >
     <slot />
   </h1>

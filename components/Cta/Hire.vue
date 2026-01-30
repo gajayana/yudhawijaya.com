@@ -19,20 +19,20 @@ id:
 
 <template>
   <UCard
-    class="mt-12 sm:mt-16 w-full max-w-3xl mx-auto bg-gradient-to-br from-neutral-50 to-white border-2 border-neutral-200"
+    class="mt-16 sm:mt-20 w-full max-w-3xl mx-auto bg-gradient-to-br from-neutral-50 to-white border-2 border-neutral-200"
   >
-    <div class="flex flex-col items-center text-center gap-4 sm:gap-6 py-4 sm:py-6">
+    <div class="flex flex-col items-center text-center gap-5 sm:gap-7 py-6 sm:py-8">
       <!-- Icon -->
-      <div class="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-neutral-900 text-white">
-        <Icon name="lucide:sparkles" size="24" class="sm:text-[28px]" />
+      <div class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-neutral-900 text-white">
+        <Icon name="lucide:sparkles" size="28" class="sm:text-[32px]" />
       </div>
 
       <!-- Content -->
-      <div class="flex flex-col gap-3">
-        <h3 class="font-sans font-bold text-xl sm:text-2xl text-neutral-900">
+      <div class="flex flex-col gap-4 sm:gap-5">
+        <h3 class="font-sans font-bold text-2xl sm:text-3xl text-neutral-900">
           {{ t("heading") }}
         </h3>
-        <p class="font-serif text-neutral-600 text-base sm:text-lg leading-relaxed max-w-xl mx-auto">
+        <p class="font-serif text-neutral-600 text-lg sm:text-xl leading-relaxed max-w-xl mx-auto px-2">
           {{ t("text") }}
         </p>
       </div>
@@ -43,7 +43,7 @@ id:
         color="neutral"
         size="xl"
         trailing-icon="lucide:arrow-right"
-        class="mt-2"
+        class="mt-3 sm:mt-4 min-h-[52px] text-base sm:text-lg px-8"
       >
         {{ t("button") }}
       </UButton>

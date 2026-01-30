@@ -33,11 +33,11 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
 <template>
   <NuxtLink
     :to="linkPath"
-    class="no-underline focus:outline-none group"
+    class="no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 rounded-lg group block"
     :aria-label="`Read more about ${title}`"
   >
     <UCard
-      class="h-full transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 overflow-hidden"
+      class="h-full transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 active:shadow-lg overflow-hidden"
     >
       <!-- Featured Image Container -->
       <div
@@ -68,15 +68,15 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
 
       <!-- Content Container -->
       <template #footer>
-        <div class="flex flex-col gap-3 px-1 pb-1">
+        <div class="flex flex-col gap-3 sm:gap-4 px-1 pb-1 min-h-[120px] sm:min-h-[140px]">
           <h3
-            class="font-sans font-bold text-lg sm:text-xl leading-tight text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2"
+            class="font-sans font-bold text-xl sm:text-2xl leading-snug text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2"
           >
             {{ title }}
           </h3>
           <p
             v-if="excerpt"
-            class="font-serif text-neutral-600 text-sm sm:text-base line-clamp-2 leading-relaxed"
+            class="font-serif text-neutral-600 text-base sm:text-lg line-clamp-2 leading-relaxed"
           >
             {{ excerpt }}
           </p>
