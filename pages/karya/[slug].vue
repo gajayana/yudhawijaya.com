@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { isFuture } from "date-fns";
 import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
+
+const { sanitize } = useSanitizeHtml();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
@@ -288,7 +290,7 @@ id:
                  prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3
                  prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2
                  prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
-          v-html="data?.bodyRich"
+          v-html="sanitize(data?.bodyRich)"
         />
 
         <!-- CTA -->
