@@ -26,8 +26,8 @@ const linkPath = computed(() =>
   localePath(`/${props.path}/${props.story.slug}`)
 );
 
-// Pre-compute image dimensions for better CLS
-const imageWidth = computed(() => Math.floor((16 / 9) * 600));
+// Image width for card display
+const imageWidth = 800;
 </script>
 
 <template>
@@ -47,15 +47,14 @@ const imageWidth = computed(() => Math.floor((16 / 9) * 600));
         <NuxtImg
           v-if="featuredImage"
           :src="featuredImage"
-          class="object-cover w-full group-hover:scale-105 transition-transform duration-700 ease-out"
+          class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
           :alt="title"
-          :height="600"
           :width="imageWidth"
           :modifiers="{ smart: true }"
           loading="lazy"
           provider="storyblok"
           format="webp"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          densities="x1 x2"
         />
         <!-- Fallback for missing image -->
         <div

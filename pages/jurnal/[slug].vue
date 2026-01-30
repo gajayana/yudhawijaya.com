@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
+import { validateSlug } from "~/utils/validateSlug";
 
 const { sanitize } = useSanitizeHtml();
 const runtimeConfig = useRuntimeConfig();
@@ -18,10 +19,19 @@ defineI18nRoute({
   },
 });
 
+// Validate slug before making API request
+const validatedSlug = validateSlug(route.params.slug);
+if (!validatedSlug) {
+  throw createError({
+    statusCode: 400,
+    statusMessage: "Invalid slug format",
+  });
+}
+
 const { data, status, error } = await useAsyncData(
-  `post-${route.params.slug}-${locale}`,
+  `post-${validatedSlug}-${locale}`,
   () =>
-    storyblokApi.get(`cdn/stories/posts/${route.params.slug}`, {
+    storyblokApi.get(`cdn/stories/posts/${validatedSlug}`, {
       language: locale.value,
       version: "published",
       cv: sb.cv || Number(Date.now()),
@@ -56,7 +66,7 @@ watchEffect(() => {
     });
 
     setTimeout(() => {
-      refreshNuxtData(`post-${route.params.slug}-${locale}`);
+      refreshNuxtData(`post-${validatedSlug}-${locale}`);
     }, 3000);
   }
 });
@@ -65,7 +75,6 @@ watchEffect(() => {
 const seoImage = computed(() =>
   data.value?.featuredImage
     ? storyblokImage({
-        height: 0,
         url: data.value.featuredImage,
         width: 1200,
       })
@@ -190,11 +199,9 @@ id:
                 :src="data.featuredImage"
                 class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                 format="webp"
-                :height="0"
                 loading="lazy"
                 provider="storyblok"
                 :quality="70"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                 :width="1200"
                 :modifiers="{ smart: true }"
               />
@@ -275,7 +282,7 @@ id:
               v-if="data?.story"
               :tags="data.tags"
               path="jurnal"
-              :slug="route.params.slug as string"
+              :slug="validatedSlug"
               :title="data.title || ''"
             />
             <template #fallback>

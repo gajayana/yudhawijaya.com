@@ -1,7 +1,7 @@
 interface StoryblokImageParams {
   filters?: string[];
   url: string;
-  height: number;
+  height?: number;
   smart?: boolean;
   width: number;
 }
@@ -14,13 +14,14 @@ interface StoryblokImageParams {
 export const storyblokImage = ({
   filters = [],
   url,
-  height,
+  height = 0,
   smart,
   width,
 }: StoryblokImageParams): string => {
   // Pre-allocate array size for better performance
   const params = new Array(filters.length + 2);
   params[0] = "m";
+  // Use 0 for height to let Storyblok auto-calculate based on aspect ratio
   params[1] = `${width}x${height}`;
 
   let paramIndex = 2;
