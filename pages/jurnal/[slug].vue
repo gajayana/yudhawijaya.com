@@ -101,11 +101,15 @@ useSchemaOrg([
     headline: data.value?.title,
     description: data.value?.excerpt,
     image: seoImage.value,
+    inLanguage: locale.value === "en" ? "en-GB" : "id-ID",
     datePublished: data.value?.datePublished,
     dateModified: data.value?.dateModified,
     author: {
+      "@type": "Person",
+      "@id": `${runtimeConfig.public.baseUrl}/#identity`,
       name: "Yosef Yudha Wijaya",
       url: runtimeConfig.public.baseUrl,
+      sameAs: SCHEMA_PERSON_SAME_AS,
     },
     mainEntityOfPage: {
       "@type": "WebPage",
