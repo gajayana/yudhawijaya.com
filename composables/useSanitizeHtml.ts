@@ -51,8 +51,6 @@ export function useSanitizeHtml() {
       ],
       // Ensure links are safe
       ALLOW_DATA_ATTR: false,
-      // Add rel="noopener noreferrer" to links with target="_blank"
-      ADD_ATTR: ["target"],
     });
   };
 
