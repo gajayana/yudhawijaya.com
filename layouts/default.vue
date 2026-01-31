@@ -1,4 +1,6 @@
 <script setup>
+const runtimeConfig = useRuntimeConfig();
+
 const head = useLocaleHead({
   addDirAttribute: true,
   identifierAttribute: "id",
@@ -16,6 +18,16 @@ useHead({
   link: [...(i18nHead.value.link || [])],
   meta: [...(i18nHead.value.meta || [])],
 });
+
+// WebSite schema with bilingual support
+useSchemaOrg([
+  defineWebSite({
+    name: "Yosef Yudha Wijaya",
+    description: SEO_DESCRIPTION_DEFAULT,
+    url: runtimeConfig.public.baseUrl,
+    inLanguage: ["id-ID", "en-GB"],
+  }),
+]);
 </script>
 
 <template>
@@ -34,8 +46,8 @@ useHead({
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
     </Head>
-    <Body class="bg-white">
-      <div class="flex flex-col relative w-full">
+    <Body>
+      <div class="flex flex-col relative pt-14 md:pt-20 w-full">
         <!-- <BackgroundPage /> -->
         <HeaderDefault />
         <slot />

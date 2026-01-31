@@ -1,0 +1,7 @@
+# Security Contact Information
+# See https://securitytxt.org/ for more information
+
+Contact: https://yudhawijaya.com/kontak
+Expires: 2027-01-30T00:00:00.000Z
+Preferred-Languages: en, id
+Canonical: https://yudhawijaya.com/.well-known/security.txt

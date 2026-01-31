@@ -15,6 +15,7 @@ export const useSb = defineStore("storyblok", {
     async serverInit() {
       try {
         const storyblokApi = useStoryblokApi();
+
         const { data } = (await storyblokApi.get("cdn/spaces/me")) as {
           data: {
             space: { version: number };
@@ -24,9 +25,8 @@ export const useSb = defineStore("storyblok", {
         if (data?.space?.version) {
           this.cv = data.space.version;
         }
-      } catch (error) {
-        console.error("Failed to fetch Storyblok space version:", error);
-        // Keep existing cv value on error
+      } catch {
+        // Silently fail - keep existing cv value on error
       }
     },
 

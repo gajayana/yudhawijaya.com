@@ -23,50 +23,77 @@ const { excerpt, featuredImage, title } = computed(() => ({
 
 // Pre-compute link path
 const linkPath = computed(() =>
-  localePath(`/${props.path}/${props.story.slug}`)
+  localePath(`/${props.path}/${props.story.slug}`),
 );
 
-// Pre-compute image dimensions for better CLS
-const imageWidth = computed(() => Math.floor((16 / 9) * 600));
+// Image width for card display
+const imageWidth = 800;
 </script>
 
 <template>
   <NuxtLink
-    class="bg-white/50 backdrop-blur flex flex-col group no-underline overflow-hidden rounded shadow shadow-black/30 w-full"
     :to="linkPath"
+    class="no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 rounded-lg group block"
+    :aria-label="`Read more about ${title}`"
   >
-    <div
-      class="aspect-video bg-black/5 bg-blend-multiply bg-center bg-cover bg-no-repeat flex overflow-hidden vignette w-full"
+    <UCard
+      class="size-full transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 active:shadow-lg overflow-hidden"
+      :ui="{ body: 'p-0 sm:p-0', footer: 'sm:p-4' }"
     >
-      <NuxtImg
-        v-if="featuredImage"
-        :src="featuredImage"
-        class="group-hover:scale-125 transition-transform duration-300 w-full"
-        :alt="title"
-        :height="600"
-        :width="imageWidth"
-        :modifiers="{ smart: true }"
-        loading="lazy"
-        provider="storyblok"
-        format="webp"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      />
-    </div>
-    <div class="flex flex-col p-3">
-      <span
-        class="drop-shadow-sm flex font-bold font-sans leading-tight mb-2 text-xl"
+      <!-- Featured Image Container -->
+      <div
+        class="aspect-video bg-neutral-50 flex overflow-hidden relative w-full"
+        :class="{ vignette: featuredImage }"
       >
-        {{ title }}
-      </span>
-      <span class="drop-shadow-sm flex font-serif text-gray-800">
-        {{ excerpt }}
-      </span>
-    </div>
+        <NuxtImg
+          v-if="featuredImage"
+          :src="featuredImage"
+          class="object-cover size-full group-hover:scale-105 transition-transform duration-700 ease-out"
+          :alt="title"
+          :width="imageWidth"
+          :modifiers="{ smart: true }"
+          loading="lazy"
+          provider="storyblok"
+          format="webp"
+          densities="x1 x2"
+        />
+        <!-- Fallback for missing image -->
+        <div
+          v-else
+          class="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-300"
+        >
+          <Icon name="lucide:image" size="64" />
+        </div>
+      </div>
+
+      <!-- Content Container -->
+      <template #footer>
+        <div
+          class="flex flex-col gap-3 sm:gap-4 px-1 pb-1 min-h-[120px] sm:min-h-[140px]"
+        >
+          <h3
+            class="font-sans font-bold text-xl sm:text-2xl leading-snug text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2"
+          >
+            {{ title }}
+          </h3>
+          <p
+            v-if="excerpt"
+            class="font-serif text-neutral-600 text-base sm:text-lg leading-relaxed"
+          >
+            {{ excerpt }}
+          </p>
+        </div>
+      </template>
+    </UCard>
   </NuxtLink>
 </template>
 
-<style lang="postcss">
-.vignette {
-  box-shadow: 0 0 4rem rgba(0, 0, 0, 0.3) inset;
+<style scoped>
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 0 3rem rgba(0, 0, 0, 0.2) inset;
+  pointer-events: none;
 }
 </style>

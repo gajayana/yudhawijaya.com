@@ -1,5 +1,7 @@
 import StoryblokClient from "storyblok-js-client";
 
+// Dynamic URLs from Storyblok CMS
+// Static pages are auto-discovered by Nuxt sitemap via nuxt:pages
 export default defineSitemapEventHandler(async () => {
   const Storyblok = new StoryblokClient({
     accessToken: process.env.NUXT_STORYBLOK_ACCESS_TOKEN,

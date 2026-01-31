@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { isFuture } from "date-fns";
+import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
+import { validateSlug } from "~/utils/validateSlug";
+
+const { sanitize } = useSanitizeHtml();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
@@ -16,10 +20,19 @@ defineI18nRoute({
   },
 });
 
+// Validate slug before making API request
+const validatedSlug = validateSlug(route.params.slug);
+if (!validatedSlug) {
+  throw createError({
+    statusCode: 400,
+    statusMessage: "Invalid slug format",
+  });
+}
+
 const { data, status, error } = await useAsyncData(
-  `post-${route.params.slug}-${locale}`,
+  `work-${validatedSlug}-${locale}`,
   () =>
-    storyblokApi.get(`cdn/stories/works/${route.params.slug}`, {
+    storyblokApi.get(`cdn/stories/works/${validatedSlug}`, {
       language: locale.value,
       version: "published",
       cv: sb.cv || Number(Date.now()),
@@ -35,9 +48,10 @@ const { data, status, error } = await useAsyncData(
 
       return {
         story,
-        bodyRich: renderRichText(story.content.body_rich || undefined, {
-          schema: customStoryblokRichTextSchema,
-        }),
+        bodyRich: renderRichText(
+          story.content.body_rich || undefined,
+          customStoryblokRichTextOptions,
+        ),
         dateModified: story.published_at ?? undefined,
         datePublished: story.first_published_at ?? undefined,
         excerpt: story.content.excerpt || undefined,
@@ -53,7 +67,7 @@ const { data, status, error } = await useAsyncData(
         url: urlIsInvalid ? story.content.url : story.content.url || "",
       };
     },
-  }
+  },
 );
 
 watchEffect(() => {
@@ -64,7 +78,7 @@ watchEffect(() => {
     });
 
     setTimeout(() => {
-      refreshNuxtData(`post-${route.params.slug}-${locale}`);
+      refreshNuxtData(`work-${validatedSlug}-${locale}`);
     }, 1000);
   }
 });
@@ -72,16 +86,15 @@ watchEffect(() => {
 const seoImage = computed(() =>
   data.value?.featuredImage
     ? storyblokImage({
-        height: 0,
         url: data.value.featuredImage,
         width: 1200,
       })
-    : undefined
+    : undefined,
 );
 
 // SEO optimization
 const pageTitle = computed(
-  () => `${t("storyOf")} ${data.value?.title} ${t("by")} ${SEO_TITLE_DEFAULT}`
+  () => `${t("storyOf")} ${data.value?.title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
 );
 
 useHead({
@@ -103,15 +116,45 @@ if (import.meta.server) {
   });
 }
 
-useSchemaOrg(
-  defineArticle({
-    headline: data.value?.title,
+// Schema.org structured data - using WebPage with CreativeWork for portfolio items
+useSchemaOrg([
+  defineWebPage({
+    "@type": "ItemPage",
+    name: data.value?.title,
     description: data.value?.excerpt,
-    image: seoImage.value,
+    inLanguage: locale.value === "en" ? "en-GB" : "id-ID",
     datePublished: data.value?.datePublished,
     dateModified: data.value?.dateModified,
-  })
-);
+    mainEntity: {
+      "@type": "CreativeWork",
+      name: data.value?.title,
+      description: data.value?.excerpt,
+      image: seoImage.value,
+      inLanguage: locale.value === "en" ? "en-GB" : "id-ID",
+      dateCreated: data.value?.period?.startDate,
+      datePublished: data.value?.datePublished,
+      dateModified: data.value?.dateModified,
+      keywords: data.value?.tags?.join(", "),
+      creator: {
+        "@type": "Person",
+        "@id": `${runtimeConfig.public.baseUrl}/#identity`,
+        name: "Yosef Yudha Wijaya",
+        url: runtimeConfig.public.baseUrl,
+        sameAs: SCHEMA_PERSON_SAME_AS,
+      },
+    },
+  }),
+  defineBreadcrumb({
+    itemListElement: [
+      { name: t("breadcrumb.home"), item: "/" },
+      {
+        name: t("breadcrumb.works"),
+        item: locale.value === "en" ? "/en/works" : "/karya",
+      },
+      { name: data.value?.title || "" },
+    ],
+  }),
+]);
 </script>
 
 <i18n lang="yaml">
@@ -119,116 +162,179 @@ en:
   by: "by"
   ongoing: "ongoing"
   storyOf: "Story of"
+  breadcrumb:
+    home: "Home"
+    works: "Works"
+  featuredImageAlt: "Screenshot of {title} project interface"
 id:
   by: "oleh"
   ongoing: "berlangsung"
   storyOf: "Kisah"
+  breadcrumb:
+    home: "Beranda"
+    works: "Karya"
+  featuredImageAlt: "Tangkapan layar antarmuka proyek {title}"
 </i18n>
 
 <template>
-  <main class="flex flex-col p-4 relative">
-    <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex flex-col">
-      <div
-        class="aspect-video bg-white/50 mb-8 mx-auto rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
-      >
-        <div class="animate-pulse h-full w-full" />
+  <main class="flex flex-col p-4 sm:p-6 lg:p-8 relative">
+    <!-- Loading State -->
+    <div
+      v-if="status === ASYNC_DATA_STATUS.PENDING"
+      class="flex flex-col gap-8 max-w-6xl mx-auto w-full"
+    >
+      <!-- Hero Image Skeleton -->
+      <div class="aspect-video overflow-hidden rounded-xl">
+        <USkeleton class="h-full w-full" />
       </div>
+
+      <!-- Content Skeleton -->
       <div
-        class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
+        class="flex flex-col items-center gap-6 w-full max-w-3xl mx-auto px-4"
       >
-        <div
-          class="animate-pulse bg-white/50 drop-shadow h-[1.875rem] md:h-9 lg:h-24 mb-4 sm:mb-8 mx-auto w-full max-w-3xl"
-        />
-        <div
-          class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-40"
-        />
-        <div
-          class="animate-pulse bg-white/50 drop-shadow h-4 mb-8 mx-auto w-full max-w-2xl"
-        />
-        <div class="flex flex-col gap-2 w-full">
-          <div
-            v-for="i in 5"
-            :key="`skeleton-paragraph-${i}`"
-            class="animate-pulse bg-white/50 drop-shadow h-4 mx-auto w-full"
-          />
+        <USkeleton class="h-12 sm:h-16 lg:h-20 w-full max-w-2xl" />
+        <USkeleton class="h-4 w-48" />
+        <USkeleton class="h-4 w-full max-w-xl" />
+        <div class="flex flex-col gap-3 w-full mt-4">
+          <USkeleton v-for="i in 5" :key="`skeleton-${i}`" class="h-4 w-full" />
         </div>
       </div>
     </div>
 
-    <div v-else class="flex flex-col">
-      <div
-        class="aspect-video mb-8 mx-auto overflow-hidden rounded-md shadow-black/10 shadow-lg w-full max-w-6xl"
-      >
-        <ClientOnly>
-          <Suspense>
-            <NuxtImg
-              v-if="data?.featuredImage"
-              alt="featured image"
-              :src="data.featuredImage"
-              class="object-cover w-full"
-              format="webp"
-              :height="0"
-              loading="lazy"
-              provider="storyblok"
-              :quality="60"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 1200px"
-              :width="1200"
-              :modifiers="{ smart: true }"
-            />
-            <template #fallback>
-              <div class="animate-pulse h-full w-full bg-white/50" />
-            </template>
-          </Suspense>
-        </ClientOnly>
+    <!-- Content -->
+    <div v-else class="flex flex-col gap-8 sm:gap-12">
+      <!-- Hero Image Section -->
+      <div class="w-full max-w-6xl mx-auto">
+        <div
+          class="aspect-video overflow-hidden rounded-xl shadow-2xl shadow-black/10 relative group"
+        >
+          <ClientOnly>
+            <Suspense>
+              <NuxtImg
+                v-if="data?.featuredImage"
+                :alt="t('featuredImageAlt', { title: data?.title })"
+                :src="data.featuredImage"
+                class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                format="webp"
+                loading="lazy"
+                provider="storyblok"
+                :quality="70"
+                :width="1200"
+                :modifiers="{ smart: true }"
+              />
+              <template #fallback>
+                <USkeleton class="h-full w-full" />
+              </template>
+            </Suspense>
+          </ClientOnly>
+
+          <!-- Gradient overlay for better text readability if needed -->
+          <div
+            class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent pointer-events-none"
+          />
+        </div>
       </div>
-      <div
-        class="flex flex-col items-center justify-center w-full max-w-3xl mx-auto"
+
+      <!-- Article Content -->
+      <article
+        class="flex flex-col items-center w-full max-w-3xl mx-auto px-4 sm:px-6"
       >
-        <HeadingPrimary class="mb-8">
+        <!-- Title -->
+        <HeadingPrimary class="mb-8 sm:mb-10">
           {{ data?.title }}
         </HeadingPrimary>
 
+        <!-- Excerpt -->
         <MDC
           v-if="data?.excerpt"
           :value="data.excerpt"
           tag="div"
-          class="flex italic mb-8 text-center"
+          class="font-serif italic text-center text-lg sm:text-xl lg:text-2xl text-neutral-600 mb-10 sm:mb-12 leading-relaxed max-w-2xl"
         />
 
-        <div class="flex flex-col items-center gap-2 mb-8">
-          <MDC v-if="data?.url" :value="data.url" tag="div" />
-          <span v-if="data?.period?.startDate" class="flex gap-1 items-center">
-            <DatetimeParser :value="data.period.startDate" :locale="locale" />
-            <span>-</span>
-            <span v-if="data?.period?.endDate === t('ongoing')">{{
-              t("ongoing")
-            }}</span>
-            <DatetimeParser
-              v-else-if="data?.period?.endDate"
-              :value="data?.period?.endDate"
-              :locale="locale"
+        <!-- Meta Information -->
+        <div
+          class="flex flex-wrap items-center justify-center gap-4 sm:gap-5 mb-12 sm:mb-16"
+        >
+          <!-- Project URL -->
+          <UBadge
+            v-if="data?.url"
+            color="neutral"
+            variant="outline"
+            size="lg"
+            class="font-sans text-base sm:text-lg"
+          >
+            <Icon name="lucide:link" size="18" class="mr-2" />
+            <MDC
+              :value="data.url"
+              tag="span"
+              class="no-underline [&_a]:border-none"
+              unwrap="p"
             />
-          </span>
+          </UBadge>
+
+          <!-- Date Period -->
+          <UBadge
+            v-if="data?.period?.startDate"
+            color="neutral"
+            variant="subtle"
+            size="lg"
+            class="font-sans text-base sm:text-lg"
+          >
+            <Icon name="lucide:calendar" size="18" class="mr-2" />
+            <span class="flex items-center gap-1.5">
+              <DatetimeParser :value="data.period.startDate" :locale="locale" />
+              <span>-</span>
+              <span v-if="data?.period?.endDate === t('ongoing')">
+                {{ t("ongoing") }}
+              </span>
+              <DatetimeParser
+                v-else-if="data?.period?.endDate"
+                :value="data?.period?.endDate"
+                :locale="locale"
+              />
+            </span>
+          </UBadge>
         </div>
 
-        <div class="flex flex-col gap-4 mb-8" v-html="data?.bodyRich" />
-      </div>
-      <div class="flex mx-auto w-full max-w-6xl">
+        <!-- Divider -->
+        <div class="flex items-center gap-4 mb-12 sm:mb-16 w-full max-w-md">
+          <div class="h-px flex-1 bg-neutral-200" />
+          <Icon name="lucide:sparkles" class="text-neutral-300" size="20" />
+          <div class="h-px flex-1 bg-neutral-200" />
+        </div>
+
+        <!-- Rich Text Body -->
+        <div
+          class="flex flex-col gap-4 prose prose-neutral prose-lg max-w-none w-full mb-12 sm:mb-16 prose-headings:font-sans prose-headings:font-bold prose-headings:mt-10 prose-headings:mb-6 prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:leading-snug prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:leading-snug prose-p:font-serif prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3 prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
+          v-html="sanitize(data?.bodyRich)"
+        />
+
+        <!-- CTA -->
+        <CtaHire />
+      </article>
+
+      <!-- Recommended Stories -->
+      <section class="w-full max-w-6xl mx-auto px-4 sm:px-6 mt-8 sm:mt-12">
         <ClientOnly>
           <Suspense>
             <RecommenderStories
               v-if="data?.story"
               :tags="data?.tags"
               path="karya"
-              :slug="route.params.slug as string"
+              :slug="validatedSlug"
               :title="data?.title || ''"
             />
             <template #fallback>
-              <div class="animate-pulse h-48 w-full bg-white/50 rounded-md" />
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+              >
+                <CardStoryLoader v-for="i in 3" :key="`rec-loader-${i}`" />
+              </div>
             </template>
           </Suspense>
         </ClientOnly>
-      </div>
+      </section>
     </div>
   </main>
 </template>

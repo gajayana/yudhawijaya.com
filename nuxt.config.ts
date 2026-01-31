@@ -1,6 +1,7 @@
 import {
   IMAGE_OF_ME,
   SCHEMA_PERSON_SAME_AS,
+  SEO_DESCRIPTION_DEFAULT,
   SEO_TITLE_DEFAULT,
 } from "./utils/constants";
 
@@ -15,7 +16,7 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         { name: "author", content: "Yosef Yudha Wijaya" },
-        { name: "description", content: "" },
+        { name: "description", content: SEO_DESCRIPTION_DEFAULT },
         { name: "twitter:card", content: "summary" },
         { name: "twitter:creator", content: "@tuan_yudha" },
         { name: "twitter:site", content: "@tuan_yudha" },
@@ -37,8 +38,8 @@ export default defineNuxtConfig({
 
   modules: [
     "@nuxtjs/i18n",
-    "@nuxtjs/tailwindcss",
     "@nuxtjs/google-fonts",
+    "@nuxt/ui",
     "@storyblok/nuxt",
     [
       "@pinia/nuxt",
@@ -46,7 +47,6 @@ export default defineNuxtConfig({
         autoImports: ["defineStore", "acceptHMRUpdate"],
       },
     ],
-    "nuxt-lodash",
     "@nuxtjs/mdc",
     "@nuxt/icon",
     "@nuxt/image",
@@ -67,6 +67,9 @@ export default defineNuxtConfig({
     },
     // overwriting: false
   },
+
+  css: ["~/assets/css/main.css"],
+
   i18n: {
     // See https://i18n.nuxtjs.org/
     vueI18n: "i18n.config.ts",
@@ -82,14 +85,15 @@ export default defineNuxtConfig({
         language: "id-ID",
       },
     ],
-    lazy: false,
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
   },
 
   icon: {
     serverBundle: false,
+  },
+
+  colorMode: {
+    preference: "light",
+    fallback: "light",
   },
 
   mdc: {
@@ -105,10 +109,39 @@ export default defineNuxtConfig({
   schemaOrg: {
     identity: {
       type: "Person",
+      name: "Yosef Yudha Wijaya",
+      description: SEO_DESCRIPTION_DEFAULT,
+      url: process.env.NUXT_PUBLIC_BASE_URL,
       image: IMAGE_OF_ME,
-      name: process.env.NUXT_PUBLIC_APP_NAME ?? "",
       sameAs: SCHEMA_PERSON_SAME_AS,
-      jobTitle: "Professional Fullstack Developer",
+      jobTitle: "Frontend Architect",
+      knowsAbout: [
+        "Vue.js",
+        "Nuxt.js",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "JavaScript",
+        "Web3",
+        "Laravel",
+        "WordPress",
+        "Tailwind CSS",
+        "Frontend Architecture",
+        "Web Development",
+      ],
+      knowsLanguage: ["id-ID", "en-GB"],
+      worksFor: [
+        {
+          type: "Organization",
+          name: "Undercurrent Capital Pte Ltd",
+          url: "https://undercurrentcapital.com",
+        },
+        {
+          type: "Organization",
+          name: "PT Kompas Media Nusantara",
+          url: "https://kompas.id",
+        },
+      ],
     },
   },
 
@@ -145,8 +178,35 @@ export default defineNuxtConfig({
   },
 
   robots: {
-    blockAiBots: true,
+    blockAiBots: false,
     blockNonSeoBots: true,
+  },
+
+  // Security headers
+  nitro: {
+    routeRules: {
+      "/**": {
+        headers: {
+          "X-Frame-Options": "DENY",
+          "X-Content-Type-Options": "nosniff",
+          "Referrer-Policy": "strict-origin-when-cross-origin",
+          "X-XSS-Protection": "1; mode=block",
+          "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+          "Content-Security-Policy": [
+            "default-src 'self'",
+            `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${(process.env.NUXT_CSP_SCRIPT_SRC || "").split(",").join(" ")}`.trim(),
+            `style-src 'self' 'unsafe-inline' ${(process.env.NUXT_CSP_STYLE_SRC || "").split(",").join(" ")}`.trim(),
+            `img-src 'self' data: ${(process.env.NUXT_CSP_IMG_SRC || "").split(",").join(" ")}`.trim(),
+            `font-src 'self' ${(process.env.NUXT_CSP_FONT_SRC || "").split(",").join(" ")}`.trim(),
+            `connect-src 'self' ${(process.env.NUXT_CSP_CONNECT_SRC || "").split(",").join(" ")}`.trim(),
+            `frame-src 'self' ${(process.env.NUXT_CSP_FRAME_SRC || "").split(",").join(" ")}`.trim(),
+            "frame-ancestors 'none'",
+            "base-uri 'self'",
+            "form-action 'self'",
+          ].join("; "),
+        },
+      },
+    },
   },
 
   typescript: {

@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --font-mono: "Menlo", "Monaco", "Consolas", "Liberation Mono";
+  --font-sans: "Roboto", sans-serif;
+  --font-serif: "Open Sans", serif;
+}
+
+@layer base {
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply flex flex-col font-serif min-h-[100dvh] relative w-full;
+  }
+
+  html, body {
+    font-size: 1rem;
+    @media (min-width: 1920px) {
+      font-size: 0.833vw;
+    }
+  }
+
+  a {
+    @apply underline underline-offset-2;
+  }
+}
