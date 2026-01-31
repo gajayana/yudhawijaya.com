@@ -23,7 +23,7 @@ const { excerpt, featuredImage, title } = computed(() => ({
 
 // Pre-compute link path
 const linkPath = computed(() =>
-  localePath(`/${props.path}/${props.story.slug}`)
+  localePath(`/${props.path}/${props.story.slug}`),
 );
 
 // Image width for card display
@@ -37,17 +37,18 @@ const imageWidth = 800;
     :aria-label="`Read more about ${title}`"
   >
     <UCard
-      class="h-full transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 active:shadow-lg overflow-hidden"
+      class="size-full transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 active:shadow-lg overflow-hidden"
+      :ui="{ body: 'p-0 sm:p-0', footer: 'sm:p-4' }"
     >
       <!-- Featured Image Container -->
       <div
-        class="aspect-video bg-neutral-50 flex overflow-hidden relative w-full -m-6 mb-4"
-        :class="{ 'vignette': featuredImage }"
+        class="aspect-video bg-neutral-50 flex overflow-hidden relative w-full"
+        :class="{ vignette: featuredImage }"
       >
         <NuxtImg
           v-if="featuredImage"
           :src="featuredImage"
-          class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
+          class="object-cover size-full group-hover:scale-105 transition-transform duration-700 ease-out"
           :alt="title"
           :width="imageWidth"
           :modifiers="{ smart: true }"
@@ -67,7 +68,9 @@ const imageWidth = 800;
 
       <!-- Content Container -->
       <template #footer>
-        <div class="flex flex-col gap-3 sm:gap-4 px-1 pb-1 min-h-[120px] sm:min-h-[140px]">
+        <div
+          class="flex flex-col gap-3 sm:gap-4 px-1 pb-1 min-h-[120px] sm:min-h-[140px]"
+        >
           <h3
             class="font-sans font-bold text-xl sm:text-2xl leading-snug text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2"
           >
@@ -75,7 +78,7 @@ const imageWidth = 800;
           </h3>
           <p
             v-if="excerpt"
-            class="font-serif text-neutral-600 text-base sm:text-lg line-clamp-2 leading-relaxed"
+            class="font-serif text-neutral-600 text-base sm:text-lg leading-relaxed"
           >
             {{ excerpt }}
           </p>
@@ -87,7 +90,7 @@ const imageWidth = 800;
 
 <style scoped>
 .vignette::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   box-shadow: 0 0 3rem rgba(0, 0, 0, 0.2) inset;
