@@ -199,6 +199,7 @@ export default defineNuxtConfig({
             `img-src 'self' data: ${(process.env.NUXT_CSP_IMG_SRC || "").split(",").join(" ")}`.trim(),
             `font-src 'self' ${(process.env.NUXT_CSP_FONT_SRC || "").split(",").join(" ")}`.trim(),
             `connect-src 'self' ${(process.env.NUXT_CSP_CONNECT_SRC || "").split(",").join(" ")}`.trim(),
+            `frame-src 'self' ${(process.env.NUXT_CSP_FRAME_SRC || "").split(",").join(" ")}`.trim(),
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'",
