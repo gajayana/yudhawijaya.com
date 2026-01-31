@@ -262,10 +262,15 @@ id:
             color="neutral"
             variant="outline"
             size="lg"
-            class="font-sans text-base sm:text-lg py-2.5 sm:py-3"
+            class="font-sans text-base sm:text-lg"
           >
             <Icon name="lucide:link" size="18" class="mr-2" />
-            <MDC :value="data.url" tag="span" class="no-underline" />
+            <MDC
+              :value="data.url"
+              tag="span"
+              class="no-underline [&_a]:border-none"
+              unwrap="p"
+            />
           </UBadge>
 
           <!-- Date Period -->
@@ -274,7 +279,7 @@ id:
             color="neutral"
             variant="subtle"
             size="lg"
-            class="font-sans text-base sm:text-lg py-2.5 sm:py-3"
+            class="font-sans text-base sm:text-lg"
           >
             <Icon name="lucide:calendar" size="18" class="mr-2" />
             <span class="flex items-center gap-1.5">
@@ -301,7 +306,7 @@ id:
 
         <!-- Rich Text Body -->
         <div
-          class="prose prose-neutral prose-lg max-w-none w-full mb-12 sm:mb-16 prose-headings:font-sans prose-headings:font-bold prose-headings:mt-10 prose-headings:mb-6 prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:leading-snug prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:leading-snug prose-p:font-serif prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-a:inline-block prose-a:min-h-[44px] prose-a:flex prose-a:items-center prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3 prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
+          class="flex flex-col gap-4 prose prose-neutral prose-lg max-w-none w-full mb-12 sm:mb-16 prose-headings:font-sans prose-headings:font-bold prose-headings:mt-10 prose-headings:mb-6 prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:leading-snug prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:leading-snug prose-p:font-serif prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-a:inline-block prose-a:min-h-[44px] prose-a:flex prose-a:items-center prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3 prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
           v-html="sanitize(data?.bodyRich)"
         />
 

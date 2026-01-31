@@ -45,7 +45,7 @@ const { data, status, error } = await useAsyncData(
       story: response.data.story,
       bodyRich: renderRichText(
         response.data.story?.content.body_rich,
-        customStoryblokRichTextOptions
+        customStoryblokRichTextOptions,
       ),
       dateModified: response.data.story?.published_at ?? undefined,
       datePublished: response.data.story?.first_published_at ?? undefined,
@@ -54,7 +54,7 @@ const { data, status, error } = await useAsyncData(
       tags: response.data.story?.tag_list,
       title: response.data.story?.content.title,
     }),
-  }
+  },
 );
 
 // Watch for errors and retry
@@ -78,12 +78,12 @@ const seoImage = computed(() =>
         url: data.value.featuredImage,
         width: 1200,
       })
-    : undefined
+    : undefined,
 );
 
 // SEO optimization
 const pageTitle = computed(
-  () => `${t("storyOf")} ${data.value?.title} ${t("by")} ${SEO_TITLE_DEFAULT}`
+  () => `${t("storyOf")} ${data.value?.title} ${t("by")} ${SEO_TITLE_DEFAULT}`,
 );
 
 useHead({
@@ -129,7 +129,10 @@ useSchemaOrg([
   defineBreadcrumb({
     itemListElement: [
       { name: t("breadcrumb.home"), item: "/" },
-      { name: t("breadcrumb.journals"), item: locale.value === "en" ? "/en/journals" : "/jurnal" },
+      {
+        name: t("breadcrumb.journals"),
+        item: locale.value === "en" ? "/en/journals" : "/jurnal",
+      },
       { name: data.value?.title || "" },
     ],
   }),
@@ -156,14 +159,19 @@ id:
 <template>
   <main class="flex flex-col p-4 sm:p-6 lg:p-8 relative">
     <!-- Loading State -->
-    <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex flex-col gap-8 max-w-6xl mx-auto w-full">
+    <div
+      v-if="status === ASYNC_DATA_STATUS.PENDING"
+      class="flex flex-col gap-8 max-w-6xl mx-auto w-full"
+    >
       <!-- Hero Image Skeleton -->
       <div class="aspect-video overflow-hidden rounded-xl">
         <USkeleton class="h-full w-full" />
       </div>
 
       <!-- Content Skeleton -->
-      <div class="flex flex-col items-center gap-6 w-full max-w-3xl mx-auto px-4">
+      <div
+        class="flex flex-col items-center gap-6 w-full max-w-3xl mx-auto px-4"
+      >
         <USkeleton class="h-12 sm:h-16 lg:h-20 w-full max-w-2xl" />
         <USkeleton class="h-4 w-48" />
         <USkeleton class="h-4 w-full max-w-xl" />
@@ -178,7 +186,9 @@ id:
       v-else-if="error"
       class="flex flex-col items-center justify-center min-h-[50vh] gap-4"
     >
-      <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-full bg-red-100"
+      >
         <Icon name="lucide:alert-circle" size="32" class="text-red-500" />
       </div>
       <p class="text-red-600 font-sans">{{ error.message }}</p>
@@ -212,31 +222,34 @@ id:
           </ClientOnly>
 
           <!-- Gradient overlay -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+          <div
+            class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent pointer-events-none"
+          />
         </div>
       </div>
 
       <!-- Article Content -->
-      <article class="flex flex-col items-center w-full max-w-3xl mx-auto px-4 sm:px-6">
+      <article
+        class="flex flex-col items-center w-full max-w-3xl mx-auto px-4 sm:px-6"
+      >
         <!-- Title -->
         <HeadingPrimary class="mb-8 sm:mb-10">
           {{ data?.title }}
         </HeadingPrimary>
 
         <!-- Published Date -->
-        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-5 mb-10 sm:mb-12">
+        <div
+          class="flex flex-wrap items-center justify-center gap-4 sm:gap-5 mb-10 sm:mb-12"
+        >
           <UBadge
             v-if="data?.datePublished"
             color="neutral"
             variant="subtle"
             size="lg"
-            class="font-sans text-base sm:text-lg py-2.5 sm:py-3"
+            class="font-sans text-base sm:text-lg"
           >
             <Icon name="lucide:calendar" size="18" class="mr-2" />
-            <DatetimeParser
-              :value="data.datePublished"
-              :locale="locale"
-            />
+            <DatetimeParser :value="data.datePublished" :locale="locale" />
           </UBadge>
         </div>
 
@@ -257,16 +270,7 @@ id:
 
         <!-- Rich Text Body -->
         <div
-          class="prose prose-neutral prose-lg max-w-none w-full mb-12 sm:mb-16
-                 prose-headings:font-sans prose-headings:font-bold prose-headings:mt-10 prose-headings:mb-6
-                 prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:leading-snug
-                 prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:leading-snug
-                 prose-p:font-serif prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed prose-p:mb-6
-                 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2
-                 prose-a:inline-block prose-a:min-h-[44px] prose-a:flex prose-a:items-center
-                 prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3
-                 prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2
-                 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
+          class="flex flex-col gap-4 prose prose-neutral prose-lg max-w-none w-full mb-12 sm:mb-16 prose-headings:font-sans prose-headings:font-bold prose-headings:mt-10 prose-headings:mb-6 prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:leading-snug prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:leading-snug prose-p:font-serif prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-a:inline-block prose-a:min-h-[44px] prose-a:flex prose-a:items-center prose-ul:my-8 prose-ul:space-y-3 prose-ol:my-8 prose-ol:space-y-3 prose-li:text-base prose-li:sm:text-lg prose-li:leading-relaxed prose-li:my-2 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8"
           v-html="sanitize(data?.bodyRich)"
         />
 
@@ -286,7 +290,9 @@ id:
               :title="data.title || ''"
             />
             <template #fallback>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+              >
                 <CardStoryLoader v-for="i in 3" :key="`rec-loader-${i}`" />
               </div>
             </template>
