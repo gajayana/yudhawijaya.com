@@ -19,6 +19,7 @@
     "@nuxtjs/seo": "^3.3.0",
     "@types/clone-deep": "^4.0.4",
     "@types/lodash-es": "^4.17.12",
+    "@types/sanitize-html": "^2.16.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "nuxt": "^4.3.0",
@@ -31,13 +32,12 @@
     "@pinia/nuxt": "^0.11.3",
     "@storyblok/nuxt": "^9.0.0",
     "clone-deep": "^4.0.1",
-    "isomorphic-dompurify": "^2.35.0",
     "lodash-es": "^4.17.21",
-    "pinia": "^3.0.4"
+    "pinia": "^3.0.4",
+    "sanitize-html": "^2.17.0"
   },
   "pnpm": {
     "overrides": {
-      "html-encoding-sniffer": "^4.0.0",
       "@eslint/plugin-kit@<0.3.4": ">=0.3.4",
       "brace-expansion@>=1.0.0 <=1.1.11": ">=1.1.12",
       "brace-expansion@>=2.0.0 <=2.0.1": ">=2.0.2",

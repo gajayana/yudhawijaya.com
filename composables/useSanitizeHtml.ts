@@ -1,16 +1,16 @@
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 
 /**
  * Composable for sanitizing HTML content to prevent XSS attacks.
- * Uses DOMPurify with a safe configuration for rich text content.
+ * Uses sanitize-html with a safe configuration for rich text content.
  */
 export function useSanitizeHtml() {
   const sanitize = (html: string | undefined | null): string => {
     if (!html) return "";
 
-    return DOMPurify.sanitize(html, {
+    return sanitizeHtml(html, {
       // Allow safe HTML tags for rich text content
-      ALLOWED_TAGS: [
+      allowedTags: [
         "a",
         "b",
         "blockquote",
@@ -36,21 +36,13 @@ export function useSanitizeHtml() {
         "ul",
       ],
       // Allow safe attributes
-      ALLOWED_ATTR: [
-        "href",
-        "target",
-        "rel",
-        "src",
-        "alt",
-        "title",
-        "class",
-        "id",
-        "loading",
-        "width",
-        "height",
-      ],
-      // Ensure links are safe
-      ALLOW_DATA_ATTR: false,
+      allowedAttributes: {
+        a: ["href", "target", "rel", "title", "class", "id"],
+        img: ["src", "alt", "title", "class", "id", "loading", "width", "height"],
+        "*": ["class", "id"],
+      },
+      // Allow specific URL schemes
+      allowedSchemes: ["http", "https", "mailto"],
     });
   };
 
