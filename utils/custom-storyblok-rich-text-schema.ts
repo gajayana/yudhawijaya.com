@@ -19,7 +19,7 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
      */
     [MarkTypes.LINK]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       return context.render(
         "a",
@@ -29,7 +29,7 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
           class:
             "text-blue-700 visited:text-blue-700/90 hover:text-blue-800 transition-colors duration-200",
         },
-        node.text || node.children,
+        node.text || node.children
       );
     },
 
@@ -38,7 +38,7 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
      */
     [BlockTypes.CODE_BLOCK]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       return context.render(
         "pre",
@@ -46,19 +46,31 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
           class:
             "backdrop-blur bg-black/70 mx-0 md:mx-20 overflow-x-auto rounded p-4 text-white text-sm font-mono",
         },
-        context.render("code", {}, node.children),
+        context.render("code", {}, node.children)
       );
     },
 
     /**
-     * Custom heading with bold styling
+     * Custom heading with bold styling and responsive font sizes
      */
     [BlockTypes.HEADING]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       const level = node.attrs?.level || 1;
-      return context.render(`h${level}`, { class: "font-bold" }, node.children);
+      const sizeClasses: Record<number, string> = {
+        1: "text-3xl",
+        2: "text-2xl",
+        3: "text-xl",
+        4: "text-lg",
+        5: "text-lg",
+        6: "text-lg",
+      };
+      return context.render(
+        `h${level}`,
+        { class: `font-bold mx-0 md:mx-20 ${sizeClasses[level] || "text-lg"}` },
+        node.children
+      );
     },
 
     /**
@@ -66,7 +78,7 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
      */
     [BlockTypes.PARAGRAPH]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       return context.render(
         "p",
@@ -77,7 +89,7 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
             "[&>img]:w-full [&>img]:rounded [&>img]:border [&>img]:border-neutral-200",
           ].join(" "),
         },
-        node.children,
+        node.children
       );
     },
 
@@ -86,12 +98,12 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
      */
     [BlockTypes.UL_LIST]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       return context.render(
         "ul",
         { class: "list-disc list-outside mx-8 md:mx-32 pl-4" },
-        node.children,
+        node.children
       );
     },
 
@@ -100,12 +112,12 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
      */
     [BlockTypes.OL_LIST]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       return context.render(
         "ol",
         { class: "list-decimal list-outside mx-8 md:mx-32 pl-4" },
-        node.children,
+        node.children
       );
     },
 
@@ -114,7 +126,7 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
      */
     [BlockTypes.LIST_ITEM]: (
       node: StoryblokRichTextNode<string>,
-      context: StoryblokRichTextContext<string>,
+      context: StoryblokRichTextContext<string>
     ) => {
       return context.render("li", { class: "[&>p]:mx-0" }, node.children);
     },
