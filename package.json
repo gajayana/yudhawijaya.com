@@ -5,7 +5,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "sb:cache": "tsx --env-file=.env scripts/sb-cache.ts"
   },
   "devDependencies": {
     "@iconify-json/circle-flags": "^1.2.10",
@@ -25,12 +26,14 @@
     "nuxt": "^4.3.0",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
+    "tsx": "^4.21.0",
     "typescript": "5.9.*"
   },
   "dependencies": {
     "@nuxt/ui": "^4.4.0",
     "@pinia/nuxt": "^0.11.3",
     "@storyblok/nuxt": "^9.0.0",
+    "@upstash/redis": "^1.36.2",
     "clone-deep": "^4.0.1",
     "lodash-es": "^4.17.21",
     "pinia": "^3.0.4",
