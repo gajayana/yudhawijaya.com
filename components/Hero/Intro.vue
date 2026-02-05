@@ -57,7 +57,7 @@ const credentials = computed(() => [
 en:
   tagline: "Code, written with an editor's eye"
   subtitle1: "From language editor to frontend architect, I've spent years obsessing over structure — first in sentences, now in systems."
-  subtitle2: "I build frontends where state, performance, and APIs don't fight each other, and lately that means Web3 interfaces that fail gracefully instead of loudly."
+  subtitle2: "I build frontends where state, performance, and APIs don't fight each other — lately that means AI-powered tools and Web3 interfaces where graceful degradation isn't optional."
   subtitle3: "The habit stuck: I still revise code the way I once revised prose — line by line, with intent."
   credentialSystemsValue: "High-Traffic Systems"
   credentialSystemsLabel: "News & Enterprise Scale"
@@ -70,7 +70,7 @@ en:
 id:
   tagline: "Kode, ditulis dengan ketelitian editor"
   subtitle1: "Dari penyelaras bahasa menjadi arsitek frontend, saya sudah bertahun-tahun terobsesi dengan struktur — dulu di kalimat, sekarang di sistem."
-  subtitle2: "Saya membangun frontend di mana state, performa, dan API tidak saling bertabrakan. Belakangan ini artinya antarmuka Web3 yang gagal dengan anggun, bukan berisik."
+  subtitle2: "Saya membangun frontend di mana state, performa, dan API tidak saling bertabrakan — belakangan ini artinya peralatan berbasis akal imitasi (AI) dan antarmuka Web3 dengan degradasi terkontrol."
   subtitle3: "Kebiasaan itu melekat: saya masih merevisi kode seperti dulu merevisi tulisan — baris demi baris, dengan intensi."
   credentialSystemsValue: "Sistem High-Traffic"
   credentialSystemsLabel: "Skala Media & Enterprise"
@@ -117,9 +117,10 @@ id:
             :key="cred.label"
             class="flex flex-col"
           >
-            <span class="font-sans font-semibold text-sm sm:text-base tracking-wide">{{
-              cred.value
-            }}</span>
+            <span
+              class="font-sans font-semibold text-sm sm:text-base tracking-wide"
+              >{{ cred.value }}</span
+            >
             <span class="text-xs text-neutral-500">{{ cred.label }}</span>
           </div>
         </div>
