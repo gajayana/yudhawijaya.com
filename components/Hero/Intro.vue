@@ -35,7 +35,7 @@ const scrollToWorks = () => {
 const heroTitle = computed(() => {
   const heroContent = props.story.content.body.find(
     (item: { component: string; headline: string }) =>
-      item.component.toLowerCase() === "hero",
+      item.component.toLowerCase() === "hero"
   );
   return heroContent?.headline ?? null;
 });
@@ -45,33 +45,39 @@ const containerStyle = {
   minHeight: "calc(100vh - 4rem)",
 };
 
-// Credentials data
+// Credentials data - capability-focused, not tenure-focused
 const credentials = computed(() => [
-  { value: "12+", label: t("credentialYears") },
-  { value: "Media & Enterprise", label: t("credentialMedia") },
-  { value: "Web3 Interfaces", label: t("credentialWeb3") },
+  { value: t("credentialSystemsValue"), label: t("credentialSystemsLabel") },
+  { value: t("credentialScaleValue"), label: t("credentialScaleLabel") },
+  { value: t("credentialFocusValue"), label: t("credentialFocusLabel") },
 ]);
 </script>
 
 <i18n lang="yaml">
 en:
-  tagline: "Code, written with an editor’s eye"
-  subtitle1: "From language editor to frontend architect, I've spent 12+ years obsessing over structure — first in sentences, now in systems."
+  tagline: "Code, written with an editor's eye"
+  subtitle1: "From language editor to frontend architect, I've spent years obsessing over structure — first in sentences, now in systems."
   subtitle2: "I build frontends where state, performance, and APIs don't fight each other, and lately that means Web3 interfaces that fail gracefully instead of loudly."
   subtitle3: "The habit stuck: I still revise code the way I once revised prose — line by line, with intent."
-  credentialYears: "Years Building Web Systems"
-  credentialMedia: "At Scale"
-  credentialWeb3: "Current Focus"
+  credentialSystemsValue: "High-Traffic Systems"
+  credentialSystemsLabel: "News & Enterprise Scale"
+  credentialScaleValue: "Production-Grade"
+  credentialScaleLabel: "Architecture & Performance"
+  credentialFocusValue: "AI & Web3 Systems"
+  credentialFocusLabel: "RAG, Embeddings, Blockchain UX"
   buttonWorks: "See My Work"
   buttonContact: "Get in Touch"
 id:
   tagline: "Kode, ditulis dengan ketelitian editor"
-  subtitle1: "Dari penyelaras bahasa menjadi arsitek frontend, saya sudah 12+ tahun terobsesi dengan struktur — dulu di kalimat, sekarang di sistem."
+  subtitle1: "Dari penyelaras bahasa menjadi arsitek frontend, saya sudah bertahun-tahun terobsesi dengan struktur — dulu di kalimat, sekarang di sistem."
   subtitle2: "Saya membangun frontend di mana state, performa, dan API tidak saling bertabrakan. Belakangan ini artinya antarmuka Web3 yang gagal dengan anggun, bukan berisik."
   subtitle3: "Kebiasaan itu melekat: saya masih merevisi kode seperti dulu merevisi tulisan — baris demi baris, dengan intensi."
-  credentialYears: "Tahun Membangun Sistem Web"
-  credentialMedia: "Skala Produksi"
-  credentialWeb3: "Fokus Saat Ini"
+  credentialSystemsValue: "Sistem High-Traffic"
+  credentialSystemsLabel: "Skala Media & Enterprise"
+  credentialScaleValue: "Production-Grade"
+  credentialScaleLabel: "Arsitektur & Performa"
+  credentialFocusValue: "Sistem AI & Web3"
+  credentialFocusLabel: "RAG, Embeddings, Blockchain UX"
   buttonWorks: "Lihat Karya"
   buttonContact: "Hubungi Saya"
 </i18n>
@@ -105,13 +111,13 @@ id:
         </div>
 
         <!-- Credential Highlights -->
-        <div class="flex flex-wrap gap-6 sm:gap-10 mb-8 sm:mb-10">
+        <div class="flex flex-wrap gap-x-8 gap-y-4 sm:gap-x-12 mb-8 sm:mb-10">
           <div
             v-for="cred in credentials"
             :key="cred.label"
             class="flex flex-col"
           >
-            <span class="font-sans font-bold text-xl sm:text-2xl">{{
+            <span class="font-sans font-semibold text-sm sm:text-base tracking-wide">{{
               cred.value
             }}</span>
             <span class="text-xs text-neutral-500">{{ cred.label }}</span>
