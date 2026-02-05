@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import type {
-  ISbStories,
-  ISbStoriesParams,
-  ISbStory,
-} from "storyblok-js-client";
+import type { ISbStories, ISbStoriesParams } from "storyblok-js-client";
 
 // Composables
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
-const { locale } = useI18n({ useScope: "local" });
+const { locale, t } = useI18n({ useScope: "local" });
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
 
@@ -20,13 +16,7 @@ const getBaseParams = computed<ISbStoriesParams>(() => ({
   cv: sb.cv || Number(Date.now()),
 }));
 
-// Split data fetching into separate composables for better caching
-const { data: heroData, error: heroError } = await useAsyncData(
-  "home-hero",
-  () => storyblokApi.get("cdn/stories/home", getBaseParams.value),
-  { watch: [locale] },
-);
-
+// Fetch featured works
 const { data: featuredData, error: featuredError } = await useAsyncData(
   "home-featured",
   () =>
@@ -36,18 +26,18 @@ const { data: featuredData, error: featuredError } = await useAsyncData(
       per_page: 6,
       sort_by: "content.is_featured:desc",
     }),
-  { watch: [locale] },
+  { watch: [locale] }
 );
 
 // Handle errors
-if (heroError.value || featuredError.value) {
+if (featuredError.value) {
   notifications.add({
     type: NOTIFICATION_TYPE.ERROR,
     message: "Error fetching data",
   });
 }
 
-if (!heroData.value || !featuredData.value) {
+if (!featuredData.value) {
   throw createError({
     statusCode: 500,
     message: "Error when processing data",
@@ -55,38 +45,21 @@ if (!heroData.value || !featuredData.value) {
 }
 
 // Computed properties with type safety
-const heroStory = computed<ISbStory["data"]["story"]>(
-  () => heroData.value?.data.story,
-);
-
 const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
-  () => featuredData.value?.data.stories,
+  () => featuredData.value?.data.stories
 );
 
-// SEO optimization
-const pageTitle = computed(() => `${SEO_TITLE_DEFAULT}`);
-
-useHead({
-  title: pageTitle.value,
+// SEO optimization - reactive to locale changes
+useSeoMeta({
+  robots: "index, follow",
+  title: SEO_TITLE_DEFAULT,
+  ogTitle: SEO_TITLE_DEFAULT,
+  description: () => t("seoDescription"),
+  ogDescription: () => t("seoDescription"),
+  ogImage: IMAGE_OF_ME,
+  ogUrl: () => `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+  twitterCard: "summary_large_image",
 });
-
-if (import.meta.server) {
-  useSeoMeta({
-    robots: "index, follow",
-    title: pageTitle.value,
-    ogTitle: pageTitle.value,
-    // description: heroStory.value.content.meta_description,
-    // ogDescription: heroStory.value.content.meta_description,
-    ogImage: storyblokImage({
-      url: heroStory.value.content.og_image.filename as string,
-      height: 480,
-      width: 480,
-      smart: true,
-    }),
-    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    twitterCard: "summary_large_image",
-  });
-}
 
 // Refresh data on locale change
 watch(locale, () => {
@@ -94,9 +67,16 @@ watch(locale, () => {
 });
 </script>
 
+<i18n lang="yaml">
+en:
+  seoDescription: "Frontend Architect building high-traffic web systems at scale. From language editor to AI & Web3 interfaces — code written with an editor's eye."
+id:
+  seoDescription: "Arsitek Frontend yang membangun sistem web dengan lalu lintas tinggi dalam skala besar. Dari penyelaras bahasa ke antarmuka AI & Web3 — kode ditulis dengan ketelitian editor."
+</i18n>
+
 <template>
   <main class="flex flex-col relative w-full">
-    <HeroIntro :story="heroStory" />
+    <HeroIntro />
     <WorksListFeatured :stories="featuredWorkStories" />
   </main>
 </template>
