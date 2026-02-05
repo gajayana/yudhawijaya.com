@@ -5,7 +5,7 @@ import type { ISbStories, ISbStoriesParams } from "storyblok-js-client";
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const sb = useSb();
-const { locale } = useI18n({ useScope: "local" });
+const { locale, t } = useI18n({ useScope: "local" });
 const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
 
@@ -26,7 +26,7 @@ const { data: featuredData, error: featuredError } = await useAsyncData(
       per_page: 6,
       sort_by: "content.is_featured:desc",
     }),
-  { watch: [locale] },
+  { watch: [locale] }
 );
 
 // Handle errors
@@ -46,34 +46,33 @@ if (!featuredData.value) {
 
 // Computed properties with type safety
 const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
-  () => featuredData.value?.data.stories,
+  () => featuredData.value?.data.stories
 );
 
-// SEO optimization - uses defaults from nuxt.config.ts
-const pageTitle = computed(() => `${SEO_TITLE_DEFAULT}`);
-
-useHead({
-  title: pageTitle.value,
+// SEO optimization - reactive to locale changes
+useSeoMeta({
+  robots: "index, follow",
+  title: SEO_TITLE_DEFAULT,
+  ogTitle: SEO_TITLE_DEFAULT,
+  description: () => t("seoDescription"),
+  ogDescription: () => t("seoDescription"),
+  ogImage: IMAGE_OF_ME,
+  ogUrl: () => `${runtimeConfig.public.baseUrl}${route.fullPath}`,
+  twitterCard: "summary_large_image",
 });
-
-if (import.meta.server) {
-  useSeoMeta({
-    robots: "index, follow",
-    title: pageTitle.value,
-    ogTitle: pageTitle.value,
-    description: SEO_DESCRIPTION_DEFAULT,
-    ogDescription: SEO_DESCRIPTION_DEFAULT,
-    ogImage: IMAGE_OF_ME,
-    ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
-    twitterCard: "summary_large_image",
-  });
-}
 
 // Refresh data on locale change
 watch(locale, () => {
   refreshNuxtData();
 });
 </script>
+
+<i18n lang="yaml">
+en:
+  seoDescription: "Frontend Architect building high-traffic web systems at scale. From language editor to AI & Web3 interfaces — code written with an editor's eye."
+id:
+  seoDescription: "Arsitek Frontend yang membangun sistem web dengan lalu lintas tinggi dalam skala besar. Dari penyelaras bahasa ke antarmuka AI & Web3 — kode ditulis dengan ketelitian editor."
+</i18n>
 
 <template>
   <main class="flex flex-col relative w-full">
