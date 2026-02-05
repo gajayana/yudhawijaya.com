@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import type { ISbStoryData } from "storyblok-js-client";
-
-const props = defineProps({
-  story: {
-    type: Object as PropType<ISbStoryData>,
-    required: true,
-  },
-});
-
 const { t } = useI18n({
   useScope: "local",
 });
@@ -31,15 +22,6 @@ const scrollToWorks = () => {
   });
 };
 
-// Get hero headline from Storyblok
-const heroTitle = computed(() => {
-  const heroContent = props.story.content.body.find(
-    (item: { component: string; headline: string }) =>
-      item.component.toLowerCase() === "hero"
-  );
-  return heroContent?.headline ?? null;
-});
-
 // Pre-compute static styles
 const containerStyle = {
   minHeight: "calc(100vh - 4rem)",
@@ -55,6 +37,7 @@ const credentials = computed(() => [
 
 <i18n lang="yaml">
 en:
+  headline: "Hi, I'm Yudha"
   tagline: "Code, written with an editor's eye"
   subtitle1: "From language editor to frontend architect, I've spent years obsessing over structure — first in sentences, now in systems."
   subtitle2: "I build frontends where state, performance, and APIs don't fight each other — lately that means AI-powered tools and Web3 interfaces where graceful degradation isn't optional."
@@ -68,6 +51,7 @@ en:
   buttonWorks: "See My Work"
   buttonContact: "Get in Touch"
 id:
+  headline: "Hai, Saya Yudha"
   tagline: "Kode, ditulis dengan ketelitian editor"
   subtitle1: "Dari penyelaras bahasa menjadi arsitek frontend, saya sudah bertahun-tahun terobsesi dengan struktur — dulu di kalimat, sekarang di sistem."
   subtitle2: "Saya membangun frontend di mana state, performa, dan API tidak saling bertabrakan — belakangan ini artinya peralatan berbasis akal imitasi (AI) dan antarmuka Web3 dengan degradasi terkontrol."
@@ -93,12 +77,11 @@ id:
           {{ t("tagline") }}
         </p>
 
-        <!-- Main Headline (from Storyblok) -->
+        <!-- Main Headline -->
         <HeadingPrimary
-          v-if="heroTitle"
           class="font-sans font-medium leading-tight mb-6 sm:mb-8 text-left text-3xl md:text-5xl lg:text-6xl"
         >
-          {{ heroTitle }}
+          {{ t("headline") }}
         </HeadingPrimary>
 
         <!-- Value Proposition -->

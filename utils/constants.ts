@@ -10,7 +10,7 @@ export const IMAGE_OF_ME =
   "https://a.storyblok.com/f/76789/96x96/83851cc667/me.jpeg" as const;
 export const SEO_TITLE_DEFAULT = "Yosef Yudha Wijaya" as const;
 export const SEO_DESCRIPTION_DEFAULT =
-  "Frontend Architect with 12+ years building resilient web systems. From language editor to Web3 interfaces — code written with an editor's eye." as const;
+  "Frontend Architect building high-traffic web systems at scale. From language editor to AI & Web3 interfaces — code written with an editor's eye." as const;
 
 // Social media accounts configuration
 export const SOCIAL_ACCOUNTS = Object.freeze([

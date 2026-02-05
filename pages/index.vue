@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type {
-  ISbStories,
-  ISbStoriesParams,
-  ISbStory,
-} from "storyblok-js-client";
+import type { ISbStories, ISbStoriesParams } from "storyblok-js-client";
 
 // Composables
 const runtimeConfig = useRuntimeConfig();
@@ -20,13 +16,7 @@ const getBaseParams = computed<ISbStoriesParams>(() => ({
   cv: sb.cv || Number(Date.now()),
 }));
 
-// Split data fetching into separate composables for better caching
-const { data: heroData, error: heroError } = await useAsyncData(
-  "home-hero",
-  () => storyblokApi.get("cdn/stories/home", getBaseParams.value),
-  { watch: [locale] },
-);
-
+// Fetch featured works
 const { data: featuredData, error: featuredError } = await useAsyncData(
   "home-featured",
   () =>
@@ -40,14 +30,14 @@ const { data: featuredData, error: featuredError } = await useAsyncData(
 );
 
 // Handle errors
-if (heroError.value || featuredError.value) {
+if (featuredError.value) {
   notifications.add({
     type: NOTIFICATION_TYPE.ERROR,
     message: "Error fetching data",
   });
 }
 
-if (!heroData.value || !featuredData.value) {
+if (!featuredData.value) {
   throw createError({
     statusCode: 500,
     message: "Error when processing data",
@@ -55,15 +45,11 @@ if (!heroData.value || !featuredData.value) {
 }
 
 // Computed properties with type safety
-const heroStory = computed<ISbStory["data"]["story"]>(
-  () => heroData.value?.data.story,
-);
-
 const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
   () => featuredData.value?.data.stories,
 );
 
-// SEO optimization
+// SEO optimization - uses defaults from nuxt.config.ts
 const pageTitle = computed(() => `${SEO_TITLE_DEFAULT}`);
 
 useHead({
@@ -75,14 +61,9 @@ if (import.meta.server) {
     robots: "index, follow",
     title: pageTitle.value,
     ogTitle: pageTitle.value,
-    // description: heroStory.value.content.meta_description,
-    // ogDescription: heroStory.value.content.meta_description,
-    ogImage: storyblokImage({
-      url: heroStory.value.content.og_image.filename as string,
-      height: 480,
-      width: 480,
-      smart: true,
-    }),
+    description: SEO_DESCRIPTION_DEFAULT,
+    ogDescription: SEO_DESCRIPTION_DEFAULT,
+    ogImage: IMAGE_OF_ME,
     ogUrl: `${runtimeConfig.public.baseUrl}${route.fullPath}`,
     twitterCard: "summary_large_image",
   });
@@ -96,7 +77,7 @@ watch(locale, () => {
 
 <template>
   <main class="flex flex-col relative w-full">
-    <HeroIntro :story="heroStory" />
+    <HeroIntro />
     <WorksListFeatured :stories="featuredWorkStories" />
   </main>
 </template>
