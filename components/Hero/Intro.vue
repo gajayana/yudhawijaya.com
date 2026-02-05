@@ -74,7 +74,7 @@ id:
   subtitle3: "Kebiasaan itu melekat: saya masih merevisi kode seperti dulu merevisi tulisan — baris demi baris, dengan intensi."
   credentialSystemsValue: "Sistem High-Traffic"
   credentialSystemsLabel: "Skala Media & Enterprise"
-  credentialScaleValue: "Production-Grade"
+  credentialScaleValue: "Standar Produksi"
   credentialScaleLabel: "Arsitektur & Performa"
   credentialFocusValue: "Sistem AI & Web3"
   credentialFocusLabel: "RAG, Embeddings, Blockchain UX"
