@@ -203,7 +203,7 @@ export default defineNuxtConfig({
             `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${(process.env.NUXT_CSP_SCRIPT_SRC || "").split(",").join(" ")}`.trim(),
             `style-src 'self' 'unsafe-inline' ${(process.env.NUXT_CSP_STYLE_SRC || "").split(",").join(" ")}`.trim(),
             `img-src 'self' data: ${(process.env.NUXT_CSP_IMG_SRC || "").split(",").join(" ")}`.trim(),
-            `font-src 'self' ${(process.env.NUXT_CSP_FONT_SRC || "").split(",").join(" ")}`.trim(),
+            `font-src 'self' data: ${(process.env.NUXT_CSP_FONT_SRC || "").split(",").join(" ")}`.trim(),
             `connect-src 'self' ${(process.env.NUXT_CSP_CONNECT_SRC || "").split(",").join(" ")}`.trim(),
             `frame-src 'self' ${(process.env.NUXT_CSP_FRAME_SRC || "").split(",").join(" ")}`.trim(),
             "frame-ancestors 'none'",
