@@ -22,7 +22,7 @@ const { data, status, error } = await useAsyncData(
       language: locale.value,
       version: "published",
       starts_with: "works",
-      per_page: 12,
+      per_page: 24,
       sort_by: "content.date_end:desc",
       cv: sb.cv || Number(Date.now()),
     }),
@@ -108,7 +108,9 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col gap-10 sm:gap-14 lg:gap-16 w-full p-4 sm:p-6 lg:p-8 relative">
+  <main
+    class="flex flex-col gap-10 sm:gap-14 lg:gap-16 w-full p-4 sm:p-6 lg:p-8 relative"
+  >
     <!-- Page Header -->
     <section class="flex flex-col w-full max-w-4xl mx-auto">
       <div class="flex flex-col gap-5 sm:gap-7 items-center px-4 w-full">
@@ -116,7 +118,9 @@ id:
           {{ t("heading") }}
         </HeadingPrimary>
 
-        <p class="font-serif italic text-center text-base sm:text-lg lg:text-xl text-neutral-600 max-w-2xl leading-relaxed">
+        <p
+          class="font-serif italic text-center text-base sm:text-lg lg:text-xl text-neutral-600 max-w-2xl leading-relaxed"
+        >
           {{ t("intro") }}
         </p>
 
