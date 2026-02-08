@@ -185,6 +185,12 @@ export default defineNuxtConfig({
   // Security headers
   nitro: {
     routeRules: {
+      "/api/storyblok/**": {
+        cors: false,
+        headers: {
+          "Access-Control-Allow-Origin": "",
+        },
+      },
       "/**": {
         headers: {
           "X-Frame-Options": "DENY",
