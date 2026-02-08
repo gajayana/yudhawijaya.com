@@ -1,32 +1,20 @@
 <script setup lang="ts">
-import type { ISbStories, ISbStoriesParams } from "storyblok-js-client";
+import type { ISbStoryData } from "storyblok-js-client";
 
 // Composables
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
-const sb = useSb();
 const { locale, t } = useI18n({ useScope: "local" });
-const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
 
-// Memoize API params to avoid recreating objects
-const getBaseParams = computed<ISbStoriesParams>(() => ({
-  language: locale.value,
-  version: "published",
-  cv: sb.cv || Number(Date.now()),
-}));
-
-// Fetch featured works
+// Fetch featured works from cached API
 const { data: featuredData, error: featuredError } = await useAsyncData(
   "home-featured",
   () =>
-    storyblokApi.get("cdn/stories", {
-      ...getBaseParams.value,
-      starts_with: "works",
-      per_page: 6,
-      sort_by: "content.is_featured:desc",
+    $fetch<ISbStoryData[]>("/api/storyblok/works", {
+      query: { locale: locale.value },
     }),
-  { watch: [locale] }
+  { watch: [locale] },
 );
 
 // Handle errors
@@ -44,10 +32,17 @@ if (!featuredData.value) {
   });
 }
 
-// Computed properties with type safety
-const featuredWorkStories = computed<ISbStories["data"]["stories"]>(
-  () => featuredData.value?.data.stories
-);
+// Sort by featured flag, take first 6
+const featuredWorkStories = computed<ISbStoryData[]>(() => {
+  const stories = featuredData.value || [];
+  return [...stories]
+    .sort((a, b) => {
+      const aFeatured = a.content?.is_featured ? 1 : 0;
+      const bFeatured = b.content?.is_featured ? 1 : 0;
+      return bFeatured - aFeatured;
+    })
+    .slice(0, 6);
+});
 
 // SEO optimization - reactive to locale changes
 useSeoMeta({

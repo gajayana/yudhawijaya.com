@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { ISbStoryData } from "@storyblok/vue";
+import type { ISbStoryData } from "storyblok-js-client";
 
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
-const sb = useSb();
 const { t, locale } = useI18n({
   useScope: "local",
 });
-const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
 
 defineI18nRoute({
@@ -20,38 +18,18 @@ defineI18nRoute({
 const { data, status, error } = await useAsyncData(
   `posts-${locale}`,
   () =>
-    storyblokApi.get("cdn/stories", {
-      language: locale.value,
-      version: "published",
-      starts_with: "posts",
-      per_page: 12,
-      sort_by: "first_published_at:desc",
-      cv: sb.cv || Number(Date.now()),
+    $fetch<ISbStoryData[]>("/api/storyblok/posts", {
+      query: { locale: locale.value },
     }),
   {
     watch: [locale],
     server: true,
     lazy: false,
     immediate: true,
-    transform: (response) => {
-      return {
-        stories: response.data.stories.map((story: ISbStoryData) => ({
-          uuid: story.uuid,
-          slug: story.slug,
-          content: {
-            title: story.content.title,
-            excerpt: story.content.excerpt,
-            featured_image: story.content.featured_image,
-          },
-          first_published_at: story.first_published_at,
-          tag_list: story.tag_list,
-        })),
-      };
-    },
-  }
+  },
 );
 
-const stories = computed(() => data.value?.stories || null);
+const stories = computed(() => data.value || null);
 
 watchEffect(() => {
   if (error.value) {

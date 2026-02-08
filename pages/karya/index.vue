@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { ISbStoryData } from "storyblok-js-client";
+
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
-const sb = useSb();
-const storyblokApi = useStoryblokApi();
 const { t, locale } = useI18n({
   useScope: "local",
 });
@@ -18,19 +18,14 @@ defineI18nRoute({
 const { data, status, error } = await useAsyncData(
   `works-${locale}`,
   () =>
-    storyblokApi.get("cdn/stories", {
-      language: locale.value,
-      version: "published",
-      starts_with: "works",
-      per_page: 12,
-      sort_by: "content.date_end:desc",
-      cv: sb.cv || Number(Date.now()),
+    $fetch<ISbStoryData[]>("/api/storyblok/works", {
+      query: { locale: locale.value },
     }),
   {
     watch: [locale],
     server: true,
     lazy: true,
-  }
+  },
 );
 
 if (error.value) {
@@ -40,10 +35,7 @@ if (error.value) {
   });
 }
 
-const stories = computed(() => {
-  if (!data.value) return null;
-  return data.value.data.stories;
-});
+const stories = computed(() => data.value || null);
 
 watchEffect(() => {
   if (error.value) {
@@ -108,7 +100,9 @@ id:
 </i18n>
 
 <template>
-  <main class="flex flex-col gap-10 sm:gap-14 lg:gap-16 w-full p-4 sm:p-6 lg:p-8 relative">
+  <main
+    class="flex flex-col gap-10 sm:gap-14 lg:gap-16 w-full p-4 sm:p-6 lg:p-8 relative"
+  >
     <!-- Page Header -->
     <section class="flex flex-col w-full max-w-4xl mx-auto">
       <div class="flex flex-col gap-5 sm:gap-7 items-center px-4 w-full">
@@ -116,7 +110,9 @@ id:
           {{ t("heading") }}
         </HeadingPrimary>
 
-        <p class="font-serif italic text-center text-base sm:text-lg lg:text-xl text-neutral-600 max-w-2xl leading-relaxed">
+        <p
+          class="font-serif italic text-center text-base sm:text-lg lg:text-xl text-neutral-600 max-w-2xl leading-relaxed"
+        >
           {{ t("intro") }}
         </p>
 

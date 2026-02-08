@@ -1,6 +1,7 @@
 import { Redis } from "@upstash/redis";
 
-export const REDIS_KEY_STORYBLOK_CV = "com_yudhawijaya:storyblok:cache:version";
+export const REDIS_KEY_PREFIX = "com_yudhawijaya:storyblok:cache";
+export const REDIS_KEY_STORYBLOK_CV = `${REDIS_KEY_PREFIX}:version`;
 
 let redisClient: Redis | null = null;
 

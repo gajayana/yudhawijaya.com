@@ -6,7 +6,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "sb:cache": "tsx --env-file=.env scripts/sb-cache.ts"
+    "sb:cache": "tsx --env-file=.env scripts/sb-cache.ts",
+    "sb:cache:works": "tsx --env-file=.env scripts/sb-cache-works.ts",
+    "sb:cache:posts": "tsx --env-file=.env scripts/sb-cache-posts.ts",
+    "sb:cache:all": "pnpm sb:cache && pnpm sb:cache:works && pnpm sb:cache:posts"
   },
   "devDependencies": {
     "@iconify-json/circle-flags": "^1.2.10",
