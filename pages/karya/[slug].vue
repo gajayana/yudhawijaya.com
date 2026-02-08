@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ISbStoryData } from "storyblok-js-client";
 import { isFuture } from "date-fns";
 import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
 import { validateSlug } from "~/utils/validateSlug";
@@ -6,12 +7,10 @@ import { validateSlug } from "~/utils/validateSlug";
 const { sanitize } = useSanitizeHtml();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
-const sb = useSb();
 const { t, locale } = useI18n({
   useScope: "local",
 });
 const notifications = useToastNotifications();
-const storyblokApi = useStoryblokApi();
 
 defineI18nRoute({
   paths: {
@@ -32,18 +31,15 @@ if (!validatedSlug) {
 const { data, status, error } = await useAsyncData(
   `work-${validatedSlug}-${locale}`,
   () =>
-    storyblokApi.get(`cdn/stories/works/${validatedSlug}`, {
-      language: locale.value,
-      version: "published",
-      cv: sb.cv || Number(Date.now()),
+    $fetch<ISbStoryData>(`/api/storyblok/works/${validatedSlug}`, {
+      query: { locale: locale.value },
     }),
   {
     watch: [locale],
     server: true,
     lazy: false,
     immediate: true,
-    transform: (response) => {
-      const story = response.data.story;
+    transform: (story) => {
       const urlIsInvalid = story?.content.url_is_invalid || false;
 
       return {

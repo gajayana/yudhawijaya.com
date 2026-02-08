@@ -1,16 +1,15 @@
 <script setup lang="ts">
+import type { ISbStoryData } from "storyblok-js-client";
 import customStoryblokRichTextOptions from "~/utils/custom-storyblok-rich-text-schema";
 import { validateSlug } from "~/utils/validateSlug";
 
 const { sanitize } = useSanitizeHtml();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
-const sb = useSb();
 const { t, locale } = useI18n({
   useScope: "local",
 });
 const notifications = useToastNotifications();
-const storyblokApi = useStoryblokApi();
 
 defineI18nRoute({
   paths: {
@@ -31,28 +30,26 @@ if (!validatedSlug) {
 const { data, status, error } = await useAsyncData(
   `post-${validatedSlug}-${locale}`,
   () =>
-    storyblokApi.get(`cdn/stories/posts/${validatedSlug}`, {
-      language: locale.value,
-      version: "published",
-      cv: sb.cv || Number(Date.now()),
+    $fetch<ISbStoryData>(`/api/storyblok/posts/${validatedSlug}`, {
+      query: { locale: locale.value },
     }),
   {
     watch: [locale],
     server: true,
     lazy: false,
     immediate: true,
-    transform: (response) => ({
-      story: response.data.story,
+    transform: (story) => ({
+      story,
       bodyRich: renderRichText(
-        response.data.story?.content.body_rich,
+        story?.content.body_rich,
         customStoryblokRichTextOptions,
       ),
-      dateModified: response.data.story?.published_at ?? undefined,
-      datePublished: response.data.story?.first_published_at ?? undefined,
-      excerpt: response.data.story?.content.excerpt,
-      featuredImage: response.data.story?.content.featured_image?.filename,
-      tags: response.data.story?.tag_list,
-      title: response.data.story?.content.title,
+      dateModified: story?.published_at ?? undefined,
+      datePublished: story?.first_published_at ?? undefined,
+      excerpt: story?.content.excerpt,
+      featuredImage: story?.content.featured_image?.filename,
+      tags: story?.tag_list,
+      title: story?.content.title,
     }),
   },
 );

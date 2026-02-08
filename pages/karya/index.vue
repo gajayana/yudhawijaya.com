@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { ISbStoryData } from "storyblok-js-client";
+
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
-const sb = useSb();
-const storyblokApi = useStoryblokApi();
 const { t, locale } = useI18n({
   useScope: "local",
 });
@@ -18,19 +18,14 @@ defineI18nRoute({
 const { data, status, error } = await useAsyncData(
   `works-${locale}`,
   () =>
-    storyblokApi.get("cdn/stories", {
-      language: locale.value,
-      version: "published",
-      starts_with: "works",
-      per_page: 24,
-      sort_by: "content.date_end:desc",
-      cv: sb.cv || Number(Date.now()),
+    $fetch<ISbStoryData[]>("/api/storyblok/works", {
+      query: { locale: locale.value },
     }),
   {
     watch: [locale],
     server: true,
     lazy: true,
-  }
+  },
 );
 
 if (error.value) {
@@ -40,10 +35,7 @@ if (error.value) {
   });
 }
 
-const stories = computed(() => {
-  if (!data.value) return null;
-  return data.value.data.stories;
-});
+const stories = computed(() => data.value || null);
 
 watchEffect(() => {
   if (error.value) {
