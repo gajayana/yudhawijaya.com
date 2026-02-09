@@ -20,7 +20,7 @@ id:
     <MDC
       :value="t('text')"
       tag="div"
-      class="font-mono mb-2text-center text-xs"
+      class="font-mono mb-2 text-center text-xs"
     />
 
     <ul class="flex gap-2">
