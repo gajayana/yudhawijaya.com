@@ -80,24 +80,22 @@ id:
 </i18n>
 
 <template>
-  <ClientOnly>
-    <div class="flex justify-center">
-      <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex text-white">
-        {{ t("loading") }}
-      </div>
-      <div v-else class="flex flex-col items-center w-full">
-        <HeadingSecondary>
-          {{ t("heading") }}
-        </HeadingSecondary>
-        <div class="gap-8 grid grid-cols-1 md:grid-cols-3">
-          <CardStory
-            v-for="story in stories"
-            :key="story.uuid"
-            :path="props.path"
-            :story="story"
-          />
-        </div>
+  <div class="flex justify-center">
+    <div v-if="status === ASYNC_DATA_STATUS.PENDING" class="flex text-white">
+      {{ t("loading") }}
+    </div>
+    <div v-else class="flex flex-col items-center w-full">
+      <HeadingSecondary>
+        {{ t("heading") }}
+      </HeadingSecondary>
+      <div class="gap-8 grid grid-cols-1 md:grid-cols-3">
+        <CardStory
+          v-for="story in stories"
+          :key="story.uuid"
+          :path="props.path"
+          :story="story"
+        />
       </div>
     </div>
-  </ClientOnly>
+  </div>
 </template>

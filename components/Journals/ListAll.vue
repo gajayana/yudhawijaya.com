@@ -39,22 +39,12 @@ const chunkedStories = computed(() => {
         v-for="(chunk, chunkIndex) in chunkedStories"
         :key="`chunk-${chunkIndex}`"
       >
-        <ClientOnly>
-          <Suspense>
-            <CardStory
-              v-for="story in chunk"
-              :key="story.uuid"
-              :story="story"
-              path="jurnal"
-            />
-            <template #fallback>
-              <CardStoryLoader
-                v-for="i in CHUNK_SIZE"
-                :key="`loader-${chunkIndex}-${i}`"
-              />
-            </template>
-          </Suspense>
-        </ClientOnly>
+        <CardStory
+          v-for="story in chunk"
+          :key="story.uuid"
+          :story="story"
+          path="jurnal"
+        />
       </template>
     </div>
 
