@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { ISbStories, ISbStoryData } from "storyblok-js-client";
+import type { ISbStoryData } from "storyblok-js-client";
 import type { PropType } from "vue";
 import { sampleSize } from "lodash-es";
 
-const sb = useSb();
 const props = defineProps({
   path: {
     type: String as PropType<"karya" | "jurnal">,
@@ -27,29 +26,30 @@ const { t, locale } = useI18n({
   useScope: "local",
 });
 
-const storyblokApi = useStoryblokApi();
 const notifications = useToastNotifications();
+const apiPath =
+  props.path === "karya" ? "/api/storyblok/works" : "/api/storyblok/posts";
 
 const { data, error, status } = await useLazyAsyncData(
   `recommended-stories-${props.path}-${props.slug}`,
-  () =>
-    storyblokApi.get("cdn/stories", {
-      language: locale.value,
-      version: "published",
-      starts_with: props.path === "karya" ? "works" : "posts",
-      sort_by: "content.date_end:desc",
-      cv: sb.cv || Number(Date.now()),
-      ...(props.tags?.length ? { with_tag: props.tags.join(",") } : {}),
-      excluding_fields: "body",
-      excluding_slugs: `${props.path === "karya" ? "works" : "posts"}/${props.slug}`,
-    }),
+  () => $fetch<ISbStoryData[]>(apiPath, { query: { locale: locale.value } }),
   {
     immediate: true,
-    transform: (response: ISbStories) => ({
-      stories: response.data.stories?.length
-        ? (sampleSize(response.data.stories, 3) as ISbStoryData[])
-        : null,
-    }),
+    transform: (allStories: ISbStoryData[]) => {
+      // Exclude current story and filter by tags if provided
+      let filtered = allStories.filter((s) => s.slug !== props.slug);
+      if (props.tags?.length) {
+        const tagged = filtered.filter((s) =>
+          s.tag_list?.some((tag: string) => props.tags.includes(tag))
+        );
+        if (tagged.length) filtered = tagged;
+      }
+      return {
+        stories: filtered.length
+          ? (sampleSize(filtered, 3) as ISbStoryData[])
+          : null,
+      };
+    },
   }
 );
 
