@@ -118,20 +118,20 @@ id:
 <template>
   <main class="flex flex-col w-full p-4 relative">
     <div class="min-h-[calc(100dvh-15.063rem)] flex flex-col w-full">
-      <div
-        class="container flex flex-col mx-auto max-w-xl w-full"
-      >
+      <div class="container flex flex-col mx-auto max-w-xl w-full">
         <HeadingPrimary>
           {{ t("heading") }}
         </HeadingPrimary>
 
         <!-- Intro -->
-        <p class="font-serif mb-10 text-neutral-700 leading-relaxed">
+        <p
+          class="font-serif mb-10 text-neutral-700 text-base sm:text-lg leading-relaxed"
+        >
           {{ t("intro") }}
         </p>
 
         <!-- Career Arc -->
-        <h2 class="font-sans font-medium text-lg mb-6">
+        <h2 class="font-sans font-medium text-lg sm:text-xl mb-6">
           {{ t("careerHeading") }}
         </h2>
         <ol class="relative border-l border-neutral-200 mb-10 ml-3">
@@ -146,28 +146,32 @@ id:
             <span class="text-xs text-neutral-400 font-sans">
               {{ phase.period }}
             </span>
-            <h3 class="font-sans font-medium text-base mt-0.5">
+            <h3 class="font-sans font-medium text-base sm:text-lg mt-0.5">
               {{ phase.title }}
             </h3>
             <span class="text-sm text-neutral-500 font-sans">
               {{ phase.company }}
             </span>
-            <p class="font-serif text-sm text-neutral-700 mt-2 leading-relaxed">
+            <p
+              class="font-serif text-sm sm:text-base text-neutral-700 mt-2 leading-relaxed"
+            >
               {{ phase.description }}
             </p>
           </li>
         </ol>
 
         <!-- Philosophy -->
-        <h2 class="font-sans font-medium text-lg mb-3">
+        <h2 class="font-sans font-medium text-lg sm:text-xl mb-3">
           {{ t("philosophyHeading") }}
         </h2>
-        <p class="font-serif mb-10 text-neutral-700 leading-relaxed">
+        <p
+          class="font-serif mb-10 text-neutral-700 text-base sm:text-lg leading-relaxed"
+        >
           {{ t("philosophy") }}
         </p>
 
         <!-- Skills -->
-        <h2 class="font-sans font-medium text-lg mb-4">
+        <h2 class="font-sans font-medium text-lg sm:text-xl mb-4">
           {{ t("skillsHeading") }}
         </h2>
         <ul class="flex flex-wrap gap-2 mb-10">
@@ -181,10 +185,12 @@ id:
         </ul>
 
         <!-- Personal -->
-        <h2 class="font-sans font-medium text-lg mb-3">
+        <h2 class="font-sans font-medium text-lg sm:text-xl mb-3">
           {{ t("personalHeading") }}
         </h2>
-        <p class="font-serif mb-10 text-neutral-700 leading-relaxed">
+        <p
+          class="font-serif mb-10 text-neutral-700 text-base sm:text-lg leading-relaxed"
+        >
           {{ t("personal") }}
         </p>
 

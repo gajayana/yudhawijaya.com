@@ -59,12 +59,12 @@ export const customRichTextResolvers: StoryblokRichTextOptions<string>["resolver
     ) => {
       const level = node.attrs?.level || 1;
       const sizeClasses: Record<number, string> = {
-        1: "text-3xl",
-        2: "text-2xl",
-        3: "text-xl",
-        4: "text-lg",
-        5: "text-lg",
-        6: "text-lg",
+        1: "text-2xl sm:text-3xl md:text-4xl",
+        2: "text-xl sm:text-2xl md:text-3xl",
+        3: "text-lg sm:text-xl md:text-2xl",
+        4: "text-base sm:text-lg md:text-xl",
+        5: "text-base sm:text-lg",
+        6: "text-sm sm:text-base",
       };
       return context.render(
         `h${level}`,

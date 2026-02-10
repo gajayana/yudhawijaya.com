@@ -198,25 +198,18 @@ id:
         <div
           class="aspect-video overflow-hidden rounded-xl shadow-2xl shadow-black/10 relative group"
         >
-          <ClientOnly>
-            <Suspense>
-              <NuxtImg
-                v-if="data?.featuredImage"
-                :alt="data?.title"
-                :src="data.featuredImage"
-                class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
-                format="webp"
-                loading="lazy"
-                provider="storyblok"
-                :quality="70"
-                :width="1200"
-                :modifiers="{ smart: true }"
-              />
-              <template #fallback>
-                <USkeleton class="h-full w-full" />
-              </template>
-            </Suspense>
-          </ClientOnly>
+          <NuxtImg
+            v-if="data?.featuredImage"
+            :alt="data?.title"
+            :src="data.featuredImage"
+            class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+            format="webp"
+            loading="lazy"
+            provider="storyblok"
+            :quality="70"
+            :width="1200"
+            :modifiers="{ smart: true }"
+          />
 
           <!-- Gradient overlay -->
           <div
@@ -277,24 +270,22 @@ id:
 
       <!-- Recommended Stories -->
       <section class="w-full max-w-6xl mx-auto px-4 sm:px-6 mt-8 sm:mt-12">
-        <ClientOnly>
-          <Suspense>
-            <RecommenderStories
-              v-if="data?.story"
-              :tags="data.tags"
-              path="jurnal"
-              :slug="validatedSlug"
-              :title="data.title || ''"
-            />
-            <template #fallback>
-              <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
-              >
-                <CardStoryLoader v-for="i in 3" :key="`rec-loader-${i}`" />
-              </div>
-            </template>
-          </Suspense>
-        </ClientOnly>
+        <Suspense>
+          <RecommenderStories
+            v-if="data?.story"
+            :tags="data.tags"
+            path="jurnal"
+            :slug="validatedSlug"
+            :title="data.title || ''"
+          />
+          <template #fallback>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+            >
+              <CardStoryLoader v-for="i in 3" :key="`rec-loader-${i}`" />
+            </div>
+          </template>
+        </Suspense>
       </section>
     </div>
   </main>
