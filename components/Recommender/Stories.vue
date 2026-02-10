@@ -34,6 +34,7 @@ const { data, error, status } = await useLazyAsyncData(
   `recommended-stories-${props.path}-${props.slug}`,
   () => $fetch<ISbStoryData[]>(apiPath, { query: { locale: locale.value } }),
   {
+    server: false,
     immediate: true,
     transform: (allStories: ISbStoryData[]) => {
       // Exclude current story and filter by tags if provided
