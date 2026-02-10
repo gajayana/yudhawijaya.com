@@ -22,6 +22,9 @@ pnpm run generate
 
 # Test production build
 pnpm build && node .output/server/index.mjs
+
+# Pre-warm Redis cache (run before deploy or after Storyblok content changes)
+pnpm sb:cache:all
 ```
 
 ## Architecture Overview
@@ -39,7 +42,11 @@ This is a **Nuxt 3** personal website with **Storyblok CMS** integration, featur
 ## Key Technical Patterns
 
 ### Storyblok Integration
-- Content fetching uses Storyblok API with version caching via `useSb` store (`stores/sb.ts`)
+- **All content fetching goes through cached server API routes** (`server/api/storyblok/`), never direct Storyblok SDK calls at runtime
+- Server routes use Redis-first strategy (Upstash Redis) with Storyblok API as fallback
+- Cache is pre-warmed via scripts: `pnpm sb:cache:all` (runs `sb:cache`, `sb:cache:works`, `sb:cache:posts`)
+- Content version (cv) cached in Redis, initialized by `plugins/init.server.ts`
+- Redis key prefix: `com_yudhawijaya:storyblok:cache`
 - Storyblok access token configured via `NUXT_STORYBLOK_ACCESS_TOKEN` environment variable
 - Images served from `https://a.storyblok.com` domain
 
@@ -58,6 +65,8 @@ This is a **Nuxt 3** personal website with **Storyblok CMS** integration, featur
 - `NUXT_PUBLIC_BASE_URL`: Site base URL for SEO and i18n
 - `NUXT_PUBLIC_APP_NAME`: Application name used in meta tags
 - `NUXT_STORYBLOK_ACCESS_TOKEN`: Storyblok API access token
+- `UPSTASH_REDIS_REST_URL`: Upstash Redis REST endpoint for content caching
+- `UPSTASH_REDIS_REST_TOKEN`: Upstash Redis auth token
 
 ## Important Development Guidelines
 
@@ -93,7 +102,7 @@ This is a **Nuxt 3** personal website with **Storyblok CMS** integration, featur
 - **Naming**: PascalCase for components, camelCase for composables, lowercase-with-dashes for directories
 - **Architecture**: Prefer types over interfaces, avoid enums (use const objects), leverage auto-imports
 - **UI**: Nuxt UI v4 (`@nuxt/ui`) for interactive components (buttons, inputs, etc.). Use `UButton` instead of hand-styled `<button>`/`<a>`/`<NuxtLink>` for actions. Use `color="neutral"` for primary buttons, `variant="outline"` for secondary. Mobile-first Tailwind CSS for layout and custom styling. Optimize for Web Vitals
-- **Data Fetching**: Use `useFetch`/`useAsyncData` for server-side data, Storyblok API for CMS content
+- **Data Fetching**: Use `useFetch`/`useAsyncData` with internal `/api/storyblok/` routes for CMS content. Never call `useStoryblokApi()` directly in components — always go through the cached server API routes
 
 ## Robots Configuration
 - Blocks AI bots and non-SEO bots (`robots.blockAiBots: true`)
