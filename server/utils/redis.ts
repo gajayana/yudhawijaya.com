@@ -1,9 +1,10 @@
 import { Redis } from "@upstash/redis";
+import StoryblokClient from "storyblok-js-client";
 
 export const REDIS_KEY_PREFIX = "com_yudhawijaya:storyblok:cache";
-export const REDIS_KEY_STORYBLOK_CV = `${REDIS_KEY_PREFIX}:version`;
 
 let redisClient: Redis | null = null;
+let storyblokClient: StoryblokClient | null = null;
 
 export function getRedisClient(): Redis | null {
   if (redisClient) return redisClient;
@@ -19,14 +20,25 @@ export function getRedisClient(): Redis | null {
   return redisClient;
 }
 
-export async function getStoryblokCvFromRedis(): Promise<number | null> {
-  try {
-    const redis = getRedisClient();
-    if (!redis) return null;
+export function getStoryblokClient(): StoryblokClient {
+  if (storyblokClient) return storyblokClient;
 
-    const cv = await redis.get<number>(REDIS_KEY_STORYBLOK_CV);
-    return cv ?? null;
-  } catch {
-    return null;
+  const token = process.env.NUXT_STORYBLOK_ACCESS_TOKEN;
+  if (!token) {
+    throw createError({ statusCode: 500, message: "Missing Storyblok token" });
   }
+
+  storyblokClient = new StoryblokClient({ accessToken: token });
+  return storyblokClient;
+}
+
+/** Race a promise against a timeout. Rejects on expiry. */
+export function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("Timeout")), ms);
+    promise.then(
+      (v) => { clearTimeout(timer); resolve(v); },
+      (e) => { clearTimeout(timer); reject(e); },
+    );
+  });
 }
