@@ -168,6 +168,7 @@ export default defineNuxtConfig({
 
   // },
   image: {
+    provider: "storyblok",
     storyblok: {
       baseURL: "https://a.storyblok.com",
     },
