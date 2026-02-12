@@ -185,6 +185,19 @@ export default defineNuxtConfig({
 
   // Security headers
   nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        "/",
+        "/karya",
+        "/jurnal",
+        "/kontak",
+        "/en",
+        "/en/works",
+        "/en/journals",
+        "/en/contact",
+      ],
+    },
     routeRules: {
       "/api/storyblok/**": {
         cors: false,
@@ -224,21 +237,6 @@ export default defineNuxtConfig({
     },
   },
 
-  // nitro: {
-  //   prerender: {
-  //     crawlLinks: true,
-  //     routes: [
-  //       '/',
-  //       '/karya',
-  //       '/jurnal',
-  //       '/kontak',
-  //       '/en',
-  //       '/en/works',
-  //       '/en/journals',
-  //       '/en/contact'
-  //     ]
-  //   }
-  // },
 
   vite: {
     optimizeDeps: {
