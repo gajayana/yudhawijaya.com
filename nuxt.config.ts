@@ -181,6 +181,12 @@ export default defineNuxtConfig({
   robots: {
     blockAiBots: false,
     blockNonSeoBots: true,
+    disallow: [
+      "/*?p=*",
+      "/*?p&*",
+      "/*ngopo=*",
+      "/*?hl=*",
+    ],
   },
 
   // Security headers
